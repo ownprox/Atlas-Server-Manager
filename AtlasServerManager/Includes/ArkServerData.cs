@@ -132,7 +132,8 @@ namespace AtlasServerManager.Includes
             if (HasMadeFirstContact && ArkMgr != null)
             {
                 if (ArkMgr.QueryPortCheck.Checked && DateTime.Now.Subtract(LastSourceQueryReply).TotalSeconds > 60) return 2;
-                if (ArkMgr.GamePortCheck.Checked && GamePortWasOpen && !CheckGamePort())
+                bool bWasGamePortOpen = GamePortWasOpen;
+                if (ArkMgr.GamePortCheck.Checked && !CheckGamePort() && bWasGamePortOpen)
                 {
                     if(!AttemptRconSave)
                     {
