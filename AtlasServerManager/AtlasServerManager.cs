@@ -8,8 +8,7 @@ namespace AtlasServerManager
 {
     public partial class AtlasServerManager : Form
     {
-        public string SteamPath = System.AppDomain.CurrentDomain.BaseDirectory + @"Steam\";
-        public string ArkManagerPath = "", ServerPath = string.Empty, ASMTitle;
+        public string SteamPath, ArkManagerPath, ServerPath = string.Empty, ASMTitle;
         public static AtlasServerManager GetInstance() { return instance; }
         public bool Updating = true, FirstDl = false, ForcedUpdate = false;
         public Process UpdateProcess = null;
@@ -26,7 +25,8 @@ namespace AtlasServerManager
         private void Form1_Load(object sender, EventArgs e)
         {
             ASMTitle = Text;
-            ArkManagerPath = (Application.StartupPath + @"\").Replace(@"\\", @"\");
+            ArkManagerPath = Path.GetDirectoryName(Application.ExecutablePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\"); ;
+            SteamPath = Path.Combine(ArkManagerPath, @"\Steam\");
             Worker.Start(this);
             Registry.LoadRegConfig(this);
             if (File.Exists(ArkManagerPath + "ShooterGameServer.exe")) ServerPath = ArkManagerPath + "ShooterGameServer.exe";
@@ -81,9 +81,10 @@ namespace AtlasServerManager
         {
             if (ServerList.FocusedItem != null)
             {
-                ArkServerListViewItem ASLVI = ((ArkServerListViewItem)ServerList.FocusedItem);
+                ArkServerListViewItem ASLVI = (ArkServerListViewItem)ServerList.FocusedItem;
                 ASLVI.GetServerData().StartServer();
                 ASLVI.UpdateStatus();
+                Registry.SaveRegConfig(this);
                 Log(ASLVI.GetServerData().AltSaveDirectory + " Started!");
             }
         }
@@ -95,6 +96,7 @@ namespace AtlasServerManager
                 ArkServerListViewItem ASLVI = (ArkServerListViewItem)ServerList.FocusedItem;
                 ASLVI.GetServerData().StopServer();
                 ASLVI.UpdateStatus();
+                Registry.SaveRegConfig(this);
                 Log(ASLVI.GetServerData().AltSaveDirectory + " Stopped!");
             }
         }

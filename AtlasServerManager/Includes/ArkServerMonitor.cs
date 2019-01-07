@@ -8,6 +8,7 @@ namespace AtlasServerManager.Includes
         {
             AtlasServerManager ArkMgr = (AtlasServerManager)Data;
             int ServerStatus = 0;
+            bool SavedAfterLaunch = false;
             while (true)
             {
                 ArkMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
@@ -34,8 +35,15 @@ namespace AtlasServerManager.Includes
                                         continue;
                                 }
                                 ASLVI.GetServerData().StartServer();
+                                SavedAfterLaunch = false;
                             }
                             ASLVI.UpdateStatus();
+                        }
+
+                        if(!SavedAfterLaunch)
+                        {
+                            SavedAfterLaunch = true;
+                            Registry.SaveRegConfig(ArkMgr);
                         }
                     }
                 });

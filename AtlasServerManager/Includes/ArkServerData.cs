@@ -15,37 +15,27 @@ namespace AtlasServerManager.Includes
         public bool Rcon, FTD, WildWipe, PVP, MapB, Gamma, Third, Crosshair, HitMarker, Imprint, Loaded, AutoStart;
         private bool HasMadeFirstContact, AttemptRconSave = false, GamePortWasOpen = false;
         private DateTime LastSourceQueryReply, RconSavedEstimate;
-        public void InitStartServer()
-        {
-            string ArkManagerPath = AtlasServerManager.GetInstance().ArkManagerPath;
-            FinalServerPath = ServerPath;
-            if (FinalServerPath[0] == '.' && (FinalServerPath[1] == '\\' || FinalServerPath[1] == '/'))
-            {
-                string[] BaseFolder = FinalServerPath.Replace(".\\", "").Replace("./", "").Split('/');
-                if (BaseFolder.Length == 1) BaseFolder = BaseFolder[0].Split('\\');
-                if (BaseFolder.Length > 0)
-                {
-                    if (!Directory.Exists(ArkManagerPath + BaseFolder[0])) Directory.CreateDirectory(ArkManagerPath + BaseFolder[0]);
-                    FinalServerPath = FinalServerPath.Replace(".\\", ArkManagerPath).Replace("./", ArkManagerPath);
-                }
-                else FinalServerPath = ArkManagerPath + @".\AtlasServerData\";
-            }
-            else if (!File.Exists(FinalServerPath)) MessageBox.Show(FinalServerPath + " Path not found!");
-        }
 
         public void StartServer()
         {
-            if (FinalServerPath == string.Empty) InitStartServer();
             HasMadeFirstContact = false;
-            string ExePath = ServerPath;
+            string ExePath = ServerPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\");
             if (ExePath.StartsWith("./") || ExePath.StartsWith(@".\"))
-                ExePath = (ExePath.Replace("./", System.AppDomain.CurrentDomain.BaseDirectory).Replace(@".\", System.AppDomain.CurrentDomain.BaseDirectory) + "\\").Replace("//", "/").Replace(@"\\", @"\");
+                ExePath = Path.GetDirectoryName(Application.ExecutablePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\");
 
-            if (!ExePath.ToLower().Contains(@"\shootergame\binaries\win64\"))
-                ExePath = Path.Combine(ExePath, "ShooterGame\\Binaries\\Win64\\");
-            if (!ExePath.ToLower().EndsWith("shootergameserver.exe"))
-                ExePath = Path.Combine(ExePath, "ShooterGameServer.exe");
-            if (!File.Exists(ExePath))
+            if (!ExePath.ToLower().Contains(@"\shootergame\binaries\win64"))
+            {
+                if(File.Exists(Path.Combine(ExePath, @"\ShooterGame\Binaries\Win64\ShooterGameServer.exe")))
+                    ExePath = Path.Combine(ExePath, @"\ShooterGame\Binaries\Win64\ShooterGameServer.exe");
+                else if(File.Exists(Path.Combine(ExePath, @"\Binaries\Win64\ShooterGameServer.exe")))
+                    ExePath = Path.Combine(ExePath, @"\Binaries\Win64\ShooterGameServer.exe");
+                else if (File.Exists(Path.Combine(ExePath, @"\Win64\ShooterGameServer.exe")))
+                    ExePath = Path.Combine(ExePath, @"\Win64\ShooterGameServer.exe");
+            }
+
+            ExePath = Path.Combine(ExePath, "ShooterGameServer.exe");
+
+            if (ExePath.Contains(".") && !File.Exists(ExePath))
             {
                 MessageBox.Show(ExePath + "  Is Not found!!!", "ShooterGameServer.exe Not Found!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
