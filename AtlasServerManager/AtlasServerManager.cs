@@ -219,6 +219,15 @@ namespace AtlasServerManager
                 Worker.ForceUpdaterRestart(this);
             };
 
+            ClearConfigButton.Click += (e, a) =>
+            {
+                if(MessageBox.Show("Are you sure you want to erase all your configurations?", "Configuration Reset", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    ServerList.Clear();
+
+                }
+            };
+
             broadcastToolStripMenuItem.Click += (e, a) => RconBroadcast(false);
             saveWorldToolStripMenuItem.Click += (e, a) => RconSaveWorld(false);
             closeSaveWorldToolStripMenuItem.Click += (e, a) => RconCloseSaveWorld(false);

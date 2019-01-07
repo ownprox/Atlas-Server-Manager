@@ -37,6 +37,7 @@ namespace AtlasServerManager.Includes
                     ArkMgr.ServerUpdatingMessage.Text = (string)key.GetValue("ServerUpdatingMessage", ArkMgr.ServerUpdatingMessage.Text);
 
                     LoadRegServers(ArkMgr);
+                    key.Close();
                 }
             }
             catch (Exception e) { System.Windows.Forms.MessageBox.Show("Failed To Load Setting: " + e.Message); }
@@ -66,6 +67,7 @@ namespace AtlasServerManager.Includes
                     key.SetValue("ServerUpdatingMessage", ArkMgr.ServerUpdatingMessage.Text, Microsoft.Win32.RegistryValueKind.String);
 
                     SaveRegServers(ArkMgr);
+                    key.Close();
                 }
             }
             catch (Exception e) { System.Windows.Forms.MessageBox.Show("Failed To Save Setting: " + e.Message); }
@@ -98,7 +100,6 @@ namespace AtlasServerManager.Includes
                         catch { ASD.PID = 0; }
                         ArkMgr.ServerList.Items.Add(new ArkServerListViewItem(ASD));
                     }
-                key.Close();
             }
         }
 
@@ -212,6 +213,18 @@ namespace AtlasServerManager.Includes
                 return true;
             }
             return false;
+        }
+
+        public static void ClearAll()
+        {
+            key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\AtlasServerManager\\Servers");
+            if (key != null)
+            {
+                string[] Servers = key.GetSubKeyNames();
+                foreach (string Srv in Servers)
+                    if (Srv.StartsWith("Server")) key.DeleteSubKey(Srv);
+                key.Close();
+            }
         }
     }
 }

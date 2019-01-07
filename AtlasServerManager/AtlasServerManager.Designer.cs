@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AtlasServerManager));
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.ClearConfigButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.GamePortCheck = new System.Windows.Forms.CheckBox();
@@ -120,6 +121,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.ClearConfigButton);
             this.tabPage2.Controls.Add(this.button1);
             this.tabPage2.Controls.Add(this.groupBox1);
             this.tabPage2.Controls.Add(this.groupBox3);
@@ -131,11 +133,20 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Options";
             // 
+            // ClearConfigButton
+            // 
+            this.ClearConfigButton.Location = new System.Drawing.Point(367, 201);
+            this.ClearConfigButton.Name = "ClearConfigButton";
+            this.ClearConfigButton.Size = new System.Drawing.Size(266, 44);
+            this.ClearConfigButton.TabIndex = 8;
+            this.ClearConfigButton.Text = "Clear Servers";
+            this.ClearConfigButton.UseVisualStyleBackColor = true;
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(367, 146);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(266, 99);
+            this.button1.Size = new System.Drawing.Size(266, 44);
             this.button1.TabIndex = 7;
             this.button1.Text = "Force Update";
             this.button1.UseVisualStyleBackColor = true;
@@ -783,7 +794,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AtlasServerManager";
-            this.Text = "Atlas Server Manager 2.5";
+            this.Text = "Atlas Server Manager 2.6";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabPage2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -881,6 +892,7 @@
         public System.Windows.Forms.TextBox ServerUpdatingMessage;
         public System.Windows.Forms.CheckBox GamePortCheck;
         public System.Windows.Forms.CheckBox QueryPortCheck;
+        private System.Windows.Forms.Button ClearConfigButton;
     }
 }
 

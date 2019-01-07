@@ -124,7 +124,6 @@ namespace AtlasServerManager
             string Error = string.Empty;
             foreach (AtlasServerData Asd in AtlasServerManager.GetInstance().ServerList.GetServerList())
             {
-                if (Asd.ServerPort == ServerData.ServerPort && Asd.QueryPort == ServerData.QueryPort && Asd.RconPort == ServerData.RconPort) continue;
                 if (Asd.ServerPort == (int)ServerPortNumericUpDown.Value || Asd.ServerPort == (int)QueryPortNumericUpDown.Value || Asd.ServerPort == (int)RconNumericUpDown.Value)
                 {
                     Error = "Server Port " + Asd.ServerPort + " is already in use by " + Asd.AltSaveDirectory;
