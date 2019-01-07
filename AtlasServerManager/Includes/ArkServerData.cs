@@ -44,11 +44,46 @@ namespace AtlasServerManager.Includes
             if (IsRunning()) StopServer();
             ServerPath = ExePath.Substring(0, ExePath.IndexOf(@"\ShooterGame"));
             GamePortWasOpen = false;
+
+            /* Resolve DNS */
+            string CurIP = ServerIp;
+            int DotCount = 0;
+            for (int i = 0; i < CurIP.Length; i++) if (CurIP[i] == '.') DotCount++;
+            if (DotCount != 3)
+            {
+                System.Net.IPAddress[] ips = System.Net.Dns.GetHostAddresses(CurIP);
+                if (ips.Length > 0)
+                {
+                    CurIP = ips[0].ToString();
+                    try
+                    {
+                        string ServerGrid = Path.Combine(ServerPath + Path.DirectorySeparatorChar, @"ShooterGame\ServerGrid.json");
+                        if (File.Exists(ServerGrid))
+                        {
+                            string OwnProxGrid = Path.Combine(ServerPath + Path.DirectorySeparatorChar, @"ShooterGame\ServerGridOwnProx.json");
+                            if (File.Exists(OwnProxGrid)) File.Delete(OwnProxGrid);
+                            using (StreamWriter sw = new StreamWriter(OwnProxGrid))
+                            using (StreamReader sr = new StreamReader(ServerGrid))
+                            {
+                                string line = "";
+                                while ((line = sr.ReadLine()) != null)
+                                {
+                                    if (line.Contains("\"ip\": \"")) sw.WriteLine("      \"ip\": \"" + CurIP + "\",");
+                                    else sw.WriteLine(line);
+                                }
+                            }
+                            File.Delete(ServerGrid);
+                            File.Move(OwnProxGrid, ServerGrid);
+                        }
+                    } catch (Exception e) { MessageBox.Show("Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                }
+            }
+
             try
             {
                 ServerProcess = new Process
                 {
-                    StartInfo = new ProcessStartInfo(ExePath, "\"" + "Ocean?ServerX=" + ServerX + "?ServerY=" + ServerY + "?Port=" + ServerPort + "?QueryPort=" + QueryPort + "?AltSaveDirectoryName=" + AltSaveDirectory + "?MaxPlayers=" + MaxPlayers + "?ReservedPlayerSlots=" + ReservedPlayers + "?ServerAdminPassword=" + Pass + "?ServerCrosshair=" + (Crosshair ? "true" : "false") + "?AllowThirdPersonPlayer=" + (Third ? "true" : "false") + "?MapPlayerLocation=" + (MapB ? "true" : "false") + "?serverPVE=" + (!PVP ? "true" : "false") + "?RCONEnabled=" + (Rcon ? ("true?RCONPort=" + RconPort) : "false") + "?EnablePvPGamma=" + (Gamma ? "true" : "false") + "?AllowAnyoneBabyImprintCuddle=" + (Imprint ? "true" : "false") + "?ShowFloatingDamageText=" + FTD + "?SeamlessIP=" + ServerIp + CustomArgs + "\" -game -server -log -NoBattlEye -NoCrashDialog")
+                    StartInfo = new ProcessStartInfo(ExePath, "\"" + "Ocean?ServerX=" + ServerX + "?ServerY=" + ServerY + "?Port=" + ServerPort + "?QueryPort=" + QueryPort + "?AltSaveDirectoryName=" + AltSaveDirectory + "?MaxPlayers=" + MaxPlayers + "?ReservedPlayerSlots=" + ReservedPlayers + "?ServerAdminPassword=" + Pass + "?ServerCrosshair=" + (Crosshair ? "true" : "false") + "?AllowThirdPersonPlayer=" + (Third ? "true" : "false") + "?MapPlayerLocation=" + (MapB ? "true" : "false") + "?serverPVE=" + (!PVP ? "true" : "false") + "?RCONEnabled=" + (Rcon ? ("true?RCONPort=" + RconPort) : "false") + "?EnablePvPGamma=" + (Gamma ? "true" : "false") + "?AllowAnyoneBabyImprintCuddle=" + (Imprint ? "true" : "false") + "?ShowFloatingDamageText=" + FTD + "?SeamlessIP=" + CurIP + CustomArgs + "\" -game -server -log -NoBattlEye -NoCrashDialog")
                     {
                         UseShellExecute = false,
                         WorkingDirectory = Path.GetDirectoryName(ExePath)
