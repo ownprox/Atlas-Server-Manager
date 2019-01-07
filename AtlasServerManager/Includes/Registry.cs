@@ -18,9 +18,9 @@ namespace AtlasServerManager.Includes
                 {
                     /* BOOL */
                     ArkMgr.checkAutoServerUpdate.Checked = (int)key.GetValue("AutoServerUpdate", ArkMgr.checkAutoServerUpdate.Checked ? 1 : 0) == 1 ? true : false;
-                    ArkMgr.checkBootWhenOff.Checked = (int)key.GetValue("BootWhenOff", 1) == 1 ? true : false;
-                    ArkMgr.checkBootWhenOff.Checked = (int)key.GetValue("QueryPortCheck", 1) == 1 ? true : false;
-                    ArkMgr.checkBootWhenOff.Checked = (int)key.GetValue("GamePortCheck", 1) == 1 ? true : false;
+                    ArkMgr.BootWhenOffCheck.Checked = (int)key.GetValue("BootWhenOff", 1) == 1 ? true : false;
+                    ArkMgr.QueryPortCheck.Checked = (int)key.GetValue("QueryPortCheck", 1) == 1 ? true : false;
+                    ArkMgr.GamePortCheck.Checked = (int)key.GetValue("GamePortCheck", 1) == 1 ? true : false;
 
                     /* DECIMAL */
                     decimal value = 1.0M;
@@ -51,7 +51,7 @@ namespace AtlasServerManager.Includes
                 {
                     /* BOOL */
                     key.SetValue("AutoServerUpdate", ArkMgr.checkAutoServerUpdate.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
-                    key.SetValue("BootWhenOff", ArkMgr.checkBootWhenOff.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
+                    key.SetValue("BootWhenOff", ArkMgr.BootWhenOffCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                     key.SetValue("QueryPortCheck", ArkMgr.QueryPortCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                     key.SetValue("GamePortCheck", ArkMgr.GamePortCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
 

@@ -13,7 +13,7 @@ namespace AtlasServerManager.Includes
             {
                 ArkMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
                 {
-                    if (!ArkMgr.Updating && ArkMgr.checkBootWhenOff.Checked)
+                    if (!ArkMgr.Updating && ArkMgr.BootWhenOffCheck.Checked)
                     {
                         foreach (ArkServerListViewItem ASLVI in ArkMgr.ServerList.Items)
                         {

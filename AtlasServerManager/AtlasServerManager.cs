@@ -25,8 +25,8 @@ namespace AtlasServerManager
         private void Form1_Load(object sender, EventArgs e)
         {
             ASMTitle = Text;
-            ArkManagerPath = Path.GetDirectoryName(Application.ExecutablePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\"); ;
-            SteamPath = Path.Combine(ArkManagerPath, @"\Steam\");
+            ArkManagerPath = Path.GetDirectoryName(Application.ExecutablePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\") + Path.DirectorySeparatorChar;
+            SteamPath = Path.Combine(ArkManagerPath, @"Steam\");
             Worker.Start(this);
             Registry.LoadRegConfig(this);
             if (File.Exists(ArkManagerPath + "ShooterGameServer.exe")) ServerPath = ArkManagerPath + "ShooterGameServer.exe";
@@ -215,6 +215,7 @@ namespace AtlasServerManager
                 }
                 if (File.Exists(SteamPath + "AtlasLatestVersion.txt")) File.Delete(SteamPath + "AtlasLatestVersion.txt");
                 Log("[Atlas] Forcing Update");
+                ForcedUpdate = true;
                 Worker.ForceUpdaterRestart(this);
             };
 

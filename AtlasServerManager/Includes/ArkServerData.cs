@@ -22,27 +22,27 @@ namespace AtlasServerManager.Includes
             string ExePath = ServerPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\");
             if (ExePath.StartsWith("./") || ExePath.StartsWith(@".\"))
                 ExePath = Path.GetDirectoryName(Application.ExecutablePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\");
-
-            if (!ExePath.ToLower().Contains(@"\shootergame\binaries\win64"))
+            
+            if (!File.Exists(ExePath))
             {
-                if(File.Exists(Path.Combine(ExePath, @"\ShooterGame\Binaries\Win64\ShooterGameServer.exe")))
-                    ExePath = Path.Combine(ExePath, @"\ShooterGame\Binaries\Win64\ShooterGameServer.exe");
-                else if(File.Exists(Path.Combine(ExePath, @"\Binaries\Win64\ShooterGameServer.exe")))
-                    ExePath = Path.Combine(ExePath, @"\Binaries\Win64\ShooterGameServer.exe");
-                else if (File.Exists(Path.Combine(ExePath, @"\Win64\ShooterGameServer.exe")))
-                    ExePath = Path.Combine(ExePath, @"\Win64\ShooterGameServer.exe");
+                if(File.Exists(Path.Combine(ExePath + Path.DirectorySeparatorChar, "ShooterGameServer.exe")))
+                    ExePath = Path.Combine(ExePath + Path.DirectorySeparatorChar, @"ShooterGameServer.exe");
+                else if (File.Exists(Path.Combine(ExePath + Path.DirectorySeparatorChar, @"ShooterGame\Binaries\Win64\ShooterGameServer.exe")))
+                    ExePath = Path.Combine(ExePath + Path.DirectorySeparatorChar, @"ShooterGame\Binaries\Win64\ShooterGameServer.exe");
+                else if(File.Exists(Path.Combine(ExePath + Path.DirectorySeparatorChar, @"Binaries\Win64\ShooterGameServer.exe")))
+                    ExePath = Path.Combine(ExePath + Path.DirectorySeparatorChar, @"Binaries\Win64\ShooterGameServer.exe");
+                else if (File.Exists(Path.Combine(ExePath + Path.DirectorySeparatorChar, @"Win64\ShooterGameServer.exe")))
+                    ExePath = Path.Combine(ExePath + Path.DirectorySeparatorChar, @"Win64\ShooterGameServer.exe");
             }
 
-            ExePath = Path.Combine(ExePath, "ShooterGameServer.exe");
-
-            if (ExePath.Contains(".") && !File.Exists(ExePath))
+            if (!File.Exists(ExePath))
             {
-                MessageBox.Show(ExePath + "  Is Not found!!!", "ShooterGameServer.exe Not Found!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ExePath + " Is Not found!!!", "ShooterGameServer.exe Not Found!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             if (IsRunning()) StopServer();
-
+            ServerPath = ExePath.Substring(0, ExePath.IndexOf(@"\ShooterGame"));
             GamePortWasOpen = false;
             try
             {

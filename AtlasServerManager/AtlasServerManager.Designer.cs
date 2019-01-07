@@ -37,7 +37,7 @@
             this.QueryPortCheck = new System.Windows.Forms.CheckBox();
             this.numServerMonitor = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkBootWhenOff = new System.Windows.Forms.CheckBox();
+            this.BootWhenOffCheck = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.ServerUpdatingMessage = new System.Windows.Forms.TextBox();
             this.ServerUpdateMessage = new System.Windows.Forms.TextBox();
@@ -123,11 +123,11 @@
             this.tabPage2.Controls.Add(this.button1);
             this.tabPage2.Controls.Add(this.groupBox1);
             this.tabPage2.Controls.Add(this.groupBox3);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(676, 267);
+            this.tabPage2.Size = new System.Drawing.Size(676, 264);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Options";
             // 
@@ -146,7 +146,7 @@
             this.groupBox1.Controls.Add(this.QueryPortCheck);
             this.groupBox1.Controls.Add(this.numServerMonitor);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.checkBootWhenOff);
+            this.groupBox1.Controls.Add(this.BootWhenOffCheck);
             this.groupBox1.Location = new System.Drawing.Point(367, 7);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(266, 133);
@@ -212,17 +212,17 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Check Every (Seconds): ";
             // 
-            // checkBootWhenOff
+            // BootWhenOffCheck
             // 
-            this.checkBootWhenOff.AutoSize = true;
-            this.checkBootWhenOff.Checked = true;
-            this.checkBootWhenOff.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBootWhenOff.Location = new System.Drawing.Point(10, 23);
-            this.checkBootWhenOff.Name = "checkBootWhenOff";
-            this.checkBootWhenOff.Size = new System.Drawing.Size(202, 21);
-            this.checkBootWhenOff.TabIndex = 2;
-            this.checkBootWhenOff.Text = "Boot Server When Offline";
-            this.checkBootWhenOff.UseVisualStyleBackColor = true;
+            this.BootWhenOffCheck.AutoSize = true;
+            this.BootWhenOffCheck.Checked = true;
+            this.BootWhenOffCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.BootWhenOffCheck.Location = new System.Drawing.Point(10, 23);
+            this.BootWhenOffCheck.Name = "BootWhenOffCheck";
+            this.BootWhenOffCheck.Size = new System.Drawing.Size(202, 21);
+            this.BootWhenOffCheck.TabIndex = 2;
+            this.BootWhenOffCheck.Text = "Boot Server When Offline";
+            this.BootWhenOffCheck.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -831,7 +831,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         public System.Windows.Forms.NumericUpDown numServerMonitor;
-        public System.Windows.Forms.CheckBox checkBootWhenOff;
+        public System.Windows.Forms.CheckBox BootWhenOffCheck;
         public System.Windows.Forms.NumericUpDown numServerUpdate;
         public System.Windows.Forms.NumericUpDown numServerWarning;
         public System.Windows.Forms.CheckBox checkAutoServerUpdate;

@@ -37,8 +37,11 @@ namespace AtlasServerManager.Includes
                         {
                             ArkMgr.Updating = true;
                             ArkMgr.Log("[Atlas] BuildID " + UpdateVersion + " Released!");
-                            foreach (ArkServerListViewItem ASLVI in ArkMgr.ServerList.Items)
-                                if (ASLVI.GetServerData().IsRunning()) ServerStillOpen = true;
+                            ArkMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate()
+                            {
+                                foreach (ArkServerListViewItem ASLVI in ArkMgr.ServerList.Items)
+                                    if (ASLVI.GetServerData().IsRunning()) ServerStillOpen = true;
+                            });
                             if (ServerStillOpen)
                             {
                                 int SleepTime = (int)ArkMgr.numServerWarning.Value / 2;
@@ -73,8 +76,11 @@ namespace AtlasServerManager.Includes
                             while (ServerStillOpen)
                             {
                                 ServerStillOpen = false;
-                                foreach (ArkServerListViewItem ASLVI in ArkMgr.ServerList.Items)
-                                    if (ASLVI.GetServerData().IsRunning()) ServerStillOpen = true;
+                                ArkMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
+                                {
+                                    foreach (ArkServerListViewItem ASLVI in ArkMgr.ServerList.Items)
+                                        if (ASLVI.GetServerData().IsRunning()) ServerStillOpen = true;
+                                });
                                 Thread.Sleep(3000);
                                 if (!ServerStillOpen) break;
                             }

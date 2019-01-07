@@ -26,7 +26,7 @@ namespace AtlasServerManager.Includes
                         int Counter = 0;
                         while (!Sr.Connected)
                         {
-                            Thread.Sleep(1000);
+                            Thread.Sleep(100);
                             if (Counter++ > 3)
                             {
                                 AtlasServerManager.GetInstance().Log("[Rcon->ConnectToRcon] Something is wrong with connection");
@@ -76,18 +76,15 @@ namespace AtlasServerManager.Includes
         {
             try
             {
-                bool FirstRun = true;
-               // AtlasServerManager.GetInstance().Invoke((System.Windows.Forms.MethodInvoker)delegate ()
-               // {
+                AtlasServerManager.GetInstance().Invoke((System.Windows.Forms.MethodInvoker)delegate ()
+                {
                     foreach (ArkServerListViewItem ASLVI in AtlasServerManager.GetInstance().ServerList.Items)
                     {
-                        if (!FirstRun) Thread.Sleep(4000);
                         if (ASLVI.GetServerData().RconConnection == null) ASLVI.GetServerData().RconConnection = new SourceRcon();
                         if (!ConnectToRcon(ASLVI.GetServerData().RconConnection, ASLVI.GetServerData().RCONIP == string.Empty ? ASLVI.GetServerData().ServerIp : ASLVI.GetServerData().RCONIP, ASLVI.GetServerData().RconPort, ASLVI.GetServerData().Pass)) continue;
                         ASLVI.GetServerData().RconConnection.ServerCommand(Command);
-                        FirstRun = false;
                     }
-              //  });
+                });
                 return true;
             }
             catch (Exception e)
@@ -99,22 +96,19 @@ namespace AtlasServerManager.Includes
 
         public static bool SaveWorld()
         {
-            bool FirstRun = true;
             int FailCount = 0;
-            //AtlasServerManager.GetInstance().Invoke((System.Windows.Forms.MethodInvoker)delegate ()
-           // {
+            AtlasServerManager.GetInstance().Invoke((System.Windows.Forms.MethodInvoker)delegate ()
+            {
                 foreach (ArkServerListViewItem ASLVI in AtlasServerManager.GetInstance().ServerList.Items)
                 {
-                    if (!FirstRun) Thread.Sleep(4000);
                     if (!ConnectToRcon(ASLVI.GetServerData().RconConnection, ASLVI.GetServerData().RCONIP == string.Empty ? ASLVI.GetServerData().ServerIp : ASLVI.GetServerData().RCONIP, ASLVI.GetServerData().RconPort, ASLVI.GetServerData().Pass))
                     {
                         FailCount++;
                         continue;
                     }
                     ASLVI.GetServerData().RconConnection.ServerCommand("DoExit");
-                    FirstRun = false;
                 }
-          //  });
+            });
             return FailCount != AtlasServerManager.GetInstance().ServerList.Items.Count;
         }
     }
