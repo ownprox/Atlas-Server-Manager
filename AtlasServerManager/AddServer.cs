@@ -60,6 +60,7 @@ namespace AtlasServerManager
             ReservedPlayersNumericUpDown.Value = ServerData.ReservedPlayers;
             ServerIPTextBox.Text = ServerData.ServerIp;
             ProcessPriotityCombo.SelectedIndex = ServerData.ProcessPriority;
+            UPNPCheck.Checked = ServerData.Upnp;
 
             /*Process Affinity*/
             if (ServerData.ProcessAffinity == null || ServerData.ProcessAffinity.Length == 0)
@@ -114,6 +115,7 @@ namespace AtlasServerManager
                 ServerIp = ServerIPTextBox.Text,
                 ProcessPriority = ProcessPriotityCombo.SelectedIndex,
 
+                Upnp = UPNPCheck.Checked,
                 ServerProcess = OldProcess,
                 PID = OldProcess != null ? OldProcess.Id : 0
             };
@@ -122,22 +124,25 @@ namespace AtlasServerManager
         private void button1_Click(object sender, EventArgs e)
         {
             string Error = string.Empty;
-            foreach (AtlasServerData Asd in AtlasServerManager.GetInstance().ServerList.GetServerList())
+            if (Create)
             {
-                if (Asd.ServerPort == (int)ServerPortNumericUpDown.Value || Asd.ServerPort == (int)QueryPortNumericUpDown.Value || Asd.ServerPort == (int)RconNumericUpDown.Value)
+                foreach (AtlasServerData Asd in AtlasServerManager.GetInstance().ServerList.GetServerList())
                 {
-                    Error = "Server Port " + Asd.ServerPort + " is already in use by " + Asd.AltSaveDirectory;
-                    break;
-                }
-                if (Asd.QueryPort == (int)QueryPortNumericUpDown.Value || Asd.QueryPort == (int)ServerPortNumericUpDown.Value || Asd.QueryPort == (int)RconNumericUpDown.Value)
-                {
-                    Error = "Query Port " + Asd.QueryPort + " is already in use by " + Asd.AltSaveDirectory;
-                    break;
-                }
-                if (Asd.RconPort == (int)RconNumericUpDown.Value || Asd.RconPort == (int)QueryPortNumericUpDown.Value || Asd.RconPort == (int)ServerPortNumericUpDown.Value)
-                {
-                    Error = "Rcon Port " + Asd.RconPort + " is already in use by " + Asd.AltSaveDirectory;
-                    break;
+                    if (Asd.ServerPort == (int)ServerPortNumericUpDown.Value || Asd.ServerPort == (int)QueryPortNumericUpDown.Value || Asd.ServerPort == (int)RconNumericUpDown.Value)
+                    {
+                        Error = "Server Port " + Asd.ServerPort + " is already in use by " + Asd.AltSaveDirectory;
+                        break;
+                    }
+                    if (Asd.QueryPort == (int)QueryPortNumericUpDown.Value || Asd.QueryPort == (int)ServerPortNumericUpDown.Value || Asd.QueryPort == (int)RconNumericUpDown.Value)
+                    {
+                        Error = "Query Port " + Asd.QueryPort + " is already in use by " + Asd.AltSaveDirectory;
+                        break;
+                    }
+                    if (Asd.RconPort == (int)RconNumericUpDown.Value || Asd.RconPort == (int)QueryPortNumericUpDown.Value || Asd.RconPort == (int)ServerPortNumericUpDown.Value)
+                    {
+                        Error = "Rcon Port " + Asd.RconPort + " is already in use by " + Asd.AltSaveDirectory;
+                        break;
+                    }
                 }
             }
 

@@ -7,7 +7,7 @@ namespace AtlasServerManager.Includes
         public static void CheckServerStatus(object Data)
         {
             AtlasServerManager ArkMgr = (AtlasServerManager)Data;
-            int ServerStatus = 0;
+            int ServerStatus = 0, SleepTime = 3000;
             bool SavedAfterLaunch = false;
             while (true)
             {
@@ -46,8 +46,9 @@ namespace AtlasServerManager.Includes
                             Registry.SaveRegConfig(ArkMgr);
                         }
                     }
+                    SleepTime = (int)(ArkMgr.numServerMonitor.Value) * 1000;
                 });
-                Thread.Sleep((int)(ArkMgr.numServerMonitor.Value) * 1000);
+                Thread.Sleep(SleepTime);
             }
         }
     }

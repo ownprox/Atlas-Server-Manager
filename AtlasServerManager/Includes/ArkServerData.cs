@@ -12,7 +12,7 @@ namespace AtlasServerManager.Includes
         public string Pass = "", CustomArgs = "", ServerPath = "", FinalServerPath = "", AltSaveDirectory = "", ServerIp = "", RCONIP = "";
         public int ServerPort, QueryPort, RconPort, MaxPlayers, ReservedPlayers, ServerX, ServerY, PID = 0, ProcessPriority;
         public bool[] ProcessAffinity;
-        public bool Rcon, FTD, WildWipe, PVP, MapB, Gamma, Third, Crosshair, HitMarker, Imprint, Loaded, AutoStart;
+        public bool Rcon, FTD, WildWipe, PVP, MapB, Gamma, Third, Crosshair, HitMarker, Imprint, Loaded, AutoStart, Upnp;
         private bool HasMadeFirstContact, AttemptRconSave = false, GamePortWasOpen = false;
         private DateTime LastSourceQueryReply, RconSavedEstimate;
 
@@ -77,6 +77,11 @@ namespace AtlasServerManager.Includes
                         }
                     } catch (Exception e) { MessageBox.Show("Error: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
                 }
+            }
+
+            if(Upnp)
+            {
+                UPNP.AddUPNPServer(ServerPort, QueryPort, AltSaveDirectory);
             }
 
             try
@@ -179,6 +184,11 @@ namespace AtlasServerManager.Includes
         public void StopServer()
         {
             HasMadeFirstContact = false;
+            if (Upnp)
+            {
+                UPNP.RemoveUPNPServer(ServerPort, QueryPort);
+            }
+
             if (IsRunning())
             {
                 ServerProcess.Kill();

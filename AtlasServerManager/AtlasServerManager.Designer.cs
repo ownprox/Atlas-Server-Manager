@@ -81,6 +81,7 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.StartButton = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.serverToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.addToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -103,6 +104,7 @@
             this.customCommandToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.loadPluginToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.unloadPluginToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numServerMonitor)).BeginInit();
@@ -611,6 +613,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.StartButton);
             this.splitContainer1.Panel1.Controls.Add(this.menuStrip1);
             this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
             // 
@@ -621,6 +624,20 @@
             this.splitContainer1.SplitterDistance = 309;
             this.splitContainer1.SplitterWidth = 2;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // StartButton
+            // 
+            this.StartButton.BackColor = System.Drawing.Color.DarkGray;
+            this.StartButton.Enabled = false;
+            this.StartButton.FlatAppearance.BorderSize = 0;
+            this.StartButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.StartButton.ForeColor = System.Drawing.Color.DimGray;
+            this.StartButton.Location = new System.Drawing.Point(123, 25);
+            this.StartButton.Name = "StartButton";
+            this.StartButton.Size = new System.Drawing.Size(60, 24);
+            this.StartButton.TabIndex = 2;
+            this.StartButton.Text = "Start";
+            this.StartButton.UseVisualStyleBackColor = false;
             // 
             // menuStrip1
             // 
@@ -794,7 +811,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AtlasServerManager";
-            this.Text = "Atlas Server Manager 2.8";
+            this.Text = "Atlas Server Manager 2.9";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabPage2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -893,6 +910,8 @@
         public System.Windows.Forms.CheckBox GamePortCheck;
         public System.Windows.Forms.CheckBox QueryPortCheck;
         private System.Windows.Forms.Button ClearConfigButton;
+        private System.Windows.Forms.FontDialog fontDialog1;
+        private System.Windows.Forms.Button StartButton;
     }
 }
 

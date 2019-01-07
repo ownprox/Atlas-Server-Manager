@@ -1,4 +1,6 @@
-﻿namespace AtlasServerManager.Includes
+﻿using NATUPNPLib;
+
+namespace AtlasServerManager.Includes
 {
 	public class UPNP
 	{
@@ -16,33 +18,43 @@
             }
         }
 
-        private static NATUPNPLib.UPnPNAT UpnpNat;
-        private static NATUPNPLib.IStaticPortMappingCollection UpnpMap;
+        private static UPnPNAT UpnpNat = null;
+        private static IStaticPortMappingCollection UpnpMap = null;
 
-		public static void Init()
+		private static void Init()
 		{
-			UpnpNat = new NATUPNPLib.UPnPNAT();
-            UpnpMap = UpnpNat.StaticPortMappingCollection;
+            if (UpnpNat == null) UpnpNat = new NATUPNPLib.UPnPNAT();
+            if (UpnpMap == null) UpnpMap = UpnpNat.StaticPortMappingCollection;
 		}
 
-		public static bool AddUPNPServer(int ServerIndex, int ServerPort, int QueryPort, int X, int Y)
-		{
-            foreach (NATUPNPLib.IStaticPortMapping EMaps in UpnpMap) if (EMaps.ExternalPort == ServerPort || EMaps.ExternalPort == QueryPort) return false;
-			UpnpMap.Add(ServerPort, "UDP", ServerPort, LocalIPAddress, true, "Atlas Server X: " + X.ToString() + ", Y: " + Y.ToString());
-			UpnpMap.Add(QueryPort, "UDP", QueryPort, LocalIPAddress, true, "Atlas Query X: " + X.ToString() + ", Y: " + Y.ToString());
+		public static bool AddUPNPServer(int ServerPort, int QueryPort, string AltSaveDir)
+        {
+            Init();
+            if (UpnpMap == null)
+            {
+                AtlasServerManager.GetInstance().Log("[Auto Port Forwarding] UPNP Does not seeem enabled at the router admins interface");
+                return false;
+            }
+            foreach (IStaticPortMapping EMaps in UpnpMap) if (EMaps.ExternalPort == ServerPort || EMaps.ExternalPort == QueryPort) return false;
+			UpnpMap.Add(ServerPort, "UDP", ServerPort, LocalIPAddress, true, "Atlas Server: " + AltSaveDir);
+			UpnpMap.Add(QueryPort, "UDP", QueryPort, LocalIPAddress, true, "Atlas Query: " + AltSaveDir);
             return true;
 		}
 
 		public static void RemoveUPNPServer(int ServerPort, int QueryPort)
-		{
+        {
+            if (UpnpMap == null) return;
             UpnpMap.Remove(ServerPort, "UDP");
             UpnpMap.Remove(QueryPort, "UDP");
 		}
 
         public static void Destroy()
         {
-            foreach (NATUPNPLib.IStaticPortMapping EMaps in UpnpMap)
-                if (EMaps.Description.StartsWith("Atlas ")) UpnpMap.Remove(EMaps.ExternalPort, "UDP");
+            if (UpnpNat != null && UpnpMap != null)
+            {
+                foreach (IStaticPortMapping EMaps in UpnpMap)
+                    if (EMaps.Description.StartsWith("Atlas ")) UpnpMap.Remove(EMaps.ExternalPort, "UDP");
+            }
         }
     }
 }

@@ -76,6 +76,7 @@
             this.BrowseButton = new System.Windows.Forms.Button();
             this.directoryPathTextBox = new System.Windows.Forms.TextBox();
             this.ServerPathBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.UPNPCheck = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServerYNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ReservedPlayersNumericUpDown)).BeginInit();
@@ -90,6 +91,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.UPNPCheck);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.ProcessPriotityCombo);
             this.groupBox1.Controls.Add(this.ServerIPTextBox);
@@ -124,7 +126,7 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Location = new System.Drawing.Point(12, 112);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(704, 330);
+            this.groupBox1.Size = new System.Drawing.Size(704, 380);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Server Settings";
@@ -132,7 +134,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(267, 292);
+            this.label11.Location = new System.Drawing.Point(267, 328);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(135, 17);
@@ -148,7 +150,7 @@
             "Above Normal",
             "High",
             "Realtime"});
-            this.ProcessPriotityCombo.Location = new System.Drawing.Point(407, 289);
+            this.ProcessPriotityCombo.Location = new System.Drawing.Point(407, 325);
             this.ProcessPriotityCombo.Name = "ProcessPriotityCombo";
             this.ProcessPriotityCombo.Size = new System.Drawing.Size(121, 24);
             this.ProcessPriotityCombo.TabIndex = 36;
@@ -163,12 +165,12 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(405, 108);
+            this.label10.Location = new System.Drawing.Point(357, 108);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(74, 17);
+            this.label10.Size = new System.Drawing.Size(127, 17);
             this.label10.TabIndex = 34;
-            this.label10.Text = "ServerIP:";
+            this.label10.Text = "ServerIP or DNS:";
             // 
             // ServerYNumericUpDown
             // 
@@ -243,7 +245,7 @@
             // 
             // ProcessAffinityButton
             // 
-            this.ProcessAffinityButton.Location = new System.Drawing.Point(556, 278);
+            this.ProcessAffinityButton.Location = new System.Drawing.Point(556, 314);
             this.ProcessAffinityButton.Name = "ProcessAffinityButton";
             this.ProcessAffinityButton.Size = new System.Drawing.Size(131, 44);
             this.ProcessAffinityButton.TabIndex = 23;
@@ -253,7 +255,7 @@
             // 
             // AltSaveDirectoryTextBox
             // 
-            this.AltSaveDirectoryTextBox.Location = new System.Drawing.Point(13, 248);
+            this.AltSaveDirectoryTextBox.Location = new System.Drawing.Point(13, 284);
             this.AltSaveDirectoryTextBox.Name = "AltSaveDirectoryTextBox";
             this.AltSaveDirectoryTextBox.Size = new System.Drawing.Size(674, 24);
             this.AltSaveDirectoryTextBox.TabIndex = 27;
@@ -262,7 +264,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(10, 228);
+            this.label17.Location = new System.Drawing.Point(10, 264);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(131, 17);
             this.label17.TabIndex = 26;
@@ -273,7 +275,7 @@
             this.checkBox17.AutoSize = true;
             this.checkBox17.Checked = true;
             this.checkBox17.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox17.Location = new System.Drawing.Point(355, 153);
+            this.checkBox17.Location = new System.Drawing.Point(355, 160);
             this.checkBox17.Name = "checkBox17";
             this.checkBox17.Size = new System.Drawing.Size(177, 21);
             this.checkBox17.TabIndex = 23;
@@ -285,7 +287,7 @@
             this.checkBox16.AutoSize = true;
             this.checkBox16.Checked = true;
             this.checkBox16.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox16.Location = new System.Drawing.Point(212, 153);
+            this.checkBox16.Location = new System.Drawing.Point(212, 160);
             this.checkBox16.Name = "checkBox16";
             this.checkBox16.Size = new System.Drawing.Size(137, 21);
             this.checkBox16.TabIndex = 22;
@@ -297,7 +299,7 @@
             this.checkBox15.AutoSize = true;
             this.checkBox15.Checked = true;
             this.checkBox15.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox15.Location = new System.Drawing.Point(100, 153);
+            this.checkBox15.Location = new System.Drawing.Point(100, 160);
             this.checkBox15.Name = "checkBox15";
             this.checkBox15.Size = new System.Drawing.Size(106, 21);
             this.checkBox15.TabIndex = 21;
@@ -309,7 +311,7 @@
             this.checkBox14.AutoSize = true;
             this.checkBox14.Checked = true;
             this.checkBox14.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox14.Location = new System.Drawing.Point(10, 153);
+            this.checkBox14.Location = new System.Drawing.Point(10, 160);
             this.checkBox14.Name = "checkBox14";
             this.checkBox14.Size = new System.Drawing.Size(92, 21);
             this.checkBox14.TabIndex = 20;
@@ -321,7 +323,7 @@
             this.checkBox13.AutoSize = true;
             this.checkBox13.Checked = true;
             this.checkBox13.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox13.Location = new System.Drawing.Point(534, 135);
+            this.checkBox13.Location = new System.Drawing.Point(534, 142);
             this.checkBox13.Name = "checkBox13";
             this.checkBox13.Size = new System.Drawing.Size(108, 21);
             this.checkBox13.TabIndex = 19;
@@ -333,7 +335,7 @@
             this.checkBox12.AutoSize = true;
             this.checkBox12.Checked = true;
             this.checkBox12.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox12.Location = new System.Drawing.Point(408, 135);
+            this.checkBox12.Location = new System.Drawing.Point(408, 142);
             this.checkBox12.Name = "checkBox12";
             this.checkBox12.Size = new System.Drawing.Size(120, 21);
             this.checkBox12.TabIndex = 18;
@@ -345,7 +347,7 @@
             this.checkBox11.AutoSize = true;
             this.checkBox11.Checked = true;
             this.checkBox11.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox11.Location = new System.Drawing.Point(283, 135);
+            this.checkBox11.Location = new System.Drawing.Point(283, 142);
             this.checkBox11.Name = "checkBox11";
             this.checkBox11.Size = new System.Drawing.Size(119, 21);
             this.checkBox11.TabIndex = 17;
@@ -357,7 +359,7 @@
             this.checkBox10.AutoSize = true;
             this.checkBox10.Checked = true;
             this.checkBox10.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox10.Location = new System.Drawing.Point(222, 135);
+            this.checkBox10.Location = new System.Drawing.Point(222, 142);
             this.checkBox10.Name = "checkBox10";
             this.checkBox10.Size = new System.Drawing.Size(55, 21);
             this.checkBox10.TabIndex = 16;
@@ -366,7 +368,7 @@
             // 
             // AdditionalArgsTextBox
             // 
-            this.AdditionalArgsTextBox.Location = new System.Drawing.Point(13, 199);
+            this.AdditionalArgsTextBox.Location = new System.Drawing.Point(13, 235);
             this.AdditionalArgsTextBox.Name = "AdditionalArgsTextBox";
             this.AdditionalArgsTextBox.Size = new System.Drawing.Size(674, 24);
             this.AdditionalArgsTextBox.TabIndex = 15;
@@ -374,7 +376,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(10, 179);
+            this.label8.Location = new System.Drawing.Point(10, 215);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(649, 17);
             this.label8.TabIndex = 14;
@@ -458,7 +460,7 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Checked = true;
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(10, 135);
+            this.checkBox1.Location = new System.Drawing.Point(10, 142);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(206, 21);
             this.checkBox1.TabIndex = 6;
@@ -500,7 +502,7 @@
             this.groupBox2.Controls.Add(this.checkBox3);
             this.groupBox2.Controls.Add(this.RconNumericUpDown);
             this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Location = new System.Drawing.Point(13, 448);
+            this.groupBox2.Location = new System.Drawing.Point(13, 498);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(703, 73);
             this.groupBox2.TabIndex = 2;
@@ -577,7 +579,7 @@
             // 
             // AddServerButton
             // 
-            this.AddServerButton.Location = new System.Drawing.Point(586, 527);
+            this.AddServerButton.Location = new System.Drawing.Point(586, 577);
             this.AddServerButton.Name = "AddServerButton";
             this.AddServerButton.Size = new System.Drawing.Size(131, 44);
             this.AddServerButton.TabIndex = 19;
@@ -588,7 +590,7 @@
             // CloseButton
             // 
             this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CloseButton.Location = new System.Drawing.Point(13, 527);
+            this.CloseButton.Location = new System.Drawing.Point(13, 577);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(131, 44);
             this.CloseButton.TabIndex = 20;
@@ -597,7 +599,7 @@
             // 
             // ResetDefaultButton
             // 
-            this.ResetDefaultButton.Location = new System.Drawing.Point(150, 527);
+            this.ResetDefaultButton.Location = new System.Drawing.Point(150, 577);
             this.ResetDefaultButton.Name = "ResetDefaultButton";
             this.ResetDefaultButton.Size = new System.Drawing.Size(131, 44);
             this.ResetDefaultButton.TabIndex = 21;
@@ -641,11 +643,22 @@
     "tall the server to";
             this.ServerPathBrowserDialog.RootFolder = System.Environment.SpecialFolder.Startup;
             // 
+            // UPNPCheck
+            // 
+            this.UPNPCheck.AutoSize = true;
+            this.UPNPCheck.Location = new System.Drawing.Point(10, 187);
+            this.UPNPCheck.Name = "UPNPCheck";
+            this.UPNPCheck.Size = new System.Drawing.Size(697, 21);
+            this.UPNPCheck.TabIndex = 38;
+            this.UPNPCheck.Text = "UPNP - Automatic Port Forwarding (router option only, and make sure upnp is enabl" +
+    "ed at router)";
+            this.UPNPCheck.UseVisualStyleBackColor = true;
+            // 
             // AddServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(729, 574);
+            this.ClientSize = new System.Drawing.Size(729, 632);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.ResetDefaultButton);
@@ -728,5 +741,6 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.CheckBox UPNPCheck;
     }
 }

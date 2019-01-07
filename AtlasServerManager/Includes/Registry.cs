@@ -16,6 +16,11 @@ namespace AtlasServerManager.Includes
 
                 if (key != null)
                 {
+                    for (int i = 0; i < ArkMgr.ServerList.Columns.Count; i++)
+                    {
+                        ArkMgr.ServerList.Columns[i].DisplayIndex = (int)key.GetValue("ColOrder" + i, i);
+                        ArkMgr.ServerList.Columns[i].Width = (int)key.GetValue("ColWidth" + i, ArkMgr.ServerList.Columns[i].Width);
+                    }
                     /* BOOL */
                     ArkMgr.checkAutoServerUpdate.Checked = (int)key.GetValue("AutoServerUpdate", ArkMgr.checkAutoServerUpdate.Checked ? 1 : 0) == 1 ? true : false;
                     ArkMgr.BootWhenOffCheck.Checked = (int)key.GetValue("BootWhenOff", 1) == 1 ? true : false;
@@ -50,6 +55,11 @@ namespace AtlasServerManager.Includes
                 key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\AtlasServerManager", true);
                 if (key != null)
                 {
+                    for (int i = 0; i < ArkMgr.ServerList.Columns.Count; i++)
+                    {
+                        key.SetValue("ColOrder" + i, ArkMgr.ServerList.Columns[i].DisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
+                        key.SetValue("ColWidth" + i, ArkMgr.ServerList.Columns[i].Width, Microsoft.Win32.RegistryValueKind.DWord);
+                    }
                     /* BOOL */
                     key.SetValue("AutoServerUpdate", ArkMgr.checkAutoServerUpdate.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                     key.SetValue("BootWhenOff", ArkMgr.BootWhenOffCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
@@ -120,6 +130,7 @@ namespace AtlasServerManager.Includes
                 Asd.HitMarker = (int)key.GetValue("HitMarker", Asd.HitMarker ? 1 : 0) == 1 ? true : false;
                 Asd.Imprint = (int)key.GetValue("Imprint", Asd.Imprint ? 1 : 0) == 1 ? true : false;
                 Asd.FTD = (int)key.GetValue("FTD", Asd.FTD ? 1 : 0) == 1 ? true : false;
+                Asd.Upnp = (int)key.GetValue("UPNP", Asd.Upnp ? 1 : 0) == 1 ? true : false;
 
                 Asd.ProcessAffinity = new bool[Environment.ProcessorCount];
                 for (int i = 0; i < Environment.ProcessorCount; i++)
@@ -181,6 +192,7 @@ namespace AtlasServerManager.Includes
                 key.SetValue("HitMarker", Asd.HitMarker ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                 key.SetValue("Imprint", Asd.Imprint ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                 key.SetValue("FTD", Asd.FTD ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
+                key.SetValue("UPNP", Asd.Upnp ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
 
                 if (Asd.ProcessAffinity == null)
                 {

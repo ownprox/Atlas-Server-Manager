@@ -145,6 +145,11 @@ namespace AtlasServerManager
             Log("Closed Saved World!");
         }
 
+        private void ServerList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
         private void RconCustomCommand(bool AllServers)
         {
             if (AllServers || ServerList.FocusedItem != null)
@@ -190,6 +195,44 @@ namespace AtlasServerManager
             {
                 if (!checkAutoServerUpdate.Checked)
                     Updating = false;
+            };
+
+            ServerList.MouseDoubleClick += (e, a) => EditServer();
+            ServerList.SelectedIndexChanged += (e, a) =>
+            {
+                if (ServerList.FocusedItem != null)
+                {
+                    ArkServerListViewItem ASLVI = (ArkServerListViewItem)ServerList.FocusedItem;
+                    StartButton.Enabled = true;
+                    if (ASLVI.GetServerData().IsRunning())
+                    {
+                        StartButton.BackColor = System.Drawing.Color.Red;
+                        StartButton.ForeColor = System.Drawing.Color.White;
+                        StartButton.Text = "Stop";
+                    }
+                    else
+                    {
+                        StartButton.BackColor = System.Drawing.Color.Green;
+                        StartButton.ForeColor = System.Drawing.Color.White;
+                        StartButton.Text = "Start";
+                    }
+                }
+                else
+                {
+                    StartButton.BackColor = System.Drawing.Color.DarkGray;
+                    StartButton.ForeColor = System.Drawing.Color.DimGray;
+                    StartButton.Enabled = false;
+                }
+            };
+
+            StartButton.Click += (e, a) =>
+            {
+                if (ServerList.FocusedItem != null)
+                {
+                    ArkServerListViewItem ASLVI = (ArkServerListViewItem)ServerList.FocusedItem;
+                    if (StartButton.Text == "Start") ASLVI.GetServerData().StartServer();
+                    else ASLVI.GetServerData().StopServer();
+                }
             };
 
             addToolStripMenuItem.Click += (e, a) => AddServer();
