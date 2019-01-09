@@ -76,6 +76,7 @@ namespace AtlasServerManager
                 Text = "Edit: ServerX: " + ServerData.ServerX + ", ServerY: " + ServerData.ServerX + ", Port: " + ServerData.ServerPort;
                 AddServerButton.Text = "Save Settings";
             }
+            //Translate.TranslateComponents(Controls, "ru");
         }
 
         private void CopyServerData()

@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddServer));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.UPNPCheck = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.ProcessPriotityCombo = new System.Windows.Forms.ComboBox();
             this.ServerIPTextBox = new System.Windows.Forms.TextBox();
@@ -76,7 +77,6 @@
             this.BrowseButton = new System.Windows.Forms.Button();
             this.directoryPathTextBox = new System.Windows.Forms.TextBox();
             this.ServerPathBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.UPNPCheck = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServerYNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ReservedPlayersNumericUpDown)).BeginInit();
@@ -130,6 +130,17 @@
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Server Settings";
+            // 
+            // UPNPCheck
+            // 
+            this.UPNPCheck.AutoSize = true;
+            this.UPNPCheck.Location = new System.Drawing.Point(10, 187);
+            this.UPNPCheck.Name = "UPNPCheck";
+            this.UPNPCheck.Size = new System.Drawing.Size(697, 21);
+            this.UPNPCheck.TabIndex = 38;
+            this.UPNPCheck.Text = "UPNP - Automatic Port Forwarding (router option only, and make sure upnp is enabl" +
+    "ed at router)";
+            this.UPNPCheck.UseVisualStyleBackColor = true;
             // 
             // label11
             // 
@@ -266,9 +277,9 @@
             this.label17.AutoSize = true;
             this.label17.Location = new System.Drawing.Point(10, 264);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(131, 17);
+            this.label17.Size = new System.Drawing.Size(187, 17);
             this.label17.TabIndex = 26;
-            this.label17.Text = "Alt Save Directory";
+            this.label17.Text = "Alternative Save Directory";
             // 
             // checkBox17
             // 
@@ -642,17 +653,6 @@
             this.ServerPathBrowserDialog.Description = "The Folder that cointains the ShooterGame Folder or a Folder that you want to ins" +
     "tall the server to";
             this.ServerPathBrowserDialog.RootFolder = System.Environment.SpecialFolder.Startup;
-            // 
-            // UPNPCheck
-            // 
-            this.UPNPCheck.AutoSize = true;
-            this.UPNPCheck.Location = new System.Drawing.Point(10, 187);
-            this.UPNPCheck.Name = "UPNPCheck";
-            this.UPNPCheck.Size = new System.Drawing.Size(697, 21);
-            this.UPNPCheck.TabIndex = 38;
-            this.UPNPCheck.Text = "UPNP - Automatic Port Forwarding (router option only, and make sure upnp is enabl" +
-    "ed at router)";
-            this.UPNPCheck.UseVisualStyleBackColor = true;
             // 
             // AddServer
             // 

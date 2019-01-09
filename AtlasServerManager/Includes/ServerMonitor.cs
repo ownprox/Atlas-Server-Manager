@@ -2,36 +2,37 @@
 
 namespace AtlasServerManager.Includes
 {
-    class ArkServerMonitor
+    class ServerMonitor
     {
+        public static bool Working = true;
         public static void CheckServerStatus(object Data)
         {
-            AtlasServerManager ArkMgr = (AtlasServerManager)Data;
+            AtlasServerManager AtlasMgr = (AtlasServerManager)Data;
             int ServerStatus = 0, SleepTime = 3000;
             bool SavedAfterLaunch = false;
-            while (true)
+            while (Working)
             {
-                ArkMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
+                AtlasMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
                 {
-                    if (!ArkMgr.Updating && ArkMgr.BootWhenOffCheck.Checked)
+                    if (!AtlasMgr.Updating && AtlasMgr.BootWhenOffCheck.Checked)
                     {
-                        foreach (ArkServerListViewItem ASLVI in ArkMgr.ServerList.Items)
+                        foreach (ArkServerListViewItem ASLVI in AtlasMgr.ServerList.Items)
                         {
-                            if (ASLVI.Checked && (ServerStatus = ASLVI.GetServerData().IsRunning(ArkMgr)) != 1)
+                            if (ASLVI.Checked && (ServerStatus = ASLVI.GetServerData().IsRunning(AtlasMgr)) != 1)
                             {
                                 switch(ServerStatus)
                                 {
                                     case 0:
-                                        ArkMgr.Log("Server: " + ASLVI.Text + " Was Offline Booting Now, Process was not running!");
+                                        AtlasMgr.Log("Server: " + ASLVI.Text + " Was Offline Booting Now, Process was not running!");
                                         break;
                                     case 2:
-                                        ArkMgr.Log("Server: " + ASLVI.Text + " Was Offline Booting Now, Query Port was not running!");
+                                        AtlasMgr.Log("Server: " + ASLVI.Text + " Was Offline Booting Now, Query Port was not running!");
                                         break;
                                     case 3:
-                                        ArkMgr.Log("Server: " + ASLVI.Text + " Booting Now!");
+                                        AtlasMgr.Log("Server: " + ASLVI.Text + " Booting Now!");
                                         break;
                                     case 4:
-                                        ArkMgr.Log("Server: " + ASLVI.Text + " Game Port is offline Attempting Rcon Save Please wait 1 minute!");
+                                        AtlasMgr.Log("Server: " + ASLVI.Text + " Game Port is offline Attempting Rcon Save Please wait 1 minute!");
                                         continue;
                                 }
                                 ASLVI.GetServerData().StartServer();
@@ -43,10 +44,10 @@ namespace AtlasServerManager.Includes
                         if(!SavedAfterLaunch)
                         {
                             SavedAfterLaunch = true;
-                            Registry.SaveRegConfig(ArkMgr);
+                            Registry.SaveRegConfig(AtlasMgr);
                         }
                     }
-                    SleepTime = (int)(ArkMgr.numServerMonitor.Value) * 1000;
+                    SleepTime = (int)(AtlasMgr.numServerMonitor.Value) * 1000;
                 });
                 Thread.Sleep(SleepTime);
             }

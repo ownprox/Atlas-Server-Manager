@@ -6,8 +6,9 @@ using System.Runtime.InteropServices;
 
 namespace AtlasServerManager.Includes
 {
-    class ArkServerStatusUpdate
+    class ServerStatusUpdate
     {
+        public static bool Working = true;
         [DllImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool GetPhysicallyInstalledSystemMemory(out long TotalMemoryInKilobytes);
@@ -22,7 +23,7 @@ namespace AtlasServerManager.Includes
             double AMem = 0;
             GetPhysicallyInstalledSystemMemory(out TotalMemA);
             TotalMem = TotalMemA / 1048576;
-            while (true)
+            while (Working)
             {
                 try
                 {

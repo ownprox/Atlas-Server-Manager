@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace AtlasServerManager.Includes
 {
@@ -9,33 +7,80 @@ namespace AtlasServerManager.Includes
     {
         public enum WorkerType
         {
-            StatusUdpdate = 0,
-            ServerStatusCheck,
-            ServerUpdateCheck,
+            StatusUpdate = 0,
+            ServerMonitor,
+            ServerUpdate,
             Max,
         }
-        private static Thread[] Workers;
-  
-        private static void AddWorker(WorkerType Index, ParameterizedThreadStart target, object form, bool Start = true)
+
+        struct WorkerData
         {
-            Workers[(int)Index] = new Thread(target);
-            if (Start) Workers[(int)Index].Start(form);
+            public Task WorkTask;
+            public CancellationTokenSource cancellationToken;
+            public WorkerData(Task WorkTask, CancellationTokenSource cancellationToken)
+            {
+                this.WorkTask = WorkTask;
+                this.cancellationToken = cancellationToken;
+            }
+        };
+
+        private static readonly WorkerData[] Workers = new WorkerData[(int)WorkerType.Max];
+
+        private static void ToggleWorker(WorkerType Index, bool Enabled)
+        {
+            switch (Index)
+            {
+                case WorkerType.StatusUpdate:
+                    ServerStatusUpdate.Working = Enabled;
+                    break;
+                case WorkerType.ServerMonitor:
+                    ServerMonitor.Working = Enabled;
+                    break;
+                case WorkerType.ServerUpdate:
+                    ServerUpdater.Working = Enabled;
+                    break;
+            }
         }
 
-        public static void Start(AtlasServerManager form1)
+        public static void Init(AtlasServerManager AtlasMgr, bool StartUpdateCheck)
         {
-            Workers = new Thread[(int)WorkerType.Max];
-            AddWorker(WorkerType.StatusUdpdate, new ParameterizedThreadStart(ArkServerStatusUpdate.UpdateStatus), form1);
-            AddWorker(WorkerType.ServerStatusCheck, new ParameterizedThreadStart(ArkServerMonitor.CheckServerStatus), form1);
-            AddWorker(WorkerType.ServerUpdateCheck, new ParameterizedThreadStart(ArkServerUpdater.CheckForUpdates), form1);
+            Workers[(int)WorkerType.StatusUpdate] = new WorkerData (Task.Run(() => ServerStatusUpdate.UpdateStatus(AtlasMgr)), new CancellationTokenSource());
+            Workers[(int)WorkerType.ServerMonitor] = new WorkerData(Task.Run(() => ServerMonitor.CheckServerStatus(AtlasMgr)), new CancellationTokenSource());
+            if (StartUpdateCheck)
+                Workers[(int)WorkerType.ServerUpdate] = new WorkerData(Task.Run(() => ServerUpdater.CheckForUpdates(AtlasMgr)), new CancellationTokenSource());
         }
 
-        public static void Destroy() { foreach (Thread w in Workers) if (w != null) w.Abort(); }
-
-        public static void ForceUpdaterRestart(AtlasServerManager form1)
+        public static void StopUpdating()
         {
-            if (Workers[(int)WorkerType.ServerUpdateCheck] != null) Workers[(int)WorkerType.ServerUpdateCheck].Abort();
-            AddWorker(WorkerType.ServerUpdateCheck, new ParameterizedThreadStart(ArkServerUpdater.CheckForUpdates), form1);
+            if (Workers[(int)WorkerType.ServerUpdate].WorkTask != null)
+            {
+                ToggleWorker(WorkerType.ServerUpdate, false);
+                if (ServerUpdater.UpdateProcess != null && !ServerUpdater.UpdateProcess.HasExited && ServerUpdater.UpdateProcess.Id != 0)
+                    ServerUpdater.UpdateProcess.Kill();
+                Workers[(int)WorkerType.ServerUpdate].cancellationToken.Cancel();
+            }
+        }
+
+        public static void DestroyAll()
+        {
+            ServerStatusUpdate.Working = false;
+            ServerMonitor.Working = false;
+            ServerUpdater.Working = false;
+            if (ServerUpdater.UpdateProcess != null && !ServerUpdater.UpdateProcess.HasExited && ServerUpdater.UpdateProcess.Id != 0)
+                ServerUpdater.UpdateProcess.Kill();
+            Thread.Sleep(1000);
+            foreach (WorkerData w in Workers)
+            {
+                if (w.WorkTask != null) w.cancellationToken.Cancel();
+            }
+        }
+
+        public static void ForceUpdaterRestart(AtlasServerManager AtlasMgr)
+        {
+            AtlasMgr.Updating = false;
+            StopUpdating();
+            ToggleWorker(WorkerType.ServerUpdate, true);
+            Workers[(int)WorkerType.ServerUpdate] = new WorkerData(Task.Run(() => ServerUpdater.CheckForUpdates(AtlasMgr)), new CancellationTokenSource());
         }
     }
 }

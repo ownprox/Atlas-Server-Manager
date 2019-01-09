@@ -11,7 +11,6 @@ namespace AtlasServerManager
         public string SteamPath, ArkManagerPath, ServerPath = string.Empty, ASMTitle;
         public static AtlasServerManager GetInstance() { return instance; }
         public bool Updating = true, FirstDl = false, ForcedUpdate = false;
-        public Process UpdateProcess = null;
         private static AtlasServerManager instance;
         private delegate void RichTextBoxUpdateEventHandler(string txt);
         private InputDialog inputDialog;
@@ -20,15 +19,35 @@ namespace AtlasServerManager
         {
             InitializeComponent();
             instance = this;
+            // 
+            // ServerList
+            // 
+            ServerList = new ArkListView
+            {
+                AllowColumnReorder = true, BackColor = System.Drawing.SystemColors.Window,
+                CheckBoxes = true, ContextMenuStrip = contextMenuStrip1, Dock = DockStyle.Fill,
+                FullRowSelect = true, GridLines = true, Location = new System.Drawing.Point(4, 4),
+                Margin = new Padding(4), MultiSelect = false, Name = "ServerList", RightToLeft = System.Windows.Forms.RightToLeft.No,
+                Size = new System.Drawing.Size(668, 256), TabIndex = 0, UseCompatibleStateImageBehavior = false,
+                View = View.Details
+            };
+            ServerList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            columnHeader3, columnHeader1, columnHeader6, columnHeader7, columnHeader4, columnHeader5});
+            tabPage1.Controls.Add(ServerList);
+            inputDialog = new InputDialog();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //Translate.TranslateMenu(menuStrip1.Items, "fr");
+            //Translate.TranslateComponents(Controls, "fr");
+            //Translate.TranslateListView(ServerList.Columns, "fr");
+            //Translate.FirstTranslate = true;
             ASMTitle = Text;
             ArkManagerPath = Path.GetDirectoryName(Application.ExecutablePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\") + Path.DirectorySeparatorChar;
             SteamPath = Path.Combine(ArkManagerPath, @"Steam\");
-            Worker.Start(this);
             Registry.LoadRegConfig(this);
+            Worker.Init(this, ServerList.Items.Count > 0);
             if (File.Exists(ArkManagerPath + "ShooterGameServer.exe")) ServerPath = ArkManagerPath + "ShooterGameServer.exe";
             else
             {
@@ -49,8 +68,13 @@ namespace AtlasServerManager
         private void AddServer()
         {
             AddServer AddSrv = new AddServer(ServerPath);
-            if (AddSrv.ShowDialog() == DialogResult.OK) ServerList.Items.Add(new ArkServerListViewItem(AddSrv.ServerData));
-            Log(AddSrv.ServerData.AltSaveDirectory + " Added!");
+            if (AddSrv.ShowDialog() == DialogResult.OK)
+            {
+                ServerList.Items.Add(new ArkServerListViewItem(AddSrv.ServerData));
+                Registry.SaveRegConfig(this);
+                Log(AddSrv.ServerData.AltSaveDirectory + " Added!");
+                Worker.ForceUpdaterRestart(this);
+            }
             AddSrv.Dispose();
         }
 
@@ -62,6 +86,7 @@ namespace AtlasServerManager
                 Log(ASLVI.GetServerData().AltSaveDirectory + " Removed!");
                 Registry.DeleteServer(ServerList.FocusedItem.Index);
                 ServerList.Items.RemoveAt(ServerList.FocusedItem.Index);
+                if (ServerList.Items.Count == 0) Worker.StopUpdating();
             }
         }
 
@@ -106,7 +131,7 @@ namespace AtlasServerManager
             if (AllServers || ServerList.FocusedItem != null)
             {
                 ArkServerListViewItem ASLVI = AllServers ? null : (ArkServerListViewItem)ServerList.FocusedItem;
-                inputDialog = new InputDialog { Text = "Broadcast to " + (AllServers ? "All" : ASLVI.GetServerData().AltSaveDirectory) };
+                inputDialog.Text = "Broadcast to " + (AllServers ? "All" : ASLVI.GetServerData().AltSaveDirectory);
                 inputDialog.SendButton.Text = "Broadcast";
                 if (inputDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -141,13 +166,8 @@ namespace AtlasServerManager
                     ArkServerListViewItem ASLVI = (ArkServerListViewItem)ServerList.FocusedItem;
                     SourceRconTools.SendCommand("DoExit", ASLVI);
                 }
+                Log("Closed Saved World!");
             }
-            Log("Closed Saved World!");
-        }
-
-        private void ServerList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void RconCustomCommand(bool AllServers)
@@ -155,15 +175,15 @@ namespace AtlasServerManager
             if (AllServers || ServerList.FocusedItem != null)
             {
                 ArkServerListViewItem ASLVI = AllServers ? null : (ArkServerListViewItem)ServerList.FocusedItem;
-                inputDialog = new InputDialog { Text = "Send Custom Command to " + (AllServers ? "All" : ASLVI.GetServerData().AltSaveDirectory) };
+                inputDialog.Text = "Send Custom Command to " + (AllServers ? "All" : ASLVI.GetServerData().AltSaveDirectory);
                 inputDialog.SendButton.Text = "Send Command";
                 if (inputDialog.ShowDialog() == DialogResult.OK)
                 {
                     if (AllServers) SourceRconTools.SendCommandToAll(inputDialog.InputText.Text);
                     else SourceRconTools.SendCommand(inputDialog.InputText.Text, ASLVI);
                 }
+                Log("Custom Command Executed: " + inputDialog.InputText.Text);
             }
-            Log("Custom Command Executed: " + inputDialog.InputText.Text);
         }
 
         private void RconPlugin(bool AllServers, bool Load)
@@ -171,23 +191,22 @@ namespace AtlasServerManager
             if (AllServers || ServerList.FocusedItem != null)
             {
                 ArkServerListViewItem ASLVI = AllServers ? null : (ArkServerListViewItem)ServerList.FocusedItem;
-                inputDialog = new InputDialog { Text = (Load ? "Load" : "Unload") + " Plugin to " + (AllServers ? "All" : ASLVI.GetServerData().AltSaveDirectory) };
+                inputDialog.Text = (Load ? "Load" : "Unload") + " Plugin to " + (AllServers ? "All" : ASLVI.GetServerData().AltSaveDirectory);
                 inputDialog.SendButton.Text = (Load ? "Load" : "Unload") + " Plugin";
                 if (inputDialog.ShowDialog() == DialogResult.OK)
                 {
                     if (AllServers) SourceRconTools.SendCommandToAll("plugins." + (Load ? "load " : "unload ") + inputDialog.InputText.Text);
                     else SourceRconTools.SendCommand("plugins." + (Load ? "load " : "unload ") + inputDialog.InputText.Text, ASLVI);
                 }
+                Log("Plugin " + (Load ? "Loaded" : "Unloaded") + ": " + inputDialog.InputText.Text);
             }
-            Log("Plugin " + (Load ? "Loaded" : "Unloaded") + ": " + inputDialog.InputText.Text);
         }
 
         private void SetupCallbacks()
         {
             FormClosing += (e, a) =>
             {
-                if (UpdateProcess != null && !UpdateProcess.HasExited && UpdateProcess.Id != 0) UpdateProcess.Kill();
-                Worker.Destroy();
+                Worker.DestroyAll();
                 Registry.SaveRegConfig(this);
             };
 
@@ -258,7 +277,7 @@ namespace AtlasServerManager
                 }
                 if (File.Exists(SteamPath + "AtlasLatestVersion.txt")) File.Delete(SteamPath + "AtlasLatestVersion.txt");
                 Log("[Atlas] Forcing Update");
-                ForcedUpdate = true;
+                ForcedUpdate = Updating = true;
                 Worker.ForceUpdaterRestart(this);
             };
 
@@ -306,6 +325,7 @@ namespace AtlasServerManager
         {
             if (richTextBox1.InvokeRequired)
             {
+                if (richTextBox1 == null) return;
                 richTextBox1.Invoke(new RichTextBoxUpdateEventHandler(Log), new object[] { txt });
             }
             else

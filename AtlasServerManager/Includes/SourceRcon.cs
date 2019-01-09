@@ -39,7 +39,7 @@ namespace AtlasServerManager.Includes
             return true;
         }
 
-        public static bool SendCommand(string Command, ArkServerListViewItem ASLVI)
+        public static bool SendCommand(string Command, Includes.ArkServerListViewItem ASLVI)
         {
             try
             {
@@ -373,18 +373,12 @@ namespace AtlasServerManager.Includes
 
         internal void OnServerOutput(string output)
         {
-            if (ServerOutput != null)
-            {
-                ServerOutput(output);
-            }
+            ServerOutput(output);
         }
 
         internal void OnConnectionSuccess(bool info)
         {
-            if (ConnectionSuccess != null)
-            {
-                ConnectionSuccess(info);
-            }
+            ConnectionSuccess(info);
         }
 
         public event StringOutput ServerOutput;
@@ -421,7 +415,7 @@ namespace AtlasServerManager.Includes
         {
             RequestId = 0;
             String1 = "blah";
-            String2 = String.Empty;
+            String2 = string.Empty;
             ServerDataSent = SERVERDATA_sent.None;
             ServerDataReceived = SERVERDATA_rec.None;
         }
@@ -529,7 +523,7 @@ namespace AtlasServerManager.Includes
         internal int RequestId;
         internal string String1;
         internal string String2;
-        internal RCONPacket.SERVERDATA_sent ServerDataSent;
-        internal RCONPacket.SERVERDATA_rec ServerDataReceived;
+        internal SERVERDATA_sent ServerDataSent;
+        internal SERVERDATA_rec ServerDataReceived;
     }
 }

@@ -7,7 +7,7 @@ namespace AtlasServerManager.Includes
     {
         private static Microsoft.Win32.RegistryKey key;
 
-        public static void LoadRegConfig(AtlasServerManager ArkMgr)
+        public static void LoadRegConfig(AtlasServerManager AtlasMgr)
         {
             try
             {
@@ -16,67 +16,66 @@ namespace AtlasServerManager.Includes
 
                 if (key != null)
                 {
-                    for (int i = 0; i < ArkMgr.ServerList.Columns.Count; i++)
+                    for (int i = 0; i < AtlasMgr.ServerList.Columns.Count; i++)
                     {
-                        ArkMgr.ServerList.Columns[i].DisplayIndex = (int)key.GetValue("ColOrder" + i, i);
-                        ArkMgr.ServerList.Columns[i].Width = (int)key.GetValue("ColWidth" + i, ArkMgr.ServerList.Columns[i].Width);
+                        AtlasMgr.ServerList.Columns[i].DisplayIndex = (int)key.GetValue("ColOrder" + i, i);
+                        AtlasMgr.ServerList.Columns[i].Width = (int)key.GetValue("ColWidth" + i, AtlasMgr.ServerList.Columns[i].Width);
                     }
                     /* BOOL */
-                    ArkMgr.checkAutoServerUpdate.Checked = (int)key.GetValue("AutoServerUpdate", ArkMgr.checkAutoServerUpdate.Checked ? 1 : 0) == 1 ? true : false;
-                    ArkMgr.BootWhenOffCheck.Checked = (int)key.GetValue("BootWhenOff", 1) == 1 ? true : false;
-                    ArkMgr.QueryPortCheck.Checked = (int)key.GetValue("QueryPortCheck", 1) == 1 ? true : false;
-                    ArkMgr.GamePortCheck.Checked = (int)key.GetValue("GamePortCheck", 1) == 1 ? true : false;
+                    AtlasMgr.checkAutoServerUpdate.Checked = (int)key.GetValue("AutoServerUpdate", 1) == 1 ? true : false;
+                    AtlasMgr.BootWhenOffCheck.Checked = (int)key.GetValue("BootWhenOff", 1) == 1 ? true : false;
+                    AtlasMgr.QueryPortCheck.Checked = (int)key.GetValue("QueryPortCheck", 1) == 1 ? true : false;
+                    AtlasMgr.GamePortCheck.Checked = (int)key.GetValue("GamePortCheck", 1) == 1 ? true : false;
 
                     /* DECIMAL */
                     decimal value = 1.0M;
-                    decimal.TryParse((string)key.GetValue("ServerUpdate", ArkMgr.numServerUpdate.Value.ToString()), out value);
-                    ArkMgr.numServerUpdate.Value = value;
-                    decimal.TryParse((string)key.GetValue("ServerWarning", ArkMgr.numServerWarning.Value.ToString()), out value);
-                    ArkMgr.numServerWarning.Value = value;
-                    decimal.TryParse((string)key.GetValue("ServerMonitor", ArkMgr.numServerMonitor.Value.ToString()), out value);
-                    ArkMgr.numServerMonitor.Value = value;
+                    decimal.TryParse((string)key.GetValue("ServerUpdate", AtlasMgr.numServerUpdate.Value.ToString()), out value);
+                    AtlasMgr.numServerUpdate.Value = value;
+                    decimal.TryParse((string)key.GetValue("ServerWarning", AtlasMgr.numServerWarning.Value.ToString()), out value);
+                    AtlasMgr.numServerWarning.Value = value;
+                    decimal.TryParse((string)key.GetValue("ServerMonitor", AtlasMgr.numServerMonitor.Value.ToString()), out value);
+                    AtlasMgr.numServerMonitor.Value = value;
 
                     /* STRING */
-                    ArkMgr.ServerPath = (string)key.GetValue("ServerDataPath", string.Empty);
-                    ArkMgr.ServerUpdateMessage.Text = (string)key.GetValue("ServerUpdateMessage", ArkMgr.ServerUpdateMessage.Text);
-                    ArkMgr.ServerUpdatingMessage.Text = (string)key.GetValue("ServerUpdatingMessage", ArkMgr.ServerUpdatingMessage.Text);
+                    AtlasMgr.ServerPath = (string)key.GetValue("ServerDataPath", string.Empty);
+                    AtlasMgr.ServerUpdateMessage.Text = (string)key.GetValue("ServerUpdateMessage", AtlasMgr.ServerUpdateMessage.Text);
+                    AtlasMgr.ServerUpdatingMessage.Text = (string)key.GetValue("ServerUpdatingMessage", AtlasMgr.ServerUpdatingMessage.Text);
 
-                    LoadRegServers(ArkMgr);
-                    key.Close();
+                    LoadRegServers(AtlasMgr);
                 }
             }
-            catch (Exception e) { System.Windows.Forms.MessageBox.Show("Failed To Load Setting: " + e.Message); }
+            catch (Exception e) { System.Windows.Forms.MessageBox.Show("Failed To Load Setting: " + e.StackTrace); }
         }
 
-        public static void SaveRegConfig(AtlasServerManager ArkMgr)
+        public static void SaveRegConfig(AtlasServerManager AtlasMgr)
         {
             try
             {
                 key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\AtlasServerManager", true);
                 if (key != null)
                 {
-                    for (int i = 0; i < ArkMgr.ServerList.Columns.Count; i++)
+                    for (int i = 0; i < AtlasMgr.ServerList.Columns.Count; i++)
                     {
-                        key.SetValue("ColOrder" + i, ArkMgr.ServerList.Columns[i].DisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
-                        key.SetValue("ColWidth" + i, ArkMgr.ServerList.Columns[i].Width, Microsoft.Win32.RegistryValueKind.DWord);
+                        key.SetValue("ColOrder" + i, AtlasMgr.ServerList.Columns[i].DisplayIndex, Microsoft.Win32.RegistryValueKind.DWord);
+                        key.SetValue("ColWidth" + i, AtlasMgr.ServerList.Columns[i].Width, Microsoft.Win32.RegistryValueKind.DWord);
                     }
                     /* BOOL */
-                    key.SetValue("AutoServerUpdate", ArkMgr.checkAutoServerUpdate.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
-                    key.SetValue("BootWhenOff", ArkMgr.BootWhenOffCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
-                    key.SetValue("QueryPortCheck", ArkMgr.QueryPortCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
-                    key.SetValue("GamePortCheck", ArkMgr.GamePortCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
+                    key.SetValue("AutoServerUpdate", AtlasMgr.checkAutoServerUpdate.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
+                    key.SetValue("BootWhenOff", AtlasMgr.BootWhenOffCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
+                    key.SetValue("QueryPortCheck", AtlasMgr.QueryPortCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
+                    key.SetValue("GamePortCheck", AtlasMgr.GamePortCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
 
                     /* DECIMAL */
-                    key.SetValue("ServerUpdate", ArkMgr.numServerUpdate.Value.ToString(), Microsoft.Win32.RegistryValueKind.String);
-                    key.SetValue("ServerWarning", ArkMgr.numServerWarning.Value.ToString(), Microsoft.Win32.RegistryValueKind.String);
-                    key.SetValue("ServerMonitor", ArkMgr.numServerMonitor.Value.ToString(), Microsoft.Win32.RegistryValueKind.String);
+                    key.SetValue("ServerUpdate", AtlasMgr.numServerUpdate.Value.ToString(), Microsoft.Win32.RegistryValueKind.String);
+                    key.SetValue("ServerWarning", AtlasMgr.numServerWarning.Value.ToString(), Microsoft.Win32.RegistryValueKind.String);
+                    key.SetValue("ServerMonitor", AtlasMgr.numServerMonitor.Value.ToString(), Microsoft.Win32.RegistryValueKind.String);
 
                     /* STRING */
-                    key.SetValue("ServerDataPath", ArkMgr.ServerPath, Microsoft.Win32.RegistryValueKind.String);
-                    key.SetValue("ServerUpdateMessage", ArkMgr.ServerUpdateMessage.Text, Microsoft.Win32.RegistryValueKind.String);
-                    key.SetValue("ServerUpdatingMessage", ArkMgr.ServerUpdatingMessage.Text, Microsoft.Win32.RegistryValueKind.String);
+                    key.SetValue("ServerDataPath", AtlasMgr.ServerPath, Microsoft.Win32.RegistryValueKind.String);
+                    key.SetValue("ServerUpdateMessage", AtlasMgr.ServerUpdateMessage.Text, Microsoft.Win32.RegistryValueKind.String);
+                    key.SetValue("ServerUpdatingMessage", AtlasMgr.ServerUpdatingMessage.Text, Microsoft.Win32.RegistryValueKind.String);
 
-                    SaveRegServers(ArkMgr);
+                    SaveRegServers(AtlasMgr);
                     key.Close();
                 }
             }
@@ -93,7 +92,7 @@ namespace AtlasServerManager.Includes
             catch (Exception e) { System.Windows.Forms.MessageBox.Show("Failed To Delete Server Setting: " + e.Message); }
         }
 
-        private static void LoadRegServers(AtlasServerManager ArkMgr)
+        private static void LoadRegServers(AtlasServerManager AtlasMgr)
         {
             key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\AtlasServerManager\\Servers");
             if (key != null)
@@ -108,7 +107,7 @@ namespace AtlasServerManager.Includes
                             if (ASD.PID != 0) ASD.ServerProcess = Process.GetProcessById(ASD.PID);
                         }
                         catch { ASD.PID = 0; }
-                        ArkMgr.ServerList.Items.Add(new ArkServerListViewItem(ASD));
+                        AtlasMgr.ServerList.Items.Add(new ArkServerListViewItem(ASD));
                     }
             }
         }
@@ -161,14 +160,14 @@ namespace AtlasServerManager.Includes
             return Asd;
         }
 
-        private static void SaveRegServers(AtlasServerManager ArkMgr)
+        private static void SaveRegServers(AtlasServerManager AtlasMgr)
         {
             key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\AtlasServerManager\\Servers", true);
             if (key == null) key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE\\AtlasServerManager\\Servers");
             if (key != null)
             {
                 int ActIndex = 0, CurActIndex;
-                foreach (AtlasServerData Asd in ArkMgr.ServerList.GetServerList()) if (SaveRegServer(Asd, ActIndex)) ActIndex++;
+                foreach (AtlasServerData Asd in AtlasMgr.ServerList.GetServerList()) if (SaveRegServer(Asd, ActIndex)) ActIndex++;
                 foreach (string s in key.GetSubKeyNames()) if ((s.Contains("Server")) && int.TryParse(s.Replace("Server", ""), out CurActIndex) && CurActIndex > ActIndex) key.DeleteSubKey("Server" + CurActIndex);
                 key.Close();
             }
@@ -224,6 +223,48 @@ namespace AtlasServerManager.Includes
                 key.SetValue("ServerIp", Asd.ServerIp, Microsoft.Win32.RegistryValueKind.String);
                 return true;
             }
+            return false;
+        }
+
+        public static bool GetText(string name, string text, string TranslateTo, bool FirstTranslation, ref string OutText)
+        {
+            key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\AtlasServerManager\\Lang\\" + TranslateTo, true);
+            if (!FirstTranslation && key == null) key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE\\AtlasServerManager\\Lang\\" + TranslateTo);
+
+            if (key != null)
+            {
+                if ((string)key.GetValue(name, "") == string.Empty)
+                {
+                    key.SetValue(name, text, Microsoft.Win32.RegistryValueKind.String);
+                    OutText = text;
+                }
+                else OutText = (string)key.GetValue(name, "");
+                return true;
+            }
+            else if (TranslateTo == "en")
+            {
+                key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\AtlasServerManager\\Lang\\Default", true);
+                if (key == null) key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE\\AtlasServerManager\\Lang\\Default");
+
+                if (key != null)
+                {
+                    OutText = (string)key.GetValue(name, text);
+                    return true;
+                }
+            }
+            else
+            {
+                key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\AtlasServerManager\\Lang\\Default", true);
+                if (key == null) key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE\\AtlasServerManager\\Lang\\Default");
+
+                if (key != null)
+                {
+                    key.SetValue(name, text, Microsoft.Win32.RegistryValueKind.String);
+                    OutText = text;
+                    return false;
+                }
+            }
+            OutText = text;
             return false;
         }
 

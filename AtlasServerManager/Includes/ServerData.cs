@@ -124,11 +124,11 @@ namespace AtlasServerManager.Includes
             }
         }
 
-        public void GetPlayersOnline(AtlasServerManager ArkMgr, ArkServerListViewItem server)
+        public void GetPlayersOnline(AtlasServerManager AtlasMgr, ArkServerListViewItem server)
         {
             new SourceQuery(ServerIp, QueryPort, (SourceQuery.ServerData SrvData) =>
             {
-                ArkMgr.Invoke((MethodInvoker)delegate ()
+                AtlasMgr.Invoke((MethodInvoker)delegate ()
                 {
                     if (server != null)
                     {
@@ -155,15 +155,15 @@ namespace AtlasServerManager.Includes
             return IsConnected;
         }
 
-        public int IsRunning(AtlasServerManager ArkMgr)
+        public int IsRunning(AtlasServerManager AtlasMgr)
         {
             if (AttemptRconSave && DateTime.Now.Subtract(RconSavedEstimate).TotalSeconds <= 0) return 1;
             if (ServerProcess != null && (ServerProcess.HasExited || ServerProcess.Id == 0)) return 0;
-            if (HasMadeFirstContact && ArkMgr != null)
+            if (HasMadeFirstContact && AtlasMgr != null)
             {
-                if (ArkMgr.QueryPortCheck.Checked && DateTime.Now.Subtract(LastSourceQueryReply).TotalSeconds > 60) return 2;
+                if (AtlasMgr.QueryPortCheck.Checked && DateTime.Now.Subtract(LastSourceQueryReply).TotalSeconds > 60) return 2;
                 bool bWasGamePortOpen = GamePortWasOpen;
-                if (ArkMgr.GamePortCheck.Checked && !CheckGamePort() && bWasGamePortOpen)
+                if (AtlasMgr.GamePortCheck.Checked && !CheckGamePort() && bWasGamePortOpen)
                 {
                     if(!AttemptRconSave)
                     {
