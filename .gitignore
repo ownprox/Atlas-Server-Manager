@@ -3,3 +3,5 @@
 ################################################################################
 
 /.vs
+/AtlasServerManager/bin/Debug
+/AtlasServerManager/obj/x86

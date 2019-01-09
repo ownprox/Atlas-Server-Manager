@@ -61,6 +61,7 @@ namespace AtlasServerManager
             ServerIPTextBox.Text = ServerData.ServerIp;
             ProcessPriotityCombo.SelectedIndex = ServerData.ProcessPriority;
             UPNPCheck.Checked = ServerData.Upnp;
+            textBox1.Text= ServerData.RCONIP;
 
             /*Process Affinity*/
             if (ServerData.ProcessAffinity == null || ServerData.ProcessAffinity.Length == 0)
@@ -107,6 +108,7 @@ namespace AtlasServerManager
                 /*Process Affinity*/
                 ProcessAffinity = PA.ProcessAffinity,
                 /*Rcon*/
+                RCONIP=textBox1.Text,
                 Rcon = checkBox3.Checked,
                 RconPort = (int)RconNumericUpDown.Value,
                 AutoStart = true,

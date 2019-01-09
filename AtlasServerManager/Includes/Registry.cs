@@ -119,6 +119,7 @@ namespace AtlasServerManager.Includes
             if (key != null)
             {
                 /* BOOL */
+                
                 Asd.Rcon = (int)key.GetValue("Rcon", Asd.Rcon ? 1 : 0) == 1 ? true : false;
                 Asd.WildWipe = (int)key.GetValue("WildWipe", Asd.WildWipe ? 1 : 0) == 1 ? true : false;
                 Asd.PVP = (int)key.GetValue("PVP", Asd.PVP ? 1 : 0) == 1 ? true : false;
@@ -155,6 +156,7 @@ namespace AtlasServerManager.Includes
                 Asd.AltSaveDirectory = (string)key.GetValue("AltSaveDirectory", Asd.AltSaveDirectory);
                 Asd.FinalServerPath = string.Empty;
                 Asd.ServerIp = (string)key.GetValue("ServerIp", Asd.ServerIp);
+                Asd.RCONIP = (string)key.GetValue("RCONIP", Asd.RCONIP);
                 Asd.Loaded = true;
             } else Asd.Loaded = false;
             return Asd;
@@ -203,7 +205,7 @@ namespace AtlasServerManager.Includes
                 {
                     key.SetValue("ProcessAffinity" + i, Asd.ProcessAffinity[i] ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                 }
-
+                
                 /* INT */
                 key.SetValue("ServerPort", Asd.ServerPort, Microsoft.Win32.RegistryValueKind.DWord);
                 key.SetValue("QueryPort", Asd.QueryPort, Microsoft.Win32.RegistryValueKind.DWord);
@@ -216,6 +218,7 @@ namespace AtlasServerManager.Includes
                 key.SetValue("ProcessPriority", Asd.ProcessPriority, Microsoft.Win32.RegistryValueKind.DWord);
 
                 /* STRING */
+                key.SetValue("RCONIP", Asd.RCONIP, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("Pass", Asd.Pass, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("CustomArgs", Asd.CustomArgs, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("ServerPath", Asd.ServerPath, Microsoft.Win32.RegistryValueKind.String);
