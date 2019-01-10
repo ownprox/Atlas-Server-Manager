@@ -23,7 +23,7 @@ namespace AtlasServerManager.Includes
             if (ExePath.StartsWith("./") || ExePath.StartsWith(@".\"))
                 ExePath = Path.GetDirectoryName(Application.ExecutablePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\");
             
-            if (!File.Exists(ExePath))
+            if (!ExePath.Contains(".") || !File.Exists(ExePath))
             {
                 if(File.Exists(Path.Combine(ExePath + Path.DirectorySeparatorChar, "ShooterGameServer.exe")))
                     ExePath = Path.Combine(ExePath + Path.DirectorySeparatorChar, @"ShooterGameServer.exe");

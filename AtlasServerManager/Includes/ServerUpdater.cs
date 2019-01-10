@@ -8,7 +8,7 @@ namespace AtlasServerManager.Includes
 {
     class ServerUpdater
     {
-        public static bool Working = true;
+        public static bool Working = true, Updating = true, ForcedUpdate = false;
         public static Process UpdateProcess = null;
         private static bool UpdateError = false, FirstLaunch = true;
         private static string DownloadSizeString, UpdateErrorText;
@@ -22,12 +22,12 @@ namespace AtlasServerManager.Includes
         public static void CheckForUpdates(object Data)
         {
             AtlasServerManager AtlasMgr = (AtlasServerManager)Data;
-            if (AtlasMgr.checkAutoServerUpdate.Checked || AtlasMgr.ForcedUpdate) AtlasMgr.Log("[Atlas] Checking for updates, can take up to 30 seconds...");
+            if (AtlasMgr.checkAutoServerUpdate.Checked || ForcedUpdate) AtlasMgr.Log("[Atlas] Checking for updates, can take up to 30 seconds...");
             string CurrentVersion = "";
             int UpdateVersion = 0, CurrentVer = 0;
             while (Working)
             {
-                if (AtlasMgr.checkAutoServerUpdate.Checked || AtlasMgr.ForcedUpdate)
+                if (AtlasMgr.checkAutoServerUpdate.Checked || ForcedUpdate)
                 {
                     UpdateVersion = GetAtlasServerBuildID(AtlasMgr);
                     if (UpdateVersion != 0)
@@ -37,7 +37,7 @@ namespace AtlasServerManager.Includes
                         bool ServerStillOpen = false;
                         if (CurrentVer != UpdateVersion)
                         {
-                            AtlasMgr.Updating = true;
+                            Updating = true;
                             AtlasMgr.Log("[Atlas] BuildID " + UpdateVersion + " Released!");
                             AtlasMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
                             {
@@ -71,7 +71,7 @@ namespace AtlasServerManager.Includes
                                 if (!SourceRconTools.SaveWorld())
                                 {
                                     AtlasMgr.Log("[Atlas] Failed Saving World, Not Updating!");
-                                    continue;
+                                    //continue;
                                 }
                             }
 
@@ -83,8 +83,8 @@ namespace AtlasServerManager.Includes
                                     foreach (ArkServerListViewItem ASLVI in AtlasMgr.ServerList.Items)
                                         if (ASLVI.GetServerData().IsRunning()) ServerStillOpen = true;
                                 });
-                                Thread.Sleep(3000);
                                 if (!ServerStillOpen) break;
+                                Thread.Sleep(3000);
                             }
                             AtlasMgr.Log("[Atlas] Current BuildID: " + CurrentVersion + ", Updating To BuildID: " + UpdateVersion);
                             UpdateAtlas(AtlasMgr, UpdateVersion.ToString());
@@ -105,26 +105,26 @@ namespace AtlasServerManager.Includes
                                 }
                                 continue;
                             }
+
                             if (!Working)
                             {
-                                AtlasMgr.Updating = false;
+                                Updating = false;
                                 break;
                             }
                             AtlasMgr.Log("[Atlas] Updated, Launching Servers if offline!");
-                            FirstLaunch = true;
-                            AtlasMgr.ForcedUpdate = AtlasMgr.Updating = false;
+                            FirstLaunch = ForcedUpdate = Updating = false;
                             StartServers(AtlasMgr);
                         }
                         else
                         {
-                            AtlasMgr.Updating = false;
+                            Updating = false;
                         }
                     }
                 }
-                else AtlasMgr.Updating = false;
+                else Updating = false;
                 if (!Working)
                 {
-                    AtlasMgr.Updating = false;
+                    Updating = false;
                     break;
                 }
                 if (FirstLaunch)

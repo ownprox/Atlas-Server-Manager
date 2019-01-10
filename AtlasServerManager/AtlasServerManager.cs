@@ -10,7 +10,7 @@ namespace AtlasServerManager
     {
         public string SteamPath, ArkManagerPath, ServerPath = string.Empty, ASMTitle;
         public static AtlasServerManager GetInstance() { return instance; }
-        public bool Updating = true, FirstDl = false, ForcedUpdate = false;
+        public bool FirstDl = false;
         private static AtlasServerManager instance;
         private delegate void RichTextBoxUpdateEventHandler(string txt);
         private InputDialog inputDialog;
@@ -61,7 +61,7 @@ namespace AtlasServerManager
                     }
                 }
             }
-            if (!checkAutoServerUpdate.Checked) Updating = false;
+            if (!checkAutoServerUpdate.Checked) ServerUpdater.Updating = false;
             SetupCallbacks();
         }
 
@@ -213,7 +213,7 @@ namespace AtlasServerManager
             checkAutoServerUpdate.CheckedChanged += (e, a) =>
             {
                 if (!checkAutoServerUpdate.Checked)
-                    Updating = false;
+                    ServerUpdater.Updating = false;
             };
 
             ServerList.MouseDoubleClick += (e, a) => EditServer();
@@ -271,14 +271,14 @@ namespace AtlasServerManager
 
             button1.Click += (e, a) =>
             {
-                if (Updating)
+                if (ServerUpdater.Updating)
                 {
                     MessageBox.Show("Already Updating", "Update in progress", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 if (File.Exists(SteamPath + "AtlasLatestVersion.txt")) File.Delete(SteamPath + "AtlasLatestVersion.txt");
                 Log("[Atlas] Forcing Update");
-                ForcedUpdate = Updating = true;
+                ServerUpdater.ForcedUpdate = true;
                 Worker.ForceUpdaterRestart(this);
             };
 
