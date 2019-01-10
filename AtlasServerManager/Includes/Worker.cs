@@ -38,6 +38,7 @@ namespace AtlasServerManager.Includes
                     break;
                 case WorkerType.ServerUpdate:
                     ServerUpdater.Working = Enabled;
+                    ServerUpdater.Updating = Enabled;
                     break;
             }
         }
@@ -77,7 +78,7 @@ namespace AtlasServerManager.Includes
 
         public static void ForceUpdaterRestart(AtlasServerManager AtlasMgr)
         {
-            AtlasMgr.Updating = false;
+            ServerUpdater.Working = false;
             StopUpdating();
             ToggleWorker(WorkerType.ServerUpdate, true);
             Workers[(int)WorkerType.ServerUpdate] = new WorkerData(Task.Run(() => ServerUpdater.CheckForUpdates(AtlasMgr)), new CancellationTokenSource());

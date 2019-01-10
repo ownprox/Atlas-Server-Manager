@@ -218,7 +218,7 @@
             this.ServerUpdatingMessage.Location = new System.Drawing.Point(0, 2);
             this.ServerUpdatingMessage.Multiline = true;
             this.ServerUpdatingMessage.Name = "ServerUpdatingMessage";
-            this.ServerUpdatingMessage.Size = new System.Drawing.Size(461, 88);
+            this.ServerUpdatingMessage.Size = new System.Drawing.Size(461, 91);
             this.ServerUpdatingMessage.TabIndex = 6;
             this.ServerUpdatingMessage.Text = "Atlas is now updating please restart your games to get the update!";
             // 
@@ -835,7 +835,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AtlasServerManager";
-            this.Text = "Atlas Server Manager 3.2";
+            this.Text = "Atlas Server Manager 3.5";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);

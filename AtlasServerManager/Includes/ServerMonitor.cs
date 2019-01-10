@@ -14,7 +14,7 @@ namespace AtlasServerManager.Includes
             {
                 AtlasMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
                 {
-                    if (!AtlasMgr.Updating && AtlasMgr.BootWhenOffCheck.Checked)
+                    if (!ServerUpdater.Updating && AtlasMgr.BootWhenOffCheck.Checked)
                     {
                         foreach (ArkServerListViewItem ASLVI in AtlasMgr.ServerList.Items)
                         {
