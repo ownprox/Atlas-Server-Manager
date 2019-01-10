@@ -21,8 +21,12 @@ namespace AtlasServerManager.Includes
             HasMadeFirstContact = false;
             string ExePath = ServerPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\");
             if (ExePath.StartsWith("./") || ExePath.StartsWith(@".\"))
-                ExePath = Path.GetDirectoryName(Application.ExecutablePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\");
-            
+            {
+                string tempEndDir = ExePath.Replace("./", "").Replace(@".\", "");
+                ExePath = Path.GetDirectoryName(Application.ExecutablePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\") + Path.DirectorySeparatorChar;
+                if (tempEndDir.Length > 0) ExePath = Path.Combine(ExePath, tempEndDir);
+            }
+
             if (!ExePath.Contains(".") || !File.Exists(ExePath))
             {
                 if(File.Exists(Path.Combine(ExePath + Path.DirectorySeparatorChar, "ShooterGameServer.exe")))
