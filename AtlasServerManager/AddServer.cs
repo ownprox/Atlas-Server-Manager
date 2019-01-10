@@ -67,9 +67,9 @@ namespace AtlasServerManager
                 ServerData.ProcessAffinity = new bool[Environment.ProcessorCount];
             PA.UpdateCheckBoxs(ServerData.ProcessAffinity);
 
-            /*Rcon*/
-            
+            /*Rcon*/            
             checkBox3.Checked = ServerData.Rcon;
+            RconIP.Text = ServerData.RCONIP;
             RconNumericUpDown.Value = ServerData.RconPort;
             if (!Create)
             {
@@ -108,6 +108,7 @@ namespace AtlasServerManager
                 ProcessAffinity = PA.ProcessAffinity,
                 /*Rcon*/
                 Rcon = checkBox3.Checked,
+                RCONIP = RconIP.Text,
                 RconPort = (int)RconNumericUpDown.Value,
                 AutoStart = true,
                 ServerX = (int)ServerXNumericUpDown.Value,

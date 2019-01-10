@@ -181,8 +181,8 @@ namespace AtlasServerManager
                 {
                     if (AllServers) SourceRconTools.SendCommandToAll(inputDialog.InputText.Text);
                     else SourceRconTools.SendCommand(inputDialog.InputText.Text, ASLVI);
+                    Log("Custom Command Executed: " + inputDialog.InputText.Text);
                 }
-                Log("Custom Command Executed: " + inputDialog.InputText.Text);
             }
         }
 

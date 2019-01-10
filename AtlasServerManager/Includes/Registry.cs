@@ -153,8 +153,8 @@ namespace AtlasServerManager.Includes
                 Asd.CustomArgs = (string)key.GetValue("CustomArgs", Asd.CustomArgs);
                 Asd.ServerPath = (string)key.GetValue("ServerPath", Asd.ServerPath);
                 Asd.AltSaveDirectory = (string)key.GetValue("AltSaveDirectory", Asd.AltSaveDirectory);
-                Asd.FinalServerPath = string.Empty;
                 Asd.ServerIp = (string)key.GetValue("ServerIp", Asd.ServerIp);
+                Asd.RCONIP = (string)key.GetValue("RconIP", Asd.RCONIP);
                 Asd.Loaded = true;
             } else Asd.Loaded = false;
             return Asd;
@@ -221,6 +221,7 @@ namespace AtlasServerManager.Includes
                 key.SetValue("ServerPath", Asd.ServerPath, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("AltSaveDirectory", Asd.AltSaveDirectory, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("ServerIp", Asd.ServerIp, Microsoft.Win32.RegistryValueKind.String);
+                key.SetValue("RconIP", Asd.RCONIP, Microsoft.Win32.RegistryValueKind.String);
                 return true;
             }
             return false;

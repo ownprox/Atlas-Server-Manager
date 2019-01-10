@@ -65,7 +65,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.RconIP = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.RconNumericUpDown = new System.Windows.Forms.NumericUpDown();
@@ -508,7 +508,7 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label13);
-            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.RconIP);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.checkBox3);
             this.groupBox2.Controls.Add(this.RconNumericUpDown);
@@ -531,12 +531,12 @@
             this.label13.TabIndex = 40;
             this.label13.Text = "Only needs setting if you have a 2nd NIC";
             // 
-            // textBox1
+            // RconIP
             // 
-            this.textBox1.Location = new System.Drawing.Point(516, 41);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(170, 24);
-            this.textBox1.TabIndex = 39;
+            this.RconIP.Location = new System.Drawing.Point(516, 41);
+            this.RconIP.Name = "RconIP";
+            this.RconIP.Size = new System.Drawing.Size(170, 24);
+            this.RconIP.TabIndex = 39;
             // 
             // label12
             // 
@@ -739,7 +739,7 @@
         private System.Windows.Forms.ComboBox ProcessPriotityCombo;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox RconIP;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.CheckBox UPNPCheck;
     }
