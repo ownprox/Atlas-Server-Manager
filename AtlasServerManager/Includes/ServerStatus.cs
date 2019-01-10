@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace AtlasServerManager.Includes
 {
-    class ServerStatusUpdate
+    class ServerStatus
     {
         public static bool Working = true;
         [DllImport("kernel32.dll")]
@@ -17,7 +17,7 @@ namespace AtlasServerManager.Includes
 
         public static void UpdateStatus(object Data)
         {
-            AtlasServerManager form1 = (AtlasServerManager)Data;
+            AtlasServerManager AtlasMgr = (AtlasServerManager)Data;
             PerformanceCounter cpu = new PerformanceCounter("Processor", "% Processor Time", "_Total"), MemA = new PerformanceCounter("Memory", "Available KBytes");
             int Players = 0, TotalPlayers = 0;
             double AMem = 0;
@@ -28,28 +28,29 @@ namespace AtlasServerManager.Includes
                 try
                 {
                     cpu.NextValue();
-                    form1.Invoke((MethodInvoker)delegate ()
+                    AtlasMgr.Invoke((MethodInvoker)delegate ()
                     {
-                        if (form1.ServerList.Items.Count > 0)
+                        if (AtlasMgr.ServerList.Items.Count > 0)
                         {
-                            foreach (ArkServerListViewItem ASD in form1.ServerList.Items)
+                            foreach (ArkServerListViewItem ASD in AtlasMgr.ServerList.Items)
                                 if (ASD.GetServerData().IsRunning())
-                                    ASD.GetServerData().GetPlayersOnline(form1, ASD);
+                                    ASD.GetServerData().GetPlayersOnline(AtlasMgr, ASD);
                         }
                     });
 
                     Thread.Sleep(3000);
                     AMem = (TotalMemA - MemA.NextValue()) / 1048576;
-                    form1.Invoke((MethodInvoker)delegate ()
+                    AtlasMgr.Invoke((MethodInvoker)delegate ()
                     {
-                        if (form1.ServerList.Items.Count > 0)
-                            foreach (ArkServerListViewItem ASD in form1.ServerList.Items)
+                        if (AtlasMgr.ServerList.Items.Count > 0)
+                            foreach (ArkServerListViewItem ASD in AtlasMgr.ServerList.Items)
                             {
                                 int.TryParse(ASD.SubItems[5].Text, out Players);
                                 TotalPlayers += Players;
+                                ASD.UpdateStatus();
                             }
                     });
-                    form1.Text = form1.ASMTitle + " | CPU: " + (int)cpu.NextValue() + "%, Mem: " + AMem.ToString("#.##") + " GB / " + TotalMem + " GB - Players Online: " + TotalPlayers;
+                    AtlasMgr.Text = AtlasMgr.ASMTitle + " | CPU: " + (int)cpu.NextValue() + "%, Mem: " + AMem.ToString("#.##") + " GB / " + TotalMem + " GB - Players Online: " + TotalPlayers;
                     TotalPlayers = 0;
                     Thread.Sleep(2000);
                 }
