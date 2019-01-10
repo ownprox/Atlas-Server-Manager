@@ -155,7 +155,7 @@ namespace AtlasServerManager.Includes
                 Asd.ServerPath = (string)key.GetValue("ServerPath", Asd.ServerPath);
                 Asd.AltSaveDirectory = (string)key.GetValue("AltSaveDirectory", Asd.AltSaveDirectory);
                 Asd.ServerIp = (string)key.GetValue("ServerIp", Asd.ServerIp);
-                Asd.RCONIP = (string)key.GetValue("RCONIP", Asd.RCONIP);
+                Asd.RCONIP = (string)key.GetValue("RconIP", Asd.RCONIP);
                 Asd.Loaded = true;
             } else Asd.Loaded = false;
             return Asd;
