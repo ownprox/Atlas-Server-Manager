@@ -197,8 +197,8 @@ namespace AtlasServerManager
                 {
                     if (AllServers) SourceRconTools.SendCommandToAll("plugins." + (Load ? "load " : "unload ") + inputDialog.InputText.Text);
                     else SourceRconTools.SendCommand("plugins." + (Load ? "load " : "unload ") + inputDialog.InputText.Text, ASLVI);
+                    Log("Plugin " + (Load ? "Loaded" : "Unloaded") + ": " + inputDialog.InputText.Text);
                 }
-                Log("Plugin " + (Load ? "Loaded" : "Unloaded") + ": " + inputDialog.InputText.Text);
             }
         }
 
@@ -251,6 +251,7 @@ namespace AtlasServerManager
                     ArkServerListViewItem ASLVI = (ArkServerListViewItem)ServerList.FocusedItem;
                     if (StartButton.Text == "Start") ASLVI.GetServerData().StartServer();
                     else ASLVI.GetServerData().StopServer();
+                    ASLVI.UpdateStatus();
                 }
             };
 
@@ -285,8 +286,8 @@ namespace AtlasServerManager
             {
                 if(MessageBox.Show("Are you sure you want to erase all your configurations?", "Configuration Reset", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
+                    Registry.ClearAll();
                     ServerList.Clear();
-
                 }
             };
 
@@ -331,7 +332,7 @@ namespace AtlasServerManager
             else
             {
                 if (txt == null || txt == string.Empty || txt.Length < 8) return;
-                if (txt.Contains("downloading") || txt.Contains("validat") || txt.Contains("committing"))
+                if (txt.Contains("downloading") || txt.Contains("validat") || txt.Contains("committing") || txt.Contains("preallocating"))
                 {
                     if(!FirstDl)
                     {

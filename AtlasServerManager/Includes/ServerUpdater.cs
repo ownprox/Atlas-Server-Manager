@@ -110,7 +110,7 @@ namespace AtlasServerManager.Includes
                                 AtlasMgr.Updating = false;
                                 break;
                             }
-                            AtlasMgr.Log("[Atlas] Updated, Launching Servers!");
+                            AtlasMgr.Log("[Atlas] Updated, Launching Servers if offline!");
                             FirstLaunch = true;
                             AtlasMgr.ForcedUpdate = AtlasMgr.Updating = false;
                             StartServers(AtlasMgr);
@@ -129,7 +129,7 @@ namespace AtlasServerManager.Includes
                 }
                 if (FirstLaunch)
                 {
-                    AtlasMgr.Log("[Atlas] No updates found, Booting servers!");
+                    AtlasMgr.Log("[Atlas] No updates found, Booting servers if offline!");
                     FirstLaunch = false;
                     StartServers(AtlasMgr);
                 }
@@ -215,7 +215,7 @@ namespace AtlasServerManager.Includes
             AtlasMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
             {
                 foreach (ArkServerListViewItem ASLVI in AtlasMgr.ServerList.Items)
-                    ASLVI.GetServerData().StartServer();
+                    if(!ASLVI.GetServerData().IsRunning()) ASLVI.GetServerData().StartServer();
             });
         }
 

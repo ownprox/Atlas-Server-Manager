@@ -31,7 +31,7 @@ namespace AtlasServerManager.Includes
             switch (Index)
             {
                 case WorkerType.StatusUpdate:
-                    ServerStatusUpdate.Working = Enabled;
+                    ServerStatus.Working = Enabled;
                     break;
                 case WorkerType.ServerMonitor:
                     ServerMonitor.Working = Enabled;
@@ -44,7 +44,7 @@ namespace AtlasServerManager.Includes
 
         public static void Init(AtlasServerManager AtlasMgr, bool StartUpdateCheck)
         {
-            Workers[(int)WorkerType.StatusUpdate] = new WorkerData (Task.Run(() => ServerStatusUpdate.UpdateStatus(AtlasMgr)), new CancellationTokenSource());
+            Workers[(int)WorkerType.StatusUpdate] = new WorkerData (Task.Run(() => ServerStatus.UpdateStatus(AtlasMgr)), new CancellationTokenSource());
             Workers[(int)WorkerType.ServerMonitor] = new WorkerData(Task.Run(() => ServerMonitor.CheckServerStatus(AtlasMgr)), new CancellationTokenSource());
             if (StartUpdateCheck)
                 Workers[(int)WorkerType.ServerUpdate] = new WorkerData(Task.Run(() => ServerUpdater.CheckForUpdates(AtlasMgr)), new CancellationTokenSource());
@@ -63,7 +63,7 @@ namespace AtlasServerManager.Includes
 
         public static void DestroyAll()
         {
-            ServerStatusUpdate.Working = false;
+            ServerStatus.Working = false;
             ServerMonitor.Working = false;
             ServerUpdater.Working = false;
             if (ServerUpdater.UpdateProcess != null && !ServerUpdater.UpdateProcess.HasExited && ServerUpdater.UpdateProcess.Id != 0)

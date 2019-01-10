@@ -134,7 +134,7 @@ namespace AtlasServerManager.Includes
             }
             catch (SocketException e)
             {
-                Console.WriteLine(e.Message);
+                OnServerOutput("Error: " + e.Message);
             }
         }
 
@@ -162,7 +162,6 @@ namespace AtlasServerManager.Includes
             catch
             {
                 OnServerOutput("Error: " + ConnectionFailedString);
-                OnConnectionSuccess(false);
                 return false;
             }
 
@@ -248,18 +247,12 @@ namespace AtlasServerManager.Includes
         {
             bool recsuccess = false;
             RecState state = null;
-
             try
             {
                 int bytesgotten = S.EndReceive(ar);
                 state = (RecState)ar.AsyncState;
                 state.BytesSoFar += bytesgotten;
                 recsuccess = true;
-
-#if DEBUG
-                Console.WriteLine("Receive Callback. Packet: {0} First packet: {1}, Bytes so far: {2}", state.PacketCount, state.IsPacketLength, state.BytesSoFar);
-#endif
-
             }
             catch
             {
@@ -267,25 +260,37 @@ namespace AtlasServerManager.Includes
                 OnServerOutput("Error: " + ConnectionClosed);
             }
 
-            if (recsuccess)
-                ProcessIncomingData(state);
+            if (recsuccess) ProcessIncomingData(state);
         }
 
         void ProcessIncomingData(RecState state)
         {
-            try
+            if (state.IsPacketLength)
             {
-                if (state.IsPacketLength)
+                // First 4 bytes of a new packet.
+                state.PacketLength = BitConverter.ToInt32(state.Data, 0);
+                state.IsPacketLength = false;
+                state.BytesSoFar = 0;
+                state.Data = new byte[state.PacketLength];
+                try
                 {
-                    // First 4 bytes of a new packet.
-                    state.PacketLength = BitConverter.ToInt32(state.Data, 0);
+                    S.BeginReceive(state.Data, 0, state.PacketLength, SocketFlags.None, new AsyncCallback(ReceiveCallback), state);
+                }
+                catch
+                {
+                    OnServerOutput("Error: Failed BeginReceive");
+                }
+            }
+            else
+            {
+                // Do something with data...
 
-                    state.IsPacketLength = false;
-                    state.BytesSoFar = 0;
-                    state.Data = new byte[state.PacketLength];
+                if (state.BytesSoFar < state.PacketLength)
+                {
                     try
                     {
-                        S.BeginReceive(state.Data, 0, state.PacketLength, SocketFlags.None, new AsyncCallback(ReceiveCallback), state);
+                        // Missing data.
+                        S.BeginReceive(state.Data, state.BytesSoFar, state.PacketLength - state.BytesSoFar, SocketFlags.None, new AsyncCallback(ReceiveCallback), state);
                     }
                     catch
                     {
@@ -294,95 +299,46 @@ namespace AtlasServerManager.Includes
                 }
                 else
                 {
-                    // Do something with data...
-
-                    if (state.BytesSoFar < state.PacketLength)
-                    {
-                        try
-                        {
-                            // Missing data.
-                            S.BeginReceive(state.Data, state.BytesSoFar, state.PacketLength - state.BytesSoFar, SocketFlags.None, new AsyncCallback(ReceiveCallback), state);
-                        }
-                        catch
-                        {
-                            OnServerOutput("Error: Failed BeginReceive");
-                        }
-                    }
-                    else
-                    {
-                        // Process data.
-#if DEBUG
-                    Console.WriteLine("Complete packet.");
-#endif
-
-                        RCONPacket RetPack = new RCONPacket();
-                        RetPack.ParseFromBytes(state.Data, this);
-
-                        ProcessResponse(RetPack);
-
-                        // Wait for new packet.
-                        StartGetNewPacket();
-                    }
+                    // Process data.
+                    RCONPacket RetPack = new RCONPacket();
+                    RetPack.ParseFromBytes(state.Data, this);
+                    ProcessResponse(RetPack);
+                    // Wait for new packet.
+                    StartGetNewPacket();
                 }
             }
-            catch { }
         }
 
         void ProcessResponse(RCONPacket P)
         {
-            try
+            switch (P.ServerDataReceived)
             {
-                switch (P.ServerDataReceived)
-                {
-                    case RCONPacket.SERVERDATA_rec.SERVERDATA_AUTH_RESPONSE:
-                        if (P.RequestId != -1)
-                        {
-                            // Connected.
-                            connected = true;
-                            OnServerOutput(ConnectionSuccessString);
-                            OnConnectionSuccess(true);
-                        }
-                        else
-                        {
-                            // Failed!
-                            OnServerOutput("Error: " + ConnectionFailedString);
-                            OnConnectionSuccess(false);
-                        }
-                        break;
-                    case RCONPacket.SERVERDATA_rec.SERVERDATA_RESPONSE_VALUE:
-                        //if (hadjunkpacket)
-                        {
-                            // Real packet!
-                            OnServerOutput("Packet: " + P.String1);
-                        }
-                        // else
-                        {
-                            //  hadjunkpacket = true;
-                            //   OnServerOutput("Info: " + GotJunkPacket);
-                        }
-                        break;
-                    default:
-                        OnServerOutput("Error: " + UnknownResponseType);
-                        break;
-                }
+                case RCONPacket.SERVERDATA_rec.SERVERDATA_AUTH_RESPONSE:
+                    if (P.RequestId != -1)
+                    {
+                        // Connected.
+                        connected = true;
+                    }
+                    else
+                    {
+                        // Failed!
+                        OnServerOutput("Error: " + ConnectionFailedString);
+                    }
+                    break;
+                case RCONPacket.SERVERDATA_rec.SERVERDATA_RESPONSE_VALUE:
+                    break;
+                default:
+                    OnServerOutput("Error: " + UnknownResponseType);
+                    break;
             }
-            catch { }
         }
 
         // bool hadjunkpacket;
 
         internal void OnServerOutput(string output)
         {
-            ServerOutput(output);
+            AtlasServerManager.GetInstance().Log("[RCON] " + output);
         }
-
-        internal void OnConnectionSuccess(bool info)
-        {
-            ConnectionSuccess(info);
-        }
-
-        public event StringOutput ServerOutput;
-        public event BoolInfo ConnectionSuccess;
 
         public static string ConnectionClosed = "Connection closed by remote host";
         public static string ConnectionSuccessString = "Connection Succeeded!";
@@ -409,6 +365,7 @@ namespace AtlasServerManager.Includes
         public bool IsPacketLength;
         public byte[] Data;
     }
+
     internal class RCONPacket
     {
         internal RCONPacket()

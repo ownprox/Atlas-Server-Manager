@@ -87,7 +87,7 @@
     <Compile Include="Includes\ServerData.cs" />
     <Compile Include="Includes\SourceQuery.cs" />
     <Compile Include="Includes\SourceRcon.cs" />
-    <Compile Include="Includes\ManagerStatusUpdate.cs" />
+    <Compile Include="Includes\ServerStatus.cs" />
     <Compile Include="Includes\Worker.cs" />
     <Compile Include="InputDialog.cs">
       <SubType>Form</SubType>
