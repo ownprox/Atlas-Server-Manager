@@ -148,7 +148,6 @@ namespace AtlasServerManager.Includes
                     StartInfo = new ProcessStartInfo("cmd.exe", "/c steamcmd +@NoPromptForPassword 1 +@sSteamCmdForcePlatformType windows +login anonymous +app_info_update 1 +app_info_print 1006030 +app_info_print 1006030 +app_info_print 1006030 +quit > \"" + AtlasMgr.SteamPath + "CurrentVersion.dat\"")
                     {
                         UseShellExecute = false,
-                        RedirectStandardOutput = true,
                         CreateNoWindow = true,
                         WorkingDirectory = AtlasMgr.SteamPath
                     }
