@@ -34,6 +34,7 @@
             this.ClearConfigButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.SteamWindowCheck = new System.Windows.Forms.CheckBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.ServerUpdateMessage = new System.Windows.Forms.TextBox();
             this.ServerUpdatingMessage = new System.Windows.Forms.TextBox();
@@ -131,18 +132,18 @@
             this.tabPage2.Controls.Add(this.ClearConfigButton);
             this.tabPage2.Controls.Add(this.button1);
             this.tabPage2.Controls.Add(this.groupBox3);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(676, 267);
+            this.tabPage2.Size = new System.Drawing.Size(676, 295);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Options";
             // 
             // ClearConfigButton
             // 
             this.ClearConfigButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ClearConfigButton.Location = new System.Drawing.Point(482, 216);
+            this.ClearConfigButton.Location = new System.Drawing.Point(482, 244);
             this.ClearConfigButton.Name = "ClearConfigButton";
             this.ClearConfigButton.Size = new System.Drawing.Size(191, 44);
             this.ClearConfigButton.TabIndex = 8;
@@ -152,7 +153,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(482, 167);
+            this.button1.Location = new System.Drawing.Point(482, 195);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(191, 44);
             this.button1.TabIndex = 7;
@@ -164,6 +165,7 @@
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox3.Controls.Add(this.SteamWindowCheck);
             this.groupBox3.Controls.Add(this.splitContainer2);
             this.groupBox3.Controls.Add(this.numServerUpdate);
             this.groupBox3.Controls.Add(this.label4);
@@ -172,17 +174,27 @@
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Location = new System.Drawing.Point(3, 7);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(473, 252);
+            this.groupBox3.Size = new System.Drawing.Size(473, 280);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Atlas Server Automatic Update";
+            // 
+            // SteamWindowCheck
+            // 
+            this.SteamWindowCheck.AutoSize = true;
+            this.SteamWindowCheck.Location = new System.Drawing.Point(6, 44);
+            this.SteamWindowCheck.Name = "SteamWindowCheck";
+            this.SteamWindowCheck.Size = new System.Drawing.Size(410, 21);
+            this.SteamWindowCheck.TabIndex = 8;
+            this.SteamWindowCheck.Text = "Show SteamCMD (can fix updating bugs on windows 7)";
+            this.SteamWindowCheck.UseVisualStyleBackColor = true;
             // 
             // splitContainer2
             // 
             this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer2.Location = new System.Drawing.Point(6, 109);
+            this.splitContainer2.Location = new System.Drawing.Point(6, 131);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -193,8 +205,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.ServerUpdatingMessage);
-            this.splitContainer2.Size = new System.Drawing.Size(461, 137);
-            this.splitContainer2.SplitterDistance = 67;
+            this.splitContainer2.Size = new System.Drawing.Size(461, 143);
+            this.splitContainer2.SplitterDistance = 69;
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 7;
             // 
@@ -206,7 +218,7 @@
             this.ServerUpdateMessage.Location = new System.Drawing.Point(0, 0);
             this.ServerUpdateMessage.Multiline = true;
             this.ServerUpdateMessage.Name = "ServerUpdateMessage";
-            this.ServerUpdateMessage.Size = new System.Drawing.Size(461, 64);
+            this.ServerUpdateMessage.Size = new System.Drawing.Size(461, 66);
             this.ServerUpdateMessage.TabIndex = 5;
             this.ServerUpdateMessage.Text = "Atlas Updating in {time}!";
             // 
@@ -218,13 +230,13 @@
             this.ServerUpdatingMessage.Location = new System.Drawing.Point(0, 2);
             this.ServerUpdatingMessage.Multiline = true;
             this.ServerUpdatingMessage.Name = "ServerUpdatingMessage";
-            this.ServerUpdatingMessage.Size = new System.Drawing.Size(461, 94);
+            this.ServerUpdatingMessage.Size = new System.Drawing.Size(461, 101);
             this.ServerUpdatingMessage.TabIndex = 6;
             this.ServerUpdatingMessage.Text = "Atlas is now updating please restart your games to get the update!";
             // 
             // numServerUpdate
             // 
-            this.numServerUpdate.Location = new System.Drawing.Point(6, 50);
+            this.numServerUpdate.Location = new System.Drawing.Point(6, 68);
             this.numServerUpdate.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -249,7 +261,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(64, 52);
+            this.label4.Location = new System.Drawing.Point(64, 70);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(163, 17);
@@ -258,7 +270,7 @@
             // 
             // numServerWarning
             // 
-            this.numServerWarning.Location = new System.Drawing.Point(6, 79);
+            this.numServerWarning.Location = new System.Drawing.Point(6, 97);
             this.numServerWarning.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -295,7 +307,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.Black;
-            this.label5.Location = new System.Drawing.Point(64, 81);
+            this.label5.Location = new System.Drawing.Point(64, 99);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(190, 17);
@@ -512,7 +524,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(684, 293);
+            this.tabControl1.Size = new System.Drawing.Size(684, 324);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage3
@@ -618,7 +630,7 @@
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox1.Location = new System.Drawing.Point(0, 0);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(684, 116);
+            this.richTextBox1.Size = new System.Drawing.Size(684, 128);
             this.richTextBox1.TabIndex = 1;
             this.richTextBox1.Text = "";
             // 
@@ -643,8 +655,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.richTextBox1);
-            this.splitContainer1.Size = new System.Drawing.Size(684, 427);
-            this.splitContainer1.SplitterDistance = 309;
+            this.splitContainer1.Size = new System.Drawing.Size(684, 470);
+            this.splitContainer1.SplitterDistance = 340;
             this.splitContainer1.SplitterWidth = 2;
             this.splitContainer1.TabIndex = 2;
             // 
@@ -828,14 +840,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 427);
+            this.ClientSize = new System.Drawing.Size(684, 470);
             this.Controls.Add(this.splitContainer1);
             this.Font = new System.Drawing.Font("Tahoma", 10F, System.Drawing.FontStyle.Bold);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AtlasServerManager";
-            this.Text = "Atlas Server Manager 3.6";
+            this.Text = "Atlas Server Manager 3.7";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -944,5 +956,6 @@
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.CheckBox BootWhenOffCheck;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        public System.Windows.Forms.CheckBox SteamWindowCheck;
     }
 }

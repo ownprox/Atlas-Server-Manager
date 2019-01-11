@@ -30,6 +30,7 @@ namespace AtlasServerManager.Includes
                 if (AtlasMgr.checkAutoServerUpdate.Checked || ForcedUpdate)
                 {
                     UpdateVersion = GetAtlasServerBuildID(AtlasMgr);
+                    AtlasMgr.Log("[Update] DEBUG: Update Version Build: " + UpdateVersion);
                     if (UpdateVersion != 0)
                     {
                         if (File.Exists(AtlasMgr.SteamPath + "AtlasLatestVersion.txt")) using (StreamReader r = new StreamReader(AtlasMgr.SteamPath + "AtlasLatestVersion.txt")) CurrentVersion = r.ReadLine();
@@ -204,14 +205,15 @@ namespace AtlasServerManager.Includes
                     StartInfo = new ProcessStartInfo(AtlasMgr.SteamPath + "steamcmd.exe", "+@NoPromptForPassword 1 +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir \"" + UpdatePath + "\" +app_update 1006030 validate +quit")
                     {
                         UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        CreateNoWindow = true,
+                        RedirectStandardOutput = !AtlasMgr.SteamWindowCheck.Checked,
+                        CreateNoWindow = !AtlasMgr.SteamWindowCheck.Checked,
                         WorkingDirectory = AtlasMgr.SteamPath
                     }
                 };
-                UpdateProcess.OutputDataReceived += (s, e) => UpdateData(e.Data);
+
+                if (!AtlasMgr.SteamWindowCheck.Checked) UpdateProcess.OutputDataReceived += (s, e) => UpdateData(e.Data);
                 UpdateProcess.Start();
-                UpdateProcess.BeginOutputReadLine();
+                if (!AtlasMgr.SteamWindowCheck.Checked) UpdateProcess.BeginOutputReadLine();
                 UpdateProcess.WaitForExit();
             }
             if (Working && !UpdateError) using (StreamWriter w = new StreamWriter(AtlasMgr.SteamPath + "AtlasLatestVersion.txt")) w.WriteLine(UpdateVersion);

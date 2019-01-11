@@ -161,6 +161,7 @@ namespace AtlasServerManager.Includes
 
         public int IsRunning(AtlasServerManager AtlasMgr)
         {
+            if (ServerProcess == null || ServerProcess.HasExited || ServerProcess.Id == 0) return 0;
             if (AttemptRconSave && DateTime.Now.Subtract(RconSavedEstimate).TotalSeconds <= 0) return 1;
             if (HasMadeFirstContact && AtlasMgr != null)
             {
@@ -179,10 +180,10 @@ namespace AtlasServerManager.Includes
                     return 3;
                 }
             }
-            return (ServerProcess == null || ServerProcess.HasExited || ServerProcess.Id == 0) ? 0 : 1;
+            return 1;
         }
 
-        public bool IsRunning() { return IsRunning(null) == 1; }
+        public bool IsRunning() { return (ServerProcess == null || ServerProcess.HasExited || ServerProcess.Id == 0) ? false : true; }
 
         public void StopServer()
         {

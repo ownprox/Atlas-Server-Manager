@@ -26,6 +26,7 @@ namespace AtlasServerManager.Includes
                     AtlasMgr.BootWhenOffCheck.Checked = (int)key.GetValue("BootWhenOff", 1) == 1 ? true : false;
                     AtlasMgr.QueryPortCheck.Checked = (int)key.GetValue("QueryPortCheck", 1) == 1 ? true : false;
                     AtlasMgr.GamePortCheck.Checked = (int)key.GetValue("GamePortCheck", 1) == 1 ? true : false;
+                    AtlasMgr.SteamWindowCheck.Checked = (int)key.GetValue("ShowSteamWindow", 0) == 1 ? true : false;
 
                     /* DECIMAL */
                     decimal value = 1.0M;
@@ -64,6 +65,7 @@ namespace AtlasServerManager.Includes
                     key.SetValue("BootWhenOff", AtlasMgr.BootWhenOffCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                     key.SetValue("QueryPortCheck", AtlasMgr.QueryPortCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                     key.SetValue("GamePortCheck", AtlasMgr.GamePortCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
+                    key.SetValue("ShowSteamWindow", AtlasMgr.SteamWindowCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
 
                     /* DECIMAL */
                     key.SetValue("ServerUpdate", AtlasMgr.numServerUpdate.Value.ToString(), Microsoft.Win32.RegistryValueKind.String);
