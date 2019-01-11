@@ -145,26 +145,33 @@ namespace AtlasServerManager.Includes
                 if (!File.Exists(AtlasMgr.SteamPath + "steamcmd.exe")) File.WriteAllBytes(AtlasMgr.SteamPath + "steamcmd.exe", Properties.Resources.steamcmd);
                 UpdateProcess = new Process()
                 {
-                    StartInfo = new ProcessStartInfo(AtlasMgr.SteamPath + "steamcmd.exe", "+@NoPromptForPassword 1 +@sSteamCmdForcePlatformType windows +login anonymous +app_info_update 1 +app_info_print 1006030 +app_info_print 1006030 +app_info_print 1006030 +quit")
+                    StartInfo = new ProcessStartInfo("cmd.exe", "/c steamcmd +@NoPromptForPassword 1 +@sSteamCmdForcePlatformType windows +login anonymous +app_info_update 1 +app_info_print 1006030 +app_info_print 1006030 +app_info_print 1006030 +quit > \"" + AtlasMgr.SteamPath + "CurrentVersion.dat\"")
                     {
                         UseShellExecute = false,
-                        RedirectStandardOutput = true,
                         CreateNoWindow = true,
                         WorkingDirectory = AtlasMgr.SteamPath
                     }
                 };
                 UpdateProcess.Start();
-                string output = UpdateProcess.StandardOutput.ReadToEnd();
                 UpdateProcess.WaitForExit();
-                int Version = 0;
-                int BuildIndex = output.IndexOf("\"buildid\"		\"");
-                if(BuildIndex != -1)
+                if (File.Exists(AtlasMgr.SteamPath + "CurrentVersion.dat"))
                 {
-                    BuildIndex += 12;
-                    int EndIndex = output.IndexOf('"', BuildIndex) - BuildIndex;
-                    if (EndIndex != -1) int.TryParse(output.Substring(BuildIndex, EndIndex), out Version);
+                    using (StreamReader Sr = new StreamReader(AtlasMgr.SteamPath + "CurrentVersion.dat"))
+                    {
+                        string output = Sr.ReadToEnd();
+                        int Version = 0;
+                        int BuildIndex = output.IndexOf("\"buildid\"		\"");
+                        if (BuildIndex != -1)
+                        {
+                            BuildIndex += 12;
+                            int EndIndex = output.IndexOf('"', BuildIndex) - BuildIndex;
+                            if (EndIndex != -1) int.TryParse(output.Substring(BuildIndex, EndIndex), out Version);
+                        }
+                        return Version;
+                    }
                 }
-                return Version;
+                AtlasMgr.Log("[Update] Failed to get latest Version Trying again shortly...");
+                Thread.Sleep(5000);
             }
             catch { AtlasMgr.Log("[Update] Failed Checking For Updates..."); }     
             return 0;

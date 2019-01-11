@@ -39,9 +39,9 @@ namespace AtlasServerManager
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //Translate.TranslateMenu(menuStrip1.Items, "fr");
-            //Translate.TranslateComponents(Controls, "fr");
-            //Translate.TranslateListView(ServerList.Columns, "fr");
+            //Translate.TranslateMenu(menuStrip1.Items, "zh-TW");
+            //Translate.TranslateComponents(Controls, "zh-TW");
+            //Translate.TranslateListView(ServerList.Columns, "zh-TW");
             //Translate.FirstTranslate = true;
             ASMTitle = Text;
             ArkManagerPath = Path.GetDirectoryName(Application.ExecutablePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\") + Path.DirectorySeparatorChar;
