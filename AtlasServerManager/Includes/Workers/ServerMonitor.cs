@@ -4,14 +4,13 @@ namespace AtlasServerManager.Includes
 {
     class ServerMonitor
     {
-        public static bool Working = true;
-        public static void CheckServerStatus(object Data)
+        public static void CheckServerStatus(AtlasServerManager AtlasMgr, CancellationToken token)
         {
-            AtlasServerManager AtlasMgr = (AtlasServerManager)Data;
             int ServerStatus = 0, SleepTime = 3000;
             bool SavedAfterLaunch = false;
-            while (Working)
+            while (true)
             {
+                if (token.IsCancellationRequested) break;
                 AtlasMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
                 {
                     if (!ServerUpdater.Updating && AtlasMgr.BootWhenOffCheck.Checked)

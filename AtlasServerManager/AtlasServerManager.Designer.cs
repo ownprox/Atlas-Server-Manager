@@ -132,18 +132,18 @@
             this.tabPage2.Controls.Add(this.ClearConfigButton);
             this.tabPage2.Controls.Add(this.button1);
             this.tabPage2.Controls.Add(this.groupBox3);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(676, 295);
+            this.tabPage2.Size = new System.Drawing.Size(676, 298);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Options";
             // 
             // ClearConfigButton
             // 
             this.ClearConfigButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ClearConfigButton.Location = new System.Drawing.Point(482, 244);
+            this.ClearConfigButton.Location = new System.Drawing.Point(482, 247);
             this.ClearConfigButton.Name = "ClearConfigButton";
             this.ClearConfigButton.Size = new System.Drawing.Size(191, 44);
             this.ClearConfigButton.TabIndex = 8;
@@ -153,7 +153,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(482, 195);
+            this.button1.Location = new System.Drawing.Point(482, 198);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(191, 44);
             this.button1.TabIndex = 7;
@@ -174,7 +174,7 @@
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Location = new System.Drawing.Point(3, 7);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(473, 280);
+            this.groupBox3.Size = new System.Drawing.Size(473, 283);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Atlas Server Automatic Update";
@@ -205,8 +205,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.ServerUpdatingMessage);
-            this.splitContainer2.Size = new System.Drawing.Size(461, 143);
-            this.splitContainer2.SplitterDistance = 69;
+            this.splitContainer2.Size = new System.Drawing.Size(461, 146);
+            this.splitContainer2.SplitterDistance = 70;
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 7;
             // 
@@ -218,7 +218,7 @@
             this.ServerUpdateMessage.Location = new System.Drawing.Point(0, 0);
             this.ServerUpdateMessage.Multiline = true;
             this.ServerUpdateMessage.Name = "ServerUpdateMessage";
-            this.ServerUpdateMessage.Size = new System.Drawing.Size(461, 66);
+            this.ServerUpdateMessage.Size = new System.Drawing.Size(461, 67);
             this.ServerUpdateMessage.TabIndex = 5;
             this.ServerUpdateMessage.Text = "Atlas Updating in {time}!";
             // 
@@ -230,7 +230,7 @@
             this.ServerUpdatingMessage.Location = new System.Drawing.Point(0, 2);
             this.ServerUpdatingMessage.Multiline = true;
             this.ServerUpdatingMessage.Name = "ServerUpdatingMessage";
-            this.ServerUpdatingMessage.Size = new System.Drawing.Size(461, 101);
+            this.ServerUpdatingMessage.Size = new System.Drawing.Size(461, 106);
             this.ServerUpdatingMessage.TabIndex = 6;
             this.ServerUpdatingMessage.Text = "Atlas is now updating please restart your games to get the update!";
             // 
@@ -320,7 +320,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(676, 264);
+            this.tabPage1.Size = new System.Drawing.Size(676, 295);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Servers";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -534,7 +534,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(676, 267);
+            this.tabPage3.Size = new System.Drawing.Size(676, 298);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Monitoring";
             // 
@@ -550,7 +550,7 @@
             this.groupBox1.Controls.Add(this.BootWhenOffCheck);
             this.groupBox1.Location = new System.Drawing.Point(8, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(660, 255);
+            this.groupBox1.Size = new System.Drawing.Size(660, 286);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Automatic Atlas Server Monitor";
@@ -847,7 +847,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AtlasServerManager";
-            this.Text = "Atlas Server Manager 3.7";
+            this.Text = "Atlas Server Manager 3.8";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);

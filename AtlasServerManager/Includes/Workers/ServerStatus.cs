@@ -8,23 +8,22 @@ namespace AtlasServerManager.Includes
 {
     class ServerStatus
     {
-        public static bool Working = true;
         [DllImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool GetPhysicallyInstalledSystemMemory(out long TotalMemoryInKilobytes);
         private static long TotalMemA;
         private static double TotalMem;
 
-        public static void UpdateStatus(object Data)
+        public static void UpdateStatus(AtlasServerManager AtlasMgr, CancellationToken token)
         {
-            AtlasServerManager AtlasMgr = (AtlasServerManager)Data;
             PerformanceCounter cpu = new PerformanceCounter("Processor", "% Processor Time", "_Total"), MemA = new PerformanceCounter("Memory", "Available KBytes");
             int Players = 0, TotalPlayers = 0;
             double AMem = 0;
             GetPhysicallyInstalledSystemMemory(out TotalMemA);
             TotalMem = TotalMemA / 1048576;
-            while (Working)
+            while (true)
             {
+                if (token.IsCancellationRequested) break;
                 try
                 {
                     cpu.NextValue();

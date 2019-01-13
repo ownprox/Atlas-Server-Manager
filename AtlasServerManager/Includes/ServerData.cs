@@ -9,10 +9,10 @@ namespace AtlasServerManager.Includes
     {
         public SourceRcon RconConnection = new SourceRcon();
         public Process ServerProcess;
-        public string Pass = "", CustomArgs = "", ServerPath = "", FinalServerPath = "", AltSaveDirectory = "", ServerIp = "", RCONIP = "";
+        public string Pass = "", CustomArgs = "", CustomAfterArgs = "", ServerPath = "", FinalServerPath = "", AltSaveDirectory = "", ServerIp = "", RCONIP = "";
         public int ServerPort, QueryPort, RconPort, MaxPlayers, ReservedPlayers, ServerX, ServerY, PID = 0, ProcessPriority;
         public bool[] ProcessAffinity;
-        public bool Rcon, FTD, WildWipe, PVP, MapB, Gamma, Third, Crosshair, HitMarker, Imprint, Loaded, AutoStart, Upnp;
+        public bool Rcon, FTD, WildWipe, PVP, MapB, Gamma, Third, Crosshair, HitMarker, Imprint, Loaded, AutoStart, Upnp, BattleEye;
         private bool HasMadeFirstContact, AttemptRconSave = false, GamePortWasOpen = false;
         private DateTime LastSourceQueryReply, RconSavedEstimate;
 
@@ -92,7 +92,7 @@ namespace AtlasServerManager.Includes
             {
                 ServerProcess = new Process
                 {
-                    StartInfo = new ProcessStartInfo(ExePath, "\"" + "Ocean?ServerX=" + ServerX + "?ServerY=" + ServerY + "?Port=" + ServerPort + "?QueryPort=" + QueryPort + "?AltSaveDirectoryName=" + AltSaveDirectory + "?MaxPlayers=" + MaxPlayers + "?ReservedPlayerSlots=" + ReservedPlayers + "?ServerAdminPassword=" + Pass + "?ServerCrosshair=" + (Crosshair ? "true" : "false") + "?AllowThirdPersonPlayer=" + (Third ? "true" : "false") + "?MapPlayerLocation=" + (MapB ? "true" : "false") + "?serverPVE=" + (!PVP ? "true" : "false") + "?RCONEnabled=" + (Rcon ? ("true?RCONPort=" + RconPort) : "false") + "?EnablePvPGamma=" + (Gamma ? "true" : "false") + "?AllowAnyoneBabyImprintCuddle=" + (Imprint ? "true" : "false") + "?ShowFloatingDamageText=" + FTD + "?SeamlessIP=" + CurIP + CustomArgs + "\" -game -server -log -NoBattlEye -NoCrashDialog")
+                    StartInfo = new ProcessStartInfo(ExePath, "\"" + "Ocean?ServerX=" + ServerX + "?ServerY=" + ServerY + "?Port=" + ServerPort + "?QueryPort=" + QueryPort + "?AltSaveDirectoryName=" + AltSaveDirectory + "?MaxPlayers=" + MaxPlayers + "?ReservedPlayerSlots=" + ReservedPlayers + "?ServerAdminPassword=" + Pass + "?ServerCrosshair=" + (Crosshair ? "true" : "false") + "?AllowThirdPersonPlayer=" + (Third ? "true" : "false") + "?MapPlayerLocation=" + (MapB ? "true" : "false") + "?serverPVE=" + (!PVP ? "true" : "false") + "?RCONEnabled=" + (Rcon ? ("true?RCONPort=" + RconPort) : "false") + "?EnablePvPGamma=" + (Gamma ? "true" : "false") + "?AllowAnyoneBabyImprintCuddle=" + (Imprint ? "true" : "false") + "?ShowFloatingDamageText=" + FTD + "?SeamlessIP=" + CurIP + CustomArgs + "\" -game -server -log -NoCrashDialog" + (BattleEye ? "" : " -NoBattlEye") + (CustomAfterArgs == string.Empty ? "" : " " + CustomAfterArgs))
                     {
                         UseShellExecute = false,
                         WorkingDirectory = Path.GetDirectoryName(ExePath)

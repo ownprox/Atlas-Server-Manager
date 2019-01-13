@@ -77,6 +77,9 @@
             this.BrowseButton = new System.Windows.Forms.Button();
             this.directoryPathTextBox = new System.Windows.Forms.TextBox();
             this.ServerPathBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.BattleEyeCheck = new System.Windows.Forms.CheckBox();
+            this.AdditionalAfterArgsTextBox = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServerYNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ReservedPlayersNumericUpDown)).BeginInit();
@@ -91,6 +94,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.AdditionalAfterArgsTextBox);
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.BattleEyeCheck);
             this.groupBox1.Controls.Add(this.UPNPCheck);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Controls.Add(this.ProcessPriotityCombo);
@@ -145,7 +151,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(267, 328);
+            this.label11.Location = new System.Drawing.Point(267, 336);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(135, 17);
@@ -161,7 +167,7 @@
             "Above Normal",
             "High",
             "Realtime"});
-            this.ProcessPriotityCombo.Location = new System.Drawing.Point(407, 325);
+            this.ProcessPriotityCombo.Location = new System.Drawing.Point(407, 333);
             this.ProcessPriotityCombo.Name = "ProcessPriotityCombo";
             this.ProcessPriotityCombo.Size = new System.Drawing.Size(121, 24);
             this.ProcessPriotityCombo.TabIndex = 36;
@@ -256,7 +262,7 @@
             // 
             // ProcessAffinityButton
             // 
-            this.ProcessAffinityButton.Location = new System.Drawing.Point(556, 314);
+            this.ProcessAffinityButton.Location = new System.Drawing.Point(556, 322);
             this.ProcessAffinityButton.Name = "ProcessAffinityButton";
             this.ProcessAffinityButton.Size = new System.Drawing.Size(131, 44);
             this.ProcessAffinityButton.TabIndex = 23;
@@ -266,16 +272,16 @@
             // 
             // AltSaveDirectoryTextBox
             // 
-            this.AltSaveDirectoryTextBox.Location = new System.Drawing.Point(13, 284);
+            this.AltSaveDirectoryTextBox.Location = new System.Drawing.Point(13, 333);
             this.AltSaveDirectoryTextBox.Name = "AltSaveDirectoryTextBox";
-            this.AltSaveDirectoryTextBox.Size = new System.Drawing.Size(674, 24);
+            this.AltSaveDirectoryTextBox.Size = new System.Drawing.Size(203, 24);
             this.AltSaveDirectoryTextBox.TabIndex = 27;
             this.AltSaveDirectoryTextBox.Text = "a6";
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(10, 264);
+            this.label17.Location = new System.Drawing.Point(10, 312);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(187, 17);
             this.label17.TabIndex = 26;
@@ -654,6 +660,34 @@
     "tall the server to";
             this.ServerPathBrowserDialog.RootFolder = System.Environment.SpecialFolder.Startup;
             // 
+            // BattleEyeCheck
+            // 
+            this.BattleEyeCheck.AutoSize = true;
+            this.BattleEyeCheck.Checked = true;
+            this.BattleEyeCheck.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.BattleEyeCheck.Location = new System.Drawing.Point(534, 160);
+            this.BattleEyeCheck.Name = "BattleEyeCheck";
+            this.BattleEyeCheck.Size = new System.Drawing.Size(93, 21);
+            this.BattleEyeCheck.TabIndex = 39;
+            this.BattleEyeCheck.Text = "BattleEye";
+            this.BattleEyeCheck.UseVisualStyleBackColor = true;
+            // 
+            // AdditionalAfterArgsTextBox
+            // 
+            this.AdditionalAfterArgsTextBox.Location = new System.Drawing.Point(13, 284);
+            this.AdditionalAfterArgsTextBox.Name = "AdditionalAfterArgsTextBox";
+            this.AdditionalAfterArgsTextBox.Size = new System.Drawing.Size(674, 24);
+            this.AdditionalAfterArgsTextBox.TabIndex = 41;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(10, 264);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(507, 17);
+            this.label14.TabIndex = 40;
+            this.label14.Text = "Additional Server After Launch Arguments (Arguments that start with -)";
+            // 
             // AddServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -742,5 +776,8 @@
         private System.Windows.Forms.TextBox RconIP;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.CheckBox UPNPCheck;
+        private System.Windows.Forms.TextBox AdditionalAfterArgsTextBox;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.CheckBox BattleEyeCheck;
     }
 }

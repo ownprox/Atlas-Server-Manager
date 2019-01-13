@@ -132,6 +132,7 @@ namespace AtlasServerManager.Includes
                 Asd.Imprint = (int)key.GetValue("Imprint", Asd.Imprint ? 1 : 0) == 1 ? true : false;
                 Asd.FTD = (int)key.GetValue("FTD", Asd.FTD ? 1 : 0) == 1 ? true : false;
                 Asd.Upnp = (int)key.GetValue("UPNP", Asd.Upnp ? 1 : 0) == 1 ? true : false;
+                Asd.BattleEye = (int)key.GetValue("BattleEye", 1) == 1 ? true : false;
 
                 Asd.ProcessAffinity = new bool[Environment.ProcessorCount];
                 for (int i = 0; i < Environment.ProcessorCount; i++)
@@ -153,6 +154,7 @@ namespace AtlasServerManager.Includes
                 /* STRING */
                 Asd.Pass = (string)key.GetValue("Pass", Asd.Pass);
                 Asd.CustomArgs = (string)key.GetValue("CustomArgs", Asd.CustomArgs);
+                Asd.CustomAfterArgs = (string)key.GetValue("CustomAfterArgs", "");
                 Asd.ServerPath = (string)key.GetValue("ServerPath", Asd.ServerPath);
                 Asd.AltSaveDirectory = (string)key.GetValue("AltSaveDirectory", Asd.AltSaveDirectory);
                 Asd.ServerIp = (string)key.GetValue("ServerIp", Asd.ServerIp);
@@ -194,6 +196,7 @@ namespace AtlasServerManager.Includes
                 key.SetValue("Imprint", Asd.Imprint ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                 key.SetValue("FTD", Asd.FTD ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                 key.SetValue("UPNP", Asd.Upnp ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
+                key.SetValue("BattleEye", Asd.BattleEye ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
 
                 if (Asd.ProcessAffinity == null)
                 {
@@ -220,6 +223,7 @@ namespace AtlasServerManager.Includes
                 /* STRING */
                 key.SetValue("Pass", Asd.Pass, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("CustomArgs", Asd.CustomArgs, Microsoft.Win32.RegistryValueKind.String);
+                key.SetValue("CustomAfterArgs", Asd.CustomAfterArgs, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("ServerPath", Asd.ServerPath, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("AltSaveDirectory", Asd.AltSaveDirectory, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("ServerIp", Asd.ServerIp, Microsoft.Win32.RegistryValueKind.String);

@@ -54,7 +54,9 @@ namespace AtlasServerManager
             checkBox15.Checked = ServerData.HitMarker;
             checkBox16.Checked = ServerData.Imprint;
             checkBox17.Checked = ServerData.FTD;
+            BattleEyeCheck.Checked = ServerData.BattleEye;
             AdditionalArgsTextBox.Text = ServerData.CustomArgs;
+            AdditionalAfterArgsTextBox.Text = ServerData.CustomAfterArgs;
             ServerXNumericUpDown.Value = ServerData.ServerX;
             ServerYNumericUpDown.Value = ServerData.ServerY;
             ReservedPlayersNumericUpDown.Value = ServerData.ReservedPlayers;
@@ -103,7 +105,9 @@ namespace AtlasServerManager
                 HitMarker = checkBox15.Checked,
                 Imprint = checkBox16.Checked,
                 FTD = checkBox17.Checked,
+                BattleEye = BattleEyeCheck.Checked,
                 CustomArgs = AdditionalArgsTextBox.Text,
+                CustomAfterArgs = AdditionalAfterArgsTextBox.Text,
                 /*Process Affinity*/
                 ProcessAffinity = PA.ProcessAffinity,
                 /*Rcon*/
