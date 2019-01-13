@@ -197,7 +197,7 @@ namespace AtlasServerManager.Includes
             
             foreach (string UpdatePath in UpdatePaths)
             {
-                AtlasMgr.Log("[Ark] Updating Path: " + UpdatePath);
+                AtlasMgr.Log("[Atlas] Updating Path: " + UpdatePath);
                 UpdateProcess = new Process()
                 {
                     StartInfo = new ProcessStartInfo(AtlasMgr.SteamPath + "steamcmd.exe", "+@NoPromptForPassword 1 +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir \"" + UpdatePath + "\" +app_update 1006030 validate +quit")
