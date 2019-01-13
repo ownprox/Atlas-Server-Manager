@@ -152,16 +152,10 @@ namespace AtlasServerManager
                 }
             }
 
-            if(ServerIPTextBox.Text == string.Empty || !ServerIPTextBox.Text.Contains("."))
-            {
-                Error = "Please set a Server IP!";
-            }
-
             if (AltSaveDirectoryTextBox.Text == string.Empty)
             {
                 Error = "Please set a Alt Save Directory!";
             }
-
 
             if (Error != string.Empty) MessageBox.Show(Error);
             else
