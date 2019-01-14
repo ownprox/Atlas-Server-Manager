@@ -19,14 +19,14 @@ namespace AtlasServerManager.Includes
             return AtlasMgr.ServerUpdateMessage.Text.Replace("{time}", SleepTime.ToString() + " " + time);
         }
 
-        public static void CheckForUpdates(object Data)
+        public static void CheckForUpdates(AtlasServerManager AtlasMgr, CancellationToken token)
         {
-            AtlasServerManager AtlasMgr = (AtlasServerManager)Data;
             if (AtlasMgr.checkAutoServerUpdate.Checked || ForcedUpdate) AtlasMgr.Log("[Atlas] Checking for updates, can take up to 30 seconds...");
             string CurrentVersion = "";
             int UpdateVersion = 0, CurrentVer = 0;
-            while (Working)
+            while (true)
             {
+                if (token.IsCancellationRequested) break;
                 if (AtlasMgr.checkAutoServerUpdate.Checked || ForcedUpdate)
                 {
                     UpdateVersion = GetAtlasServerBuildID(AtlasMgr);
@@ -49,7 +49,6 @@ namespace AtlasServerManager.Includes
                                 int SleepTime = (int)AtlasMgr.numServerWarning.Value / 2;
                                 AtlasMgr.Log("[Atlas] Update Broadcasting " + (int)AtlasMgr.numServerWarning.Value + " Minutes");
                                 SourceRconTools.SendCommandToAll("broadcast " + GenerateUpdateMessage(AtlasMgr, (int)AtlasMgr.numServerWarning.Value));
-
                                 Thread.Sleep(SleepTime * 60000);
 
                                 AtlasMgr.Log("[Atlas] Update Broadcasting " + SleepTime + " Minutes");
@@ -106,7 +105,7 @@ namespace AtlasServerManager.Includes
                                 continue;
                             }
 
-                            if (!Working)
+                            if (token.IsCancellationRequested)
                             {
                                 Updating = false;
                                 break;
@@ -122,7 +121,7 @@ namespace AtlasServerManager.Includes
                     }
                 }
                 else Updating = false;
-                if (!Working)
+                if (token.IsCancellationRequested)
                 {
                     Updating = false;
                     break;
@@ -198,20 +197,21 @@ namespace AtlasServerManager.Includes
             
             foreach (string UpdatePath in UpdatePaths)
             {
-                AtlasMgr.Log("[Ark] Updating Path: " + UpdatePath);
+                AtlasMgr.Log("[Atlas] Updating Path: " + UpdatePath);
                 UpdateProcess = new Process()
                 {
                     StartInfo = new ProcessStartInfo(AtlasMgr.SteamPath + "steamcmd.exe", "+@NoPromptForPassword 1 +@sSteamCmdForcePlatformType windows +login anonymous +force_install_dir \"" + UpdatePath + "\" +app_update 1006030 validate +quit")
                     {
                         UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        CreateNoWindow = true,
+                        RedirectStandardOutput = !AtlasMgr.SteamWindowCheck.Checked,
+                        CreateNoWindow = !AtlasMgr.SteamWindowCheck.Checked,
                         WorkingDirectory = AtlasMgr.SteamPath
                     }
                 };
-                UpdateProcess.OutputDataReceived += (s, e) => UpdateData(e.Data);
+
+                if (!AtlasMgr.SteamWindowCheck.Checked) UpdateProcess.OutputDataReceived += (s, e) => UpdateData(e.Data);
                 UpdateProcess.Start();
-                UpdateProcess.BeginOutputReadLine();
+                if (!AtlasMgr.SteamWindowCheck.Checked) UpdateProcess.BeginOutputReadLine();
                 UpdateProcess.WaitForExit();
             }
             if (Working && !UpdateError) using (StreamWriter w = new StreamWriter(AtlasMgr.SteamPath + "AtlasLatestVersion.txt")) w.WriteLine(UpdateVersion);

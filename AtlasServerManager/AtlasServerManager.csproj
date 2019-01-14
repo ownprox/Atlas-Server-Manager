@@ -78,8 +78,8 @@
     <Compile Include="AtlasServerManager.Designer.cs">
       <DependentUpon>AtlasServerManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Includes\ServerUpdater.cs" />
-    <Compile Include="Includes\ServerMonitor.cs" />
+    <Compile Include="Includes\Workers\ServerUpdater.cs" />
+    <Compile Include="Includes\Workers\ServerMonitor.cs" />
     <Compile Include="Includes\CustomComponents.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -87,7 +87,7 @@
     <Compile Include="Includes\ServerData.cs" />
     <Compile Include="Includes\SourceQuery.cs" />
     <Compile Include="Includes\SourceRcon.cs" />
-    <Compile Include="Includes\ServerStatus.cs" />
+    <Compile Include="Includes\Workers\ServerStatus.cs" />
     <Compile Include="Includes\Worker.cs" />
     <Compile Include="InputDialog.cs">
       <SubType>Form</SubType>

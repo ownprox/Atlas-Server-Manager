@@ -26,6 +26,7 @@ namespace AtlasServerManager.Includes
                     AtlasMgr.BootWhenOffCheck.Checked = (int)key.GetValue("BootWhenOff", 1) == 1 ? true : false;
                     AtlasMgr.QueryPortCheck.Checked = (int)key.GetValue("QueryPortCheck", 1) == 1 ? true : false;
                     AtlasMgr.GamePortCheck.Checked = (int)key.GetValue("GamePortCheck", 1) == 1 ? true : false;
+                    AtlasMgr.SteamWindowCheck.Checked = (int)key.GetValue("ShowSteamWindow", 0) == 1 ? true : false;
 
                     /* DECIMAL */
                     decimal value = 1.0M;
@@ -64,6 +65,7 @@ namespace AtlasServerManager.Includes
                     key.SetValue("BootWhenOff", AtlasMgr.BootWhenOffCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                     key.SetValue("QueryPortCheck", AtlasMgr.QueryPortCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                     key.SetValue("GamePortCheck", AtlasMgr.GamePortCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
+                    key.SetValue("ShowSteamWindow", AtlasMgr.SteamWindowCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
 
                     /* DECIMAL */
                     key.SetValue("ServerUpdate", AtlasMgr.numServerUpdate.Value.ToString(), Microsoft.Win32.RegistryValueKind.String);
@@ -131,6 +133,7 @@ namespace AtlasServerManager.Includes
                 Asd.Imprint = (int)key.GetValue("Imprint", Asd.Imprint ? 1 : 0) == 1 ? true : false;
                 Asd.FTD = (int)key.GetValue("FTD", Asd.FTD ? 1 : 0) == 1 ? true : false;
                 Asd.Upnp = (int)key.GetValue("UPNP", Asd.Upnp ? 1 : 0) == 1 ? true : false;
+                Asd.BattleEye = (int)key.GetValue("BattleEye", 1) == 1 ? true : false;
 
                 Asd.ProcessAffinity = new bool[Environment.ProcessorCount];
                 for (int i = 0; i < Environment.ProcessorCount; i++)
@@ -152,6 +155,7 @@ namespace AtlasServerManager.Includes
                 /* STRING */
                 Asd.Pass = (string)key.GetValue("Pass", Asd.Pass);
                 Asd.CustomArgs = (string)key.GetValue("CustomArgs", Asd.CustomArgs);
+                Asd.CustomAfterArgs = (string)key.GetValue("CustomAfterArgs", "");
                 Asd.ServerPath = (string)key.GetValue("ServerPath", Asd.ServerPath);
                 Asd.AltSaveDirectory = (string)key.GetValue("AltSaveDirectory", Asd.AltSaveDirectory);
                 Asd.ServerIp = (string)key.GetValue("ServerIp", Asd.ServerIp);
@@ -193,6 +197,7 @@ namespace AtlasServerManager.Includes
                 key.SetValue("Imprint", Asd.Imprint ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                 key.SetValue("FTD", Asd.FTD ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                 key.SetValue("UPNP", Asd.Upnp ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
+                key.SetValue("BattleEye", Asd.BattleEye ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
 
                 if (Asd.ProcessAffinity == null)
                 {
@@ -220,6 +225,7 @@ namespace AtlasServerManager.Includes
                 key.SetValue("RCONIP", Asd.RCONIP, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("Pass", Asd.Pass, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("CustomArgs", Asd.CustomArgs, Microsoft.Win32.RegistryValueKind.String);
+                key.SetValue("CustomAfterArgs", Asd.CustomAfterArgs, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("ServerPath", Asd.ServerPath, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("AltSaveDirectory", Asd.AltSaveDirectory, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("ServerIp", Asd.ServerIp, Microsoft.Win32.RegistryValueKind.String);
