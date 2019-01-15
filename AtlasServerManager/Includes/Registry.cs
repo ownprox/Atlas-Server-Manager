@@ -27,6 +27,7 @@ namespace AtlasServerManager.Includes
                     AtlasMgr.QueryPortCheck.Checked = (int)key.GetValue("QueryPortCheck", 1) == 1 ? true : false;
                     AtlasMgr.GamePortCheck.Checked = (int)key.GetValue("GamePortCheck", 1) == 1 ? true : false;
                     AtlasMgr.SteamWindowCheck.Checked = (int)key.GetValue("ShowSteamWindow", 0) == 1 ? true : false;
+                    AtlasMgr.ConfigReplaceCheck.Checked = (int)key.GetValue("ConfigReplacer", 1) == 1 ? true : false;
 
                     /* DECIMAL */
                     decimal value = 1.0M;
@@ -36,6 +37,8 @@ namespace AtlasServerManager.Includes
                     AtlasMgr.numServerWarning.Value = value;
                     decimal.TryParse((string)key.GetValue("ServerMonitor", AtlasMgr.numServerMonitor.Value.ToString()), out value);
                     AtlasMgr.numServerMonitor.Value = value;
+                    decimal.TryParse((string)key.GetValue("StartupDelay", "0"), out value);
+                    AtlasMgr.StartupDelayNum.Value = value;
 
                     /* STRING */
                     AtlasMgr.ServerPath = (string)key.GetValue("ServerDataPath", string.Empty);
@@ -66,11 +69,13 @@ namespace AtlasServerManager.Includes
                     key.SetValue("QueryPortCheck", AtlasMgr.QueryPortCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                     key.SetValue("GamePortCheck", AtlasMgr.GamePortCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                     key.SetValue("ShowSteamWindow", AtlasMgr.SteamWindowCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
+                    key.SetValue("ConfigReplacer", AtlasMgr.ConfigReplaceCheck.Checked ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
 
                     /* DECIMAL */
                     key.SetValue("ServerUpdate", AtlasMgr.numServerUpdate.Value.ToString(), Microsoft.Win32.RegistryValueKind.String);
                     key.SetValue("ServerWarning", AtlasMgr.numServerWarning.Value.ToString(), Microsoft.Win32.RegistryValueKind.String);
                     key.SetValue("ServerMonitor", AtlasMgr.numServerMonitor.Value.ToString(), Microsoft.Win32.RegistryValueKind.String);
+                    key.SetValue("StartupDelay", AtlasMgr.StartupDelayNum.Value.ToString(), Microsoft.Win32.RegistryValueKind.String);
 
                     /* STRING */
                     key.SetValue("ServerDataPath", AtlasMgr.ServerPath, Microsoft.Win32.RegistryValueKind.String);

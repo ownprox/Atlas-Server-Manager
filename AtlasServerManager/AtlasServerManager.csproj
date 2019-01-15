@@ -78,6 +78,7 @@
     <Compile Include="AtlasServerManager.Designer.cs">
       <DependentUpon>AtlasServerManager.cs</DependentUpon>
     </Compile>
+    <Compile Include="Includes\Backup.cs" />
     <Compile Include="Includes\Workers\ServerUpdater.cs" />
     <Compile Include="Includes\Workers\ServerMonitor.cs" />
     <Compile Include="Includes\CustomComponents.cs">

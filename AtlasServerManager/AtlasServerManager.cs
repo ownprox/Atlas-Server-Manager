@@ -204,6 +204,8 @@ namespace AtlasServerManager
 
         private void SetupCallbacks()
         {
+            BackupButton.Click += (e, a) => Backup.BackupConfigs(this);
+
             FormClosing += (e, a) =>
             {
                 Worker.DestroyAll();

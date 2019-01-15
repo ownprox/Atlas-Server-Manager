@@ -215,6 +215,7 @@ namespace AtlasServerManager.Includes
                 UpdateProcess.WaitForExit();
             }
             if (Working && !UpdateError) using (StreamWriter w = new StreamWriter(AtlasMgr.SteamPath + "AtlasLatestVersion.txt")) w.WriteLine(UpdateVersion);
+            UpdatePaths.Clear();
         }
 
         private static void StartServers(AtlasServerManager AtlasMgr)
