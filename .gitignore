@@ -3,5 +3,6 @@
 ################################################################################
 
 /.vs
-/AtlasServerManager/bin/Debug
+/AtlasServerManager/bin/
 /AtlasServerManager/obj/x86
+/AtlasServerManager/bin/Release/Interop.NATUPNPLib.dll
