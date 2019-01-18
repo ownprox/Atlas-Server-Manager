@@ -49,6 +49,8 @@ namespace AtlasServerManager.Includes
             ServerPath = ExePath.Substring(0, ExePath.IndexOf(@"\ShooterGame"));
             GamePortWasOpen = false;
 
+            Backup.RestoreConfigs(AtlasServerManager.GetInstance(), ServerPath);
+
             /* Resolve DNS */
             string CurIP = ServerIp;
             if (CurIP != string.Empty)
@@ -91,7 +93,7 @@ namespace AtlasServerManager.Includes
             {
                 UPNP.AddUPNPServer(ServerPort, QueryPort, AltSaveDirectory);
             }
-
+            
             try
             {
                 ServerProcess = new Process

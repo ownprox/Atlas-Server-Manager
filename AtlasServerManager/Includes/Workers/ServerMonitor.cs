@@ -36,6 +36,7 @@ namespace AtlasServerManager.Includes
                                 }
                                 ASLVI.GetServerData().StartServer();
                                 SavedAfterLaunch = false;
+                                if (AtlasMgr.StartupDelayNum.Value > 0) Thread.Sleep((int)AtlasMgr.StartupDelayNum.Value * 1000);
                             }
                             ASLVI.UpdateStatus();
                         }
@@ -46,7 +47,7 @@ namespace AtlasServerManager.Includes
                             Registry.SaveRegConfig(AtlasMgr);
                         }
                     }
-                    SleepTime = (int)(AtlasMgr.numServerMonitor.Value) * 1000;
+                    SleepTime = (int)AtlasMgr.numServerMonitor.Value * 1000;
                 });
                 Thread.Sleep(SleepTime);
             }
