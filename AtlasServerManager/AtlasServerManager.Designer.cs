@@ -773,7 +773,7 @@
             // 
             this.customCommandToolStripMenuItem2.Name = "customCommandToolStripMenuItem2";
             this.customCommandToolStripMenuItem2.Size = new System.Drawing.Size(192, 22);
-            this.customCommandToolStripMenuItem2.Text = "Custom Command";
+            this.customCommandToolStripMenuItem2.Text = "Custom Command"; 
             // 
             // loadPluginToolStripMenuItem2
             // 

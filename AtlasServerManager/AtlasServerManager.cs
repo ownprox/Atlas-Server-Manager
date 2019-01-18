@@ -140,6 +140,10 @@ namespace AtlasServerManager
                     Log("Broadcasted!");
                 }
             }
+            else
+            {
+                MessageBox.Show("Please select a server!!!");
+            }
         }
 
         private void RconSaveWorld(bool AllServers)
@@ -154,6 +158,10 @@ namespace AtlasServerManager
                 }
                 Log("Saved World!");
             }
+            else
+            {
+                MessageBox.Show("Please select a server!!!");
+            }
         }
 
         private void RconCloseSaveWorld(bool AllServers)
@@ -167,6 +175,10 @@ namespace AtlasServerManager
                     SourceRconTools.SendCommand("DoExit", ASLVI);
                 }
                 Log("Closed Saved World!");
+            }
+            else
+            {
+                MessageBox.Show("Please select a server!!!");
             }
         }
 
@@ -184,6 +196,10 @@ namespace AtlasServerManager
                     Log("Custom Command Executed: " + inputDialog.InputText.Text);
                 }
             }
+            else
+            {
+                MessageBox.Show("Please select a server!!!");
+            }
         }
 
         private void RconPlugin(bool AllServers, bool Load)
@@ -200,7 +216,13 @@ namespace AtlasServerManager
                     Log("Plugin " + (Load ? "Loaded" : "Unloaded") + ": " + inputDialog.InputText.Text);
                 }
             }
+            else
+            {
+                MessageBox.Show("Please select a server!!!");
+            }
         }
+
+      
 
         private void SetupCallbacks()
         {
