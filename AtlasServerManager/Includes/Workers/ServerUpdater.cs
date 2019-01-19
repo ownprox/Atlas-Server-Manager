@@ -34,11 +34,11 @@ namespace AtlasServerManager.Includes
                     {
                         if (File.Exists(AtlasMgr.SteamPath + "AtlasLatestVersion.txt")) using (StreamReader r = new StreamReader(AtlasMgr.SteamPath + "AtlasLatestVersion.txt")) CurrentVersion = r.ReadLine();
                         int.TryParse(CurrentVersion, out CurrentVer);
-                        bool ServerStillOpen = false;
                         if (CurrentVer != UpdateVersion)
                         {
                             Updating = true;
                             AtlasMgr.Log("[Atlas] BuildID " + UpdateVersion + " Released!");
+                            bool ServerStillOpen = false;
                             AtlasMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
                             {
                                 foreach (ArkServerListViewItem ASLVI in AtlasMgr.ServerList.Items)
