@@ -13,6 +13,7 @@ namespace AtlasServerManager.Includes
         private static bool UpdateError = false, FirstLaunch = true;
         private static string DownloadSizeString, UpdateErrorText;
         private static ulong DownloadSizeBytes = 0;
+        private static List<string> UpdatePaths = new List<string>();
 
         public static string GenerateUpdateMessage(AtlasServerManager AtlasMgr, int SleepTime, string time = "Minutes")
         {
@@ -172,10 +173,12 @@ namespace AtlasServerManager.Includes
                             BuildIndex += 12;
                             int EndIndex = output.IndexOf('"', BuildIndex) - BuildIndex;
                             if (EndIndex != -1) int.TryParse(output.Substring(BuildIndex, EndIndex), out Version);
+                            break;
                         }
                     }
                 }
             }
+            UpdatePaths.Clear();
             return Version;
         }
 
@@ -219,7 +222,6 @@ namespace AtlasServerManager.Includes
             return 0;
         }
 
-        private static List<string> UpdatePaths = new List<string>();
         private static void UpdateAtlas(AtlasServerManager AtlasMgr, string UpdateVersion)
         {
             AtlasMgr.FirstDl = false;
