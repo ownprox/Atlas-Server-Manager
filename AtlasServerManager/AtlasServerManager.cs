@@ -278,7 +278,6 @@ namespace AtlasServerManager
                     MessageBox.Show("Already Updating", "Update in progress", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-                if (File.Exists(SteamPath + "AtlasLatestVersion.txt")) File.Delete(SteamPath + "AtlasLatestVersion.txt");
                 Log("[Atlas] Forcing Update");
                 ServerUpdater.ForcedUpdate = true;
                 Worker.ForceUpdaterRestart(this);
