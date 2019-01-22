@@ -9,7 +9,7 @@ namespace AtlasServerManager.Includes
 {
     public class SourceRconTools
     {
-        public static bool ConnectToRcon(SourceRcon Sr, string IP, int Port, string Pass)
+        public static bool ConnectToRcon(SourceRcon Sr, string IP, int Port, string Pass, string ServerName)
         {
                 if (Sr != null && !Sr.Connected)
                 {
@@ -29,7 +29,7 @@ namespace AtlasServerManager.Includes
                             Thread.Sleep(100);
                             if (Counter++ > 3)
                             {
-                                AtlasServerManager.GetInstance().Log("[Rcon->ConnectToRcon] Something is wrong with connection");
+                                AtlasServerManager.GetInstance().Log("[Rcon->ConnectToRcon] " + ServerName + " Something is wrong with connection");
                                 return false;
                             }
                             else if (Sr.Connected) break;
@@ -43,7 +43,7 @@ namespace AtlasServerManager.Includes
         {
             try
             {
-                if (!ConnectToRcon(ASLVI.GetServerData().RconConnection, ASLVI.GetServerData().RCONIP == string.Empty ? ASLVI.GetServerData().ServerIp : ASLVI.GetServerData().RCONIP, ASLVI.GetServerData().RconPort, ASLVI.GetServerData().Pass))
+                if (!ConnectToRcon(ASLVI.GetServerData().RconConnection, ASLVI.GetServerData().RCONIP == string.Empty ? ASLVI.GetServerData().ServerIp : ASLVI.GetServerData().RCONIP, ASLVI.GetServerData().RconPort, ASLVI.GetServerData().Pass, ASLVI.GetServerData().AltSaveDirectory))
                     return false;
                 ASLVI.GetServerData().RconConnection.ServerCommand(Command);
                 return true;
@@ -60,7 +60,7 @@ namespace AtlasServerManager.Includes
         {
             try
             {
-                if (!ConnectToRcon(ASD.RconConnection, ASD.RCONIP == string.Empty ? ASD.ServerIp : ASD.RCONIP, ASD.RconPort, ASD.Pass))
+                if (!ConnectToRcon(ASD.RconConnection, ASD.RCONIP == string.Empty ? ASD.ServerIp : ASD.RCONIP, ASD.RconPort, ASD.Pass, ASD.AltSaveDirectory))
                     return false;
                 ASD.RconConnection.ServerCommand(Command);
                 return true;
@@ -81,7 +81,7 @@ namespace AtlasServerManager.Includes
                     foreach (ArkServerListViewItem ASLVI in AtlasServerManager.GetInstance().ServerList.Items)
                     {
                         if (ASLVI.GetServerData().RconConnection == null) ASLVI.GetServerData().RconConnection = new SourceRcon();
-                        if (!ConnectToRcon(ASLVI.GetServerData().RconConnection, ASLVI.GetServerData().RCONIP == string.Empty ? ASLVI.GetServerData().ServerIp : ASLVI.GetServerData().RCONIP, ASLVI.GetServerData().RconPort, ASLVI.GetServerData().Pass)) continue;
+                        if (!ConnectToRcon(ASLVI.GetServerData().RconConnection, ASLVI.GetServerData().RCONIP == string.Empty ? ASLVI.GetServerData().ServerIp : ASLVI.GetServerData().RCONIP, ASLVI.GetServerData().RconPort, ASLVI.GetServerData().Pass, ASLVI.GetServerData().AltSaveDirectory)) continue;
                         ASLVI.GetServerData().RconConnection.ServerCommand(Command);
                     }
                 });
@@ -101,7 +101,7 @@ namespace AtlasServerManager.Includes
             {
                 foreach (ArkServerListViewItem ASLVI in AtlasServerManager.GetInstance().ServerList.Items)
                 {
-                    if (!ConnectToRcon(ASLVI.GetServerData().RconConnection, ASLVI.GetServerData().RCONIP == string.Empty ? ASLVI.GetServerData().ServerIp : ASLVI.GetServerData().RCONIP, ASLVI.GetServerData().RconPort, ASLVI.GetServerData().Pass))
+                    if (!ConnectToRcon(ASLVI.GetServerData().RconConnection, ASLVI.GetServerData().RCONIP == string.Empty ? ASLVI.GetServerData().ServerIp : ASLVI.GetServerData().RCONIP, ASLVI.GetServerData().RconPort, ASLVI.GetServerData().Pass, ASLVI.GetServerData().AltSaveDirectory))
                     {
                         FailCount++;
                         continue;

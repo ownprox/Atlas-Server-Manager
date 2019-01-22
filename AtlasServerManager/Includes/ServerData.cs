@@ -140,14 +140,15 @@ namespace AtlasServerManager.Includes
             {
                 AtlasMgr.Invoke((MethodInvoker)delegate ()
                 {
-                    if (server != null)
+                    if (server != null && SrvData.Success)
                     {
                         server.SubItems[5].Text = SrvData.Players.ToString();
                         HasMadeFirstContact = true;
                         LastSourceQueryReply = DateTime.Now;
                     }
+                    SrvData.sourceQuery.Dispose();
                 });
-            }).Dispose();
+            });
         }
 
         private bool CheckGamePort()

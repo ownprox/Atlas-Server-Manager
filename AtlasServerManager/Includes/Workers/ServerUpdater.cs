@@ -13,6 +13,7 @@ namespace AtlasServerManager.Includes
         private static bool UpdateError = false, FirstLaunch = true;
         private static string DownloadSizeString, UpdateErrorText;
         private static ulong DownloadSizeBytes = 0;
+        private static List<string> UpdatePaths = new List<string>();
 
         public static string GenerateUpdateMessage(AtlasServerManager AtlasMgr, int SleepTime, string time = "Minutes")
         {
@@ -22,23 +23,25 @@ namespace AtlasServerManager.Includes
         public static void CheckForUpdates(AtlasServerManager AtlasMgr, CancellationToken token)
         {
             if (AtlasMgr.checkAutoServerUpdate.Checked || ForcedUpdate) AtlasMgr.Log("[Atlas] Checking for updates, can take up to 30 seconds...");
-            string CurrentVersion = "";
             int UpdateVersion = 0, CurrentVer = 0;
             while (true)
             {
                 if (token.IsCancellationRequested) break;
                 if (AtlasMgr.checkAutoServerUpdate.Checked || ForcedUpdate)
                 {
+                    if (AtlasMgr.DebugCheck.Checked) AtlasMgr.Log("[Atlas->Debug] Checking for Update");
                     UpdateVersion = GetAtlasServerBuildID(AtlasMgr);
+                    if(AtlasMgr.DebugCheck.Checked) AtlasMgr.Log("[Atlas->Debug] Atlas Latest Build: " + UpdateVersion);
                     if (UpdateVersion != 0)
                     {
-                        if (File.Exists(AtlasMgr.SteamPath + "AtlasLatestVersion.txt")) using (StreamReader r = new StreamReader(AtlasMgr.SteamPath + "AtlasLatestVersion.txt")) CurrentVersion = r.ReadLine();
-                        int.TryParse(CurrentVersion, out CurrentVer);
-                        bool ServerStillOpen = false;
+                        CurrentVer = GetCurrentBuildID(AtlasMgr);
+                        if (AtlasMgr.DebugCheck.Checked) AtlasMgr.Log("[Atlas->Debug] Atlas Current Build: " + CurrentVer);
                         if (CurrentVer != UpdateVersion)
                         {
                             Updating = true;
                             AtlasMgr.Log("[Atlas] BuildID " + UpdateVersion + " Released!");
+                            if (AtlasMgr.DebugCheck.Checked) AtlasMgr.Log("[Atlas->Debug] Checking if servers are still online");
+                            bool ServerStillOpen = false;
                             AtlasMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
                             {
                                 foreach (ArkServerListViewItem ASLVI in AtlasMgr.ServerList.Items)
@@ -84,8 +87,9 @@ namespace AtlasServerManager.Includes
                                 });
                                 if (!ServerStillOpen) break;
                                 Thread.Sleep(3000);
+                                if (AtlasMgr.DebugCheck.Checked) AtlasMgr.Log("[Atlas->Debug] Waiting for all servers to close");
                             }
-                            AtlasMgr.Log("[Atlas] Current BuildID: " + CurrentVersion + ", Updating To BuildID: " + UpdateVersion);
+                            AtlasMgr.Log("[Atlas] Current BuildID: " + CurrentVer + ", Updating To BuildID: " + UpdateVersion);
                             UpdateAtlas(AtlasMgr, UpdateVersion.ToString());
                             if (UpdateError)
                             {
@@ -136,6 +140,48 @@ namespace AtlasServerManager.Includes
             }
         }
 
+        private static int GetCurrentBuildID(AtlasServerManager AtlasMgr)
+        {
+            AtlasMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
+            {
+                foreach (ArkServerListViewItem ASLVI in AtlasMgr.ServerList.Items)
+                {
+                    string UpdatePath = ASLVI.GetServerData().ServerPath;
+                    if (UpdatePath.StartsWith("./") || UpdatePath.StartsWith(@".\")) UpdatePath = UpdatePath.Replace("./", System.AppDomain.CurrentDomain.BaseDirectory).Replace(@".\", System.AppDomain.CurrentDomain.BaseDirectory).Replace("//", "/").Replace(@"\\", @"\");
+
+                    if (!Directory.Exists(Path.GetDirectoryName(UpdatePath))) Directory.CreateDirectory(Path.GetDirectoryName(UpdatePath));
+
+                    if (UpdatePath.Contains(@"ShooterGame\Binaries\Win64")) UpdatePath = Regex.Split(UpdatePath, "\\ShooterGame")[0];
+
+                    if (!UpdatePaths.Contains(UpdatePath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar, '\\'))) UpdatePaths.Add(UpdatePath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar, '\\'));
+                }
+            });
+
+            int Version = 0;
+            string SteamAppsDir;
+            foreach (string UpdatePath in UpdatePaths)
+            {
+                SteamAppsDir = Path.Combine(UpdatePath, @"steamapps\");
+                if (Directory.Exists(SteamAppsDir) && File.Exists(SteamAppsDir + "appmanifest_1006030.acf"))
+                {
+                    using (StreamReader Sr = new StreamReader(SteamAppsDir + "appmanifest_1006030.acf"))
+                    {
+                        string output = Sr.ReadToEnd();
+                        int BuildIndex = output.IndexOf("\"buildid\"		\"");
+                        if (BuildIndex != -1)
+                        {
+                            BuildIndex += 12;
+                            int EndIndex = output.IndexOf('"', BuildIndex) - BuildIndex;
+                            if (EndIndex != -1) int.TryParse(output.Substring(BuildIndex, EndIndex), out Version);
+                            break;
+                        }
+                    }
+                }
+            }
+            UpdatePaths.Clear();
+            return Version;
+        }
+
         private static int GetAtlasServerBuildID(AtlasServerManager AtlasMgr)
         {
             try
@@ -176,25 +222,11 @@ namespace AtlasServerManager.Includes
             return 0;
         }
 
-        private static List<string> UpdatePaths = new List<string>();
         private static void UpdateAtlas(AtlasServerManager AtlasMgr, string UpdateVersion)
         {
             AtlasMgr.FirstDl = false;
-            AtlasMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
-            {
-                foreach (ArkServerListViewItem ASLVI in AtlasMgr.ServerList.Items)
-                {
-                    string UpdatePath = ASLVI.GetServerData().ServerPath;
-                    if (UpdatePath.StartsWith("./") || UpdatePath.StartsWith(@".\")) UpdatePath = UpdatePath.Replace("./", System.AppDomain.CurrentDomain.BaseDirectory).Replace(@".\", System.AppDomain.CurrentDomain.BaseDirectory).Replace("//", "/").Replace(@"\\", @"\");
-                    
-                    if (!Directory.Exists(Path.GetDirectoryName(UpdatePath))) Directory.CreateDirectory(Path.GetDirectoryName(UpdatePath));
 
-                    if (UpdatePath.Contains(@"ShooterGame\Binaries\Win64")) UpdatePath = Regex.Split(UpdatePath, "\\ShooterGame")[0];
-
-                    if (!UpdatePaths.Contains(UpdatePath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar, '\\'))) UpdatePaths.Add(UpdatePath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar, '\\'));
-                }
-            });
-            
+            if (AtlasMgr.DebugCheck.Checked) AtlasMgr.Log("[Atlas->Debug] " + UpdatePaths.Count + " Update Paths found");
             foreach (string UpdatePath in UpdatePaths)
             {
                 AtlasMgr.Log("[Atlas] Updating Path: " + UpdatePath);
@@ -214,7 +246,6 @@ namespace AtlasServerManager.Includes
                 if (!AtlasMgr.SteamWindowCheck.Checked) UpdateProcess.BeginOutputReadLine();
                 UpdateProcess.WaitForExit();
             }
-            if (Working && !UpdateError) using (StreamWriter w = new StreamWriter(AtlasMgr.SteamPath + "AtlasLatestVersion.txt")) w.WriteLine(UpdateVersion);
             UpdatePaths.Clear();
         }
 

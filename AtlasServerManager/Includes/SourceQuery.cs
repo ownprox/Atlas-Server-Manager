@@ -13,10 +13,11 @@ namespace AtlasServerManager.Includes
             public byte Protocol, Players, MaxPlayers, Bots, Dedicated, Os;
             public string Name, Map, ModDir, ModDesc;
             public short AppID;
-            public bool PasswordProtected, Secure;
+            public bool PasswordProtected, Secure, Success;
             public int Ping;
+            public SourceQuery sourceQuery;
 
-            public ServerData(byte Protocol, string Name, string Map, string ModDir, string ModDesc, short AppID, byte Players, byte MaxPlayers, byte Bots, byte Dedicated, byte Os, bool PasswordProtected, bool Secure)
+            public ServerData(byte Protocol, string Name, string Map, string ModDir, string ModDesc, short AppID, byte Players, byte MaxPlayers, byte Bots, byte Dedicated, byte Os, bool PasswordProtected, bool Secure, bool Success, SourceQuery sourceQuery)
             {
                 this.Protocol = Protocol;
                 this.Name = Name;
@@ -31,6 +32,8 @@ namespace AtlasServerManager.Includes
                 this.Os = Os;
                 this.PasswordProtected = PasswordProtected;
                 this.Secure = Secure;
+                this.sourceQuery = sourceQuery;
+                this.Success = Success;
                 Ping = 0;
             }
         };
@@ -79,12 +82,7 @@ namespace AtlasServerManager.Includes
         private short ReadShort(ref byte[] _bSource)
         {
             if (_bSource == null || _bSource.Length == 0) return 0;
-            short s = 0;
-            try
-            {
-                s = BitConverter.ToInt16(_bSource, ReadIndex);
-            }
-            catch { }
+            short s = BitConverter.ToInt16(_bSource, ReadIndex);
             ReadIndex += 2;
             return s;
         }
@@ -93,26 +91,16 @@ namespace AtlasServerManager.Includes
         {
 
             if (_bSource == null || _bSource.Length == 0) return 0;
-            int l = 0;
-            try
-            {
-                l = BitConverter.ToInt32(_bSource, ReadIndex);
-            }
-            catch { }
+            int i = BitConverter.ToInt32(_bSource, ReadIndex);
             ReadIndex += 4;
-            return l;
+            return i;
         }
 
         private long ReadLong(ref byte[] _bSource)
         {
 
             if (_bSource == null || _bSource.Length == 0) return 0;
-            long l = 0;
-            try
-            {
-                l = BitConverter.ToInt64(_bSource, ReadIndex);
-            }
-            catch { }
+            long l = BitConverter.ToInt64(_bSource, ReadIndex);
             ReadIndex += 4;
             return l;
         }
@@ -121,12 +109,7 @@ namespace AtlasServerManager.Includes
         {
 
             if (_bSource == null || _bSource.Length == 0) return 0;
-            float f = 0;
-            try
-            {
-                f = BitConverter.ToSingle(_bSource, ReadIndex);
-            }
-            catch { }
+            float f = BitConverter.ToSingle(_bSource, ReadIndex);
             ReadIndex += 4;
             return f;
         }
@@ -153,7 +136,8 @@ namespace AtlasServerManager.Includes
                 Socket client = (Socket) ar.AsyncState;
                 client.EndConnect(ar);
                 SendPacket(client, Send_INFO);
-            } catch { }
+            }
+            catch { FailedCallback(); }
         }
 
         private void SendChallenge(byte PacketID)
@@ -161,6 +145,12 @@ namespace AtlasServerManager.Includes
             ChallengePacket = PacketID;
             Ping = timeGetTime();
             SendPacket(SourceQuerySocket, PacketID, new byte[4] { 0xFF, 0xFF, 0xFF, 0xFF });
+        }
+
+        private void FailedCallback()
+        {
+            SrvData = new ServerData(0, "", "", "", "", 0, 0, 0, 0, 0, 0, false, false, false, this);
+            ServerListCallbackRemote(SrvData);
         }
 
         private void ReceiveCallback(IAsyncResult ar)
@@ -174,7 +164,7 @@ namespace AtlasServerManager.Includes
                     switch (ReadByte(ref BUFFER))
                     {
                         case Recieve_INFO:
-                            SrvData = new ServerData(ReadByte(ref BUFFER), ReadString(ref BUFFER), ReadString(ref BUFFER), ReadString(ref BUFFER), ReadString(ref BUFFER), ReadShort(ref BUFFER), ReadByte(ref BUFFER), ReadByte(ref BUFFER), ReadByte(ref BUFFER), ReadByte(ref BUFFER), ReadByte(ref BUFFER), (ReadByte(ref BUFFER) == 1), (ReadByte(ref BUFFER) == 1));
+                            SrvData = new ServerData(ReadByte(ref BUFFER), ReadString(ref BUFFER), ReadString(ref BUFFER), ReadString(ref BUFFER), ReadString(ref BUFFER), ReadShort(ref BUFFER), ReadByte(ref BUFFER), ReadByte(ref BUFFER), ReadByte(ref BUFFER), ReadByte(ref BUFFER), ReadByte(ref BUFFER), (ReadByte(ref BUFFER) == 1), (ReadByte(ref BUFFER) == 1), true, this);
                             SendChallenge(Send_PLAYER);
                             break;
                         case Recieve_CHALLENGE:
@@ -202,23 +192,25 @@ namespace AtlasServerManager.Includes
                                 }
                                 SrvData.Players = (byte)PlayersOnline.Count;
                                 PlayersOnline.Clear();
-                                SourceQuerySocket.Shutdown(SocketShutdown.Both);
-                                SourceQuerySocket.Close();
                                 ServerListCallbackRemote(SrvData);
                             }
                             break;
                     }
                    
                 }
-            } catch { }
+            } catch { FailedCallback(); }
         }
 
         private void SendPacket(Socket client, byte PacketID, byte[] ExtraData = null, int Size = -1)
         {
-            if (ExtraData == null) ExtraData = new byte[] { 83, 111, 117, 114, 99, 101, 32, 69, 110, 103, 105, 110, 101, 32, 81, 117, 101, 114, 121, 0 }; //Source Engine Query\0
-            byte[] msg = BuildPacket(PacketID, ExtraData, Size);
-            SourceQuerySocket.BeginSend(msg, 0, msg.Length, 0, new AsyncCallback(SendCallback), 0);
-            client.BeginReceive(BUFFER, 0, BuffSize, 0, new AsyncCallback(ReceiveCallback), 0);
+            try
+            {
+                if (ExtraData == null) ExtraData = new byte[] { 83, 111, 117, 114, 99, 101, 32, 69, 110, 103, 105, 110, 101, 32, 81, 117, 101, 114, 121, 0 }; //Source Engine Query\0
+                byte[] msg = BuildPacket(PacketID, ExtraData, Size);
+                SourceQuerySocket.BeginSend(msg, 0, msg.Length, 0, new AsyncCallback(SendCallback), 0);
+                client.BeginReceive(BUFFER, 0, BuffSize, 0, new AsyncCallback(ReceiveCallback), 0);
+            }
+            catch { FailedCallback(); }
         }
 
         private void SendCallback(IAsyncResult ar) 
@@ -226,7 +218,8 @@ namespace AtlasServerManager.Includes
             try
             {
                 SourceQuerySocket.EndSend(ar);
-            } catch { }
+            }
+            catch { FailedCallback(); }
         }
 
         public SourceQuery(string IP, int Port, Action<ServerData> CallBack)
@@ -239,12 +232,19 @@ namespace AtlasServerManager.Includes
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, Port);
                 SourceQuerySocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 SourceQuerySocket.BeginConnect(remoteEP, new AsyncCallback(ConnectCallback), SourceQuerySocket);
-            }
-            catch { }
+            } catch { FailedCallback(); }
         }
         
         public void Dispose()
         {
+            if (SourceQuerySocket != null)
+            {
+                try
+                {
+                    SourceQuerySocket.Shutdown(SocketShutdown.Both);
+                    SourceQuerySocket.Close();
+                } catch { }
+            }
             GC.SuppressFinalize(this);
         }
 
