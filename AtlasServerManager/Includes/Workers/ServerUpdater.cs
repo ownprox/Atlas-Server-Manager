@@ -149,7 +149,7 @@ namespace AtlasServerManager.Includes
                     string UpdatePath = ASLVI.GetServerData().ServerPath;
                     if (UpdatePath.StartsWith("./") || UpdatePath.StartsWith(@".\")) UpdatePath = UpdatePath.Replace("./", System.AppDomain.CurrentDomain.BaseDirectory).Replace(@".\", System.AppDomain.CurrentDomain.BaseDirectory).Replace("//", "/").Replace(@"\\", @"\");
 
-                    if (!Directory.Exists(Path.GetDirectoryName(UpdatePath))) Directory.CreateDirectory(Path.GetDirectoryName(UpdatePath));
+                    if (!Directory.Exists(UpdatePath)) Directory.CreateDirectory(UpdatePath);
 
                     if (UpdatePath.Contains(@"ShooterGame\Binaries\Win64")) UpdatePath = Regex.Split(UpdatePath, "\\ShooterGame")[0];
 
@@ -178,7 +178,7 @@ namespace AtlasServerManager.Includes
                     }
                 }
             }
-            UpdatePaths.Clear();
+            //UpdatePaths.Clear();
             return Version;
         }
 
@@ -246,7 +246,7 @@ namespace AtlasServerManager.Includes
                 if (!AtlasMgr.SteamWindowCheck.Checked) UpdateProcess.BeginOutputReadLine();
                 UpdateProcess.WaitForExit();
             }
-            UpdatePaths.Clear();
+           // UpdatePaths.Clear();
         }
 
         private static void StartServers(AtlasServerManager AtlasMgr)

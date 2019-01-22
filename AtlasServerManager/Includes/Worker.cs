@@ -47,9 +47,15 @@ namespace AtlasServerManager.Includes
         public static void Init(AtlasServerManager AtlasMgr, bool StartUpdateCheck)
         {
             AddWorker(WorkerType.StatusUpdate, AtlasMgr);
-            AddWorker(WorkerType.ServerMonitor, AtlasMgr);
-            if (StartUpdateCheck)
+            if (StartUpdateCheck) {
+                ServerUpdater.Updating = true;
+                ServerUpdater.ForcedUpdate = true;
                 AddWorker(WorkerType.ServerUpdate, AtlasMgr);
+            }
+
+            AddWorker(WorkerType.ServerMonitor, AtlasMgr);
+            
+
         }
 
         public static void StopUpdating()

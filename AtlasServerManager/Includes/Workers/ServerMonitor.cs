@@ -10,9 +10,10 @@ namespace AtlasServerManager.Includes
             bool SavedAfterLaunch = false;
             while (true)
             {
+                AtlasMgr.Log("123");
                 if (token.IsCancellationRequested) break;
                 AtlasMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
-                {
+                { 
                     if (!ServerUpdater.Updating && AtlasMgr.BootWhenOffCheck.Checked)
                     {
                         foreach (ArkServerListViewItem ASLVI in AtlasMgr.ServerList.Items)
