@@ -49,7 +49,6 @@ namespace AtlasServerManager.Includes
             AddWorker(WorkerType.StatusUpdate, AtlasMgr);
             if (StartUpdateCheck) {
                 ServerUpdater.Updating = true;
-                ServerUpdater.ForcedUpdate = true;
                 AddWorker(WorkerType.ServerUpdate, AtlasMgr);
             }
 
