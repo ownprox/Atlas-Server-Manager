@@ -44,6 +44,7 @@ namespace AtlasServerManager.Includes
                     AtlasMgr.ServerPath = (string)key.GetValue("ServerDataPath", string.Empty);
                     AtlasMgr.ServerUpdateMessage.Text = (string)key.GetValue("ServerUpdateMessage", AtlasMgr.ServerUpdateMessage.Text);
                     AtlasMgr.ServerUpdatingMessage.Text = (string)key.GetValue("ServerUpdatingMessage", AtlasMgr.ServerUpdatingMessage.Text);
+                    //AtlasMgr.SetLanguage((string)key.GetValue("Language", "en"));
 
                     LoadRegServers(AtlasMgr);
                 }
@@ -51,6 +52,20 @@ namespace AtlasServerManager.Includes
             catch (Exception e) { System.Windows.Forms.MessageBox.Show("Failed To Load Setting: " + e.StackTrace); }
         }
 
+        public static void SaveRegkey(string keystring, string value)
+        {
+            key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\AtlasServerManager", true);
+            if (key != null)
+            {
+                key.SetValue(keystring, value, Microsoft.Win32.RegistryValueKind.String);
+            }
+        }
+        public static object LoadRegkey(string keystring)
+        {
+            key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\AtlasServerManager", true);
+            if (key == null) return null;
+            return key.GetValue(keystring);
+        }
         public static void SaveRegConfig(AtlasServerManager AtlasMgr)
         {
             try
@@ -81,7 +96,7 @@ namespace AtlasServerManager.Includes
                     key.SetValue("ServerDataPath", AtlasMgr.ServerPath, Microsoft.Win32.RegistryValueKind.String);
                     key.SetValue("ServerUpdateMessage", AtlasMgr.ServerUpdateMessage.Text, Microsoft.Win32.RegistryValueKind.String);
                     key.SetValue("ServerUpdatingMessage", AtlasMgr.ServerUpdatingMessage.Text, Microsoft.Win32.RegistryValueKind.String);
-
+                    key.SetValue("Language", AtlasMgr.GetLanguage(), Microsoft.Win32.RegistryValueKind.String); 
                     SaveRegServers(AtlasMgr);
                     key.Close();
                 }

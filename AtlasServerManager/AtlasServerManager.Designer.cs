@@ -114,6 +114,9 @@
             this.customCommandToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.loadPluginToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.unloadPluginToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.en = new System.Windows.Forms.ToolStripMenuItem();
+            this.zh_cn = new System.Windows.Forms.ToolStripMenuItem();
             this.fontDialog1 = new System.Windows.Forms.FontDialog();
             this.tabPage2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -143,18 +146,18 @@
             this.tabPage2.Controls.Add(this.ClearConfigButton);
             this.tabPage2.Controls.Add(this.button1);
             this.tabPage2.Controls.Add(this.groupBox3);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage2.Size = new System.Drawing.Size(676, 298);
+            this.tabPage2.Size = new System.Drawing.Size(676, 295);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Options";
             // 
             // ClearConfigButton
             // 
             this.ClearConfigButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ClearConfigButton.Location = new System.Drawing.Point(482, 247);
+            this.ClearConfigButton.Location = new System.Drawing.Point(482, 244);
             this.ClearConfigButton.Name = "ClearConfigButton";
             this.ClearConfigButton.Size = new System.Drawing.Size(191, 44);
             this.ClearConfigButton.TabIndex = 8;
@@ -164,7 +167,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(482, 198);
+            this.button1.Location = new System.Drawing.Point(482, 195);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(191, 44);
             this.button1.TabIndex = 7;
@@ -186,7 +189,7 @@
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Location = new System.Drawing.Point(3, 7);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(473, 283);
+            this.groupBox3.Size = new System.Drawing.Size(473, 280);
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Atlas Server Automatic Update";
@@ -227,8 +230,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.ServerUpdatingMessage);
-            this.splitContainer2.Size = new System.Drawing.Size(461, 146);
-            this.splitContainer2.SplitterDistance = 69;
+            this.splitContainer2.Size = new System.Drawing.Size(461, 143);
+            this.splitContainer2.SplitterDistance = 67;
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 7;
             // 
@@ -240,7 +243,7 @@
             this.ServerUpdateMessage.Location = new System.Drawing.Point(0, 0);
             this.ServerUpdateMessage.Multiline = true;
             this.ServerUpdateMessage.Name = "ServerUpdateMessage";
-            this.ServerUpdateMessage.Size = new System.Drawing.Size(461, 66);
+            this.ServerUpdateMessage.Size = new System.Drawing.Size(461, 64);
             this.ServerUpdateMessage.TabIndex = 5;
             this.ServerUpdateMessage.Text = "Atlas Updating in {time}!";
             // 
@@ -252,7 +255,7 @@
             this.ServerUpdatingMessage.Location = new System.Drawing.Point(0, 2);
             this.ServerUpdatingMessage.Multiline = true;
             this.ServerUpdatingMessage.Name = "ServerUpdatingMessage";
-            this.ServerUpdatingMessage.Size = new System.Drawing.Size(461, 125);
+            this.ServerUpdatingMessage.Size = new System.Drawing.Size(461, 133);
             this.ServerUpdatingMessage.TabIndex = 6;
             this.ServerUpdatingMessage.Text = "Atlas is now updating please restart your games to get the update!";
             // 
@@ -788,7 +791,8 @@
             this.serverToolStripMenuItem1,
             this.managerToolStripMenuItem,
             this.rCONSelecteToolStripMenuItem,
-            this.rCONAllToolStripMenuItem1});
+            this.rCONAllToolStripMenuItem1,
+            this.languageToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(684, 25);
@@ -942,6 +946,29 @@
             this.unloadPluginToolStripMenuItem3.Size = new System.Drawing.Size(192, 22);
             this.unloadPluginToolStripMenuItem3.Text = "Unload Plugin";
             // 
+            // languageToolStripMenuItem
+            // 
+            this.languageToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.en,
+            this.zh_cn});
+            this.languageToolStripMenuItem.Name = "languageToolStripMenuItem";
+            this.languageToolStripMenuItem.Size = new System.Drawing.Size(77, 21);
+            this.languageToolStripMenuItem.Text = "Language";
+            // 
+            // en
+            // 
+            this.en.Name = "en";
+            this.en.Size = new System.Drawing.Size(117, 22);
+            this.en.Text = "English";
+            this.en.Click += new System.EventHandler(this.Language_Click);
+            // 
+            // zh_cn
+            // 
+            this.zh_cn.Name = "zh_cn";
+            this.zh_cn.Size = new System.Drawing.Size(117, 22);
+            this.zh_cn.Text = "中文";
+            this.zh_cn.Click += new System.EventHandler(this.Language_Click);
+            // 
             // AtlasServerManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -953,7 +980,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AtlasServerManager";
-            this.Text = "Atlas Server Manager 4.1A";
+            this.Text = "Atlas Server Manager 4.1B";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabPage2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -1075,5 +1102,8 @@
         public System.Windows.Forms.NumericUpDown StartupDelayNum;
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.CheckBox DebugCheck;
+        private System.Windows.Forms.ToolStripMenuItem languageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem en;
+        private System.Windows.Forms.ToolStripMenuItem zh_cn;
     }
 }
