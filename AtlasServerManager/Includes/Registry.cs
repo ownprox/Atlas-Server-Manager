@@ -44,6 +44,7 @@ namespace AtlasServerManager.Includes
                     AtlasMgr.ServerPath = (string)key.GetValue("ServerDataPath", string.Empty);
                     AtlasMgr.ServerUpdateMessage.Text = (string)key.GetValue("ServerUpdateMessage", AtlasMgr.ServerUpdateMessage.Text);
                     AtlasMgr.ServerUpdatingMessage.Text = (string)key.GetValue("ServerUpdatingMessage", AtlasMgr.ServerUpdatingMessage.Text);
+                    //AtlasMgr.SetLanguage((string)key.GetValue("Language", "en"));
 
                     LoadRegServers(AtlasMgr);
                 }
@@ -51,6 +52,20 @@ namespace AtlasServerManager.Includes
             catch (Exception e) { System.Windows.Forms.MessageBox.Show("Failed To Load Setting: " + e.StackTrace); }
         }
 
+        public static void SaveRegkey(string keystring, string value)
+        {
+            key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\AtlasServerManager", true);
+            if (key != null)
+            {
+                key.SetValue(keystring, value, Microsoft.Win32.RegistryValueKind.String);
+            }
+        }
+        public static object LoadRegkey(string keystring)
+        {
+            key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\AtlasServerManager", true);
+            if (key == null) return null;
+            return key.GetValue(keystring);
+        }
         public static void SaveRegConfig(AtlasServerManager AtlasMgr)
         {
             try
@@ -81,7 +96,7 @@ namespace AtlasServerManager.Includes
                     key.SetValue("ServerDataPath", AtlasMgr.ServerPath, Microsoft.Win32.RegistryValueKind.String);
                     key.SetValue("ServerUpdateMessage", AtlasMgr.ServerUpdateMessage.Text, Microsoft.Win32.RegistryValueKind.String);
                     key.SetValue("ServerUpdatingMessage", AtlasMgr.ServerUpdatingMessage.Text, Microsoft.Win32.RegistryValueKind.String);
-
+                    key.SetValue("Language", AtlasMgr.GetLanguage(), Microsoft.Win32.RegistryValueKind.String); 
                     SaveRegServers(AtlasMgr);
                     key.Close();
                 }
@@ -126,6 +141,7 @@ namespace AtlasServerManager.Includes
             if (key != null)
             {
                 /* BOOL */
+                
                 Asd.Rcon = (int)key.GetValue("Rcon", Asd.Rcon ? 1 : 0) == 1 ? true : false;
                 Asd.WildWipe = (int)key.GetValue("WildWipe", Asd.WildWipe ? 1 : 0) == 1 ? true : false;
                 Asd.PVP = (int)key.GetValue("PVP", Asd.PVP ? 1 : 0) == 1 ? true : false;
@@ -213,7 +229,7 @@ namespace AtlasServerManager.Includes
                 {
                     key.SetValue("ProcessAffinity" + i, Asd.ProcessAffinity[i] ? 1 : 0, Microsoft.Win32.RegistryValueKind.DWord);
                 }
-
+                
                 /* INT */
                 key.SetValue("ServerPort", Asd.ServerPort, Microsoft.Win32.RegistryValueKind.DWord);
                 key.SetValue("QueryPort", Asd.QueryPort, Microsoft.Win32.RegistryValueKind.DWord);
@@ -226,6 +242,7 @@ namespace AtlasServerManager.Includes
                 key.SetValue("ProcessPriority", Asd.ProcessPriority, Microsoft.Win32.RegistryValueKind.DWord);
 
                 /* STRING */
+                key.SetValue("RCONIP", Asd.RCONIP, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("Pass", Asd.Pass, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("CustomArgs", Asd.CustomArgs, Microsoft.Win32.RegistryValueKind.String);
                 key.SetValue("CustomAfterArgs", Asd.CustomAfterArgs, Microsoft.Win32.RegistryValueKind.String);

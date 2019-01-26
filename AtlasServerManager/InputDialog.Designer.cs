@@ -37,36 +37,36 @@
             // SendButton
             // 
             this.SendButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.SendButton.Location = new System.Drawing.Point(302, 156);
+            this.SendButton.Location = new System.Drawing.Point(302, 144);
             this.SendButton.Name = "SendButton";
-            this.SendButton.Size = new System.Drawing.Size(135, 39);
+            this.SendButton.Size = new System.Drawing.Size(135, 36);
             this.SendButton.TabIndex = 0;
             this.SendButton.Text = "Send";
             this.SendButton.UseVisualStyleBackColor = true;
             // 
             // InputText
             // 
-            this.InputText.Location = new System.Drawing.Point(12, 12);
+            this.InputText.Location = new System.Drawing.Point(12, 11);
             this.InputText.Multiline = true;
             this.InputText.Name = "InputText";
-            this.InputText.Size = new System.Drawing.Size(425, 138);
+            this.InputText.Size = new System.Drawing.Size(425, 128);
             this.InputText.TabIndex = 1;
             // 
             // CloseButton
             // 
             this.CloseButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CloseButton.Location = new System.Drawing.Point(12, 156);
+            this.CloseButton.Location = new System.Drawing.Point(12, 144);
             this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(135, 39);
+            this.CloseButton.Size = new System.Drawing.Size(135, 36);
             this.CloseButton.TabIndex = 2;
             this.CloseButton.Text = "Cancel";
             this.CloseButton.UseVisualStyleBackColor = true;
             // 
             // InputDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(449, 207);
+            this.ClientSize = new System.Drawing.Size(449, 191);
             this.ControlBox = false;
             this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.InputText);

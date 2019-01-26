@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Windows.Forms;
+using AtlasServerManager.Includes;
 
 namespace AtlasServerManager
 {
@@ -129,5 +130,8 @@ namespace AtlasServerManager
                 TranslateComponent(toolStripItem, Language);
             }
         }
+
+
+
     }
 }
