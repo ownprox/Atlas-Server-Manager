@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 
@@ -142,6 +143,7 @@ namespace AtlasServerManager.Includes
 
         private static int GetCurrentBuildID(AtlasServerManager AtlasMgr)
         {
+            UpdatePaths.Clear();
             AtlasMgr.Invoke((System.Windows.Forms.MethodInvoker)delegate ()
             {
                 foreach (ArkServerListViewItem ASLVI in AtlasMgr.ServerList.Items)
@@ -178,16 +180,16 @@ namespace AtlasServerManager.Includes
                     }
                 }
             }
-            UpdatePaths.Clear();
             return Version;
         }
-
+        /*
         private static int GetAtlasServerBuildID(AtlasServerManager AtlasMgr)
         {
             try
             {
                 if (!Directory.Exists(AtlasMgr.SteamPath)) Directory.CreateDirectory(AtlasMgr.SteamPath);
                 if (!File.Exists(AtlasMgr.SteamPath + "steamcmd.exe")) File.WriteAllBytes(AtlasMgr.SteamPath + "steamcmd.exe", Properties.Resources.steamcmd);
+                if (File.Exists(AtlasMgr.SteamPath + "CurrentVersion.dat")) File.Delete(AtlasMgr.SteamPath + "CurrentVersion.dat");
                 UpdateProcess = new Process()
                 {
                     StartInfo = new ProcessStartInfo("cmd.exe", "/c steamcmd +@NoPromptForPassword 1 +@sSteamCmdForcePlatformType windows +login anonymous +app_info_update 1 +app_info_print 1006030 +app_info_print 1006030 +app_info_print 1006030 +quit > \"" + AtlasMgr.SteamPath + "CurrentVersion.dat\"")
@@ -220,6 +222,30 @@ namespace AtlasServerManager.Includes
             }
             catch { AtlasMgr.Log("[Update] Failed Checking For Updates..."); }     
             return 0;
+        }*/
+
+        private static int GetAtlasServerBuildID(AtlasServerManager AtlasMgr)
+        {
+            int Version = 0;
+            try
+            {
+                using (WebClient wb = new WebClient())
+                {
+                    string html = wb.DownloadString("https://steamdb.info/app/1006030/depots/?branch=public");
+                    int FindBuildIndex = html.IndexOf("<i>buildid:</i> <b>");
+                    if (FindBuildIndex != -1)
+                    {
+                        FindBuildIndex += 19;
+                        int EndIndex = html.IndexOf('<', FindBuildIndex) - FindBuildIndex;
+                        if (EndIndex != -1)
+                        {
+                            System.Windows.Forms.MessageBox.Show(html.Substring(FindBuildIndex, EndIndex));
+                            int.TryParse(html.Substring(FindBuildIndex, EndIndex), out Version);
+                        }
+                    }
+                }
+            } catch (System.Exception e) { System.Windows.Forms.MessageBox.Show(e.Message); }
+            return Version;
         }
 
         private static void UpdateAtlas(AtlasServerManager AtlasMgr, string UpdateVersion)

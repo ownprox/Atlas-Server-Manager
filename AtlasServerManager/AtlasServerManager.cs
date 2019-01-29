@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using AtlasServerManager.Includes;
 using System.IO;
 using System.Diagnostics;
+using System.Net;
 
 namespace AtlasServerManager
 {
@@ -43,6 +44,9 @@ namespace AtlasServerManager
             //Translate.TranslateComponents(Controls, "zh-TW");
             //Translate.TranslateListView(ServerList.Columns, "zh-TW");
             //Translate.FirstTranslate = true;
+            //Added to query steamdb.com
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
             ASMTitle = Text;
             ArkManagerPath = Path.GetDirectoryName(Application.ExecutablePath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Replace("/", @"\") + Path.DirectorySeparatorChar;
             SteamPath = Path.Combine(ArkManagerPath, @"Steam\");
