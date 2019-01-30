@@ -238,10 +238,7 @@ namespace AtlasServerManager.Includes
                         FindBuildIndex += 19;
                         int EndIndex = html.IndexOf('<', FindBuildIndex) - FindBuildIndex;
                         if (EndIndex != -1)
-                        {
-                            System.Windows.Forms.MessageBox.Show(html.Substring(FindBuildIndex, EndIndex));
                             int.TryParse(html.Substring(FindBuildIndex, EndIndex), out Version);
-                        }
                     }
                 }
             } catch (System.Exception e) { System.Windows.Forms.MessageBox.Show(e.Message); }
