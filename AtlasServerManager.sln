@@ -7,14 +7,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtlasServerManager", "Atlas
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x86 = Debug|x86
-		Release|x86 = Release|x86
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6BE7A655-BA43-49D9-88CD-B1E9167A062C}.Debug|x86.ActiveCfg = Debug|x86
-		{6BE7A655-BA43-49D9-88CD-B1E9167A062C}.Debug|x86.Build.0 = Debug|x86
-		{6BE7A655-BA43-49D9-88CD-B1E9167A062C}.Release|x86.ActiveCfg = Release|x86
-		{6BE7A655-BA43-49D9-88CD-B1E9167A062C}.Release|x86.Build.0 = Release|x86
+		{6BE7A655-BA43-49D9-88CD-B1E9167A062C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE7A655-BA43-49D9-88CD-B1E9167A062C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE7A655-BA43-49D9-88CD-B1E9167A062C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE7A655-BA43-49D9-88CD-B1E9167A062C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -106,8 +106,8 @@ namespace AtlasServerManager.Includes
                 };
 
                 ServerProcess.Start();
-                int AffinityMask = 0;
-                for (int i = 0; i < ProcessAffinity.Length; i++) AffinityMask |= (ProcessAffinity[i] ? 1 : 0) << i;
+                ulong AffinityMask = 0;
+                for (int i = 0; i < ProcessAffinity.Length; i++) AffinityMask |= (ProcessAffinity[i] ? (ulong)1 : 0) << i;
                 ServerProcess.ProcessorAffinity = (System.IntPtr)AffinityMask;
                 switch(ProcessPriority)
                 {
